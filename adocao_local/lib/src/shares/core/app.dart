@@ -1,3 +1,4 @@
+import 'package:adocao_local/src/modules/account/login/login_page.dart';
 import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/core/app_style.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,10 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Adoção Animal',
       theme: _appStyle.lightTheme,
-      initialRoute: '',
+      initialRoute: 'account/login',
       routes: {
         '': (context) => const HomePage(),
+        'account/login': (context) => const LoginPage(),
       },
     );
   }
