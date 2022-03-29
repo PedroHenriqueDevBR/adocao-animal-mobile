@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Adoção Animal',
       theme: _appStyle.lightTheme,
-      initialRoute: 'home',
+      initialRoute: 'account/login',
       routes: {
         'home': (context) => const HomePage(),
         'account/login': (context) => const LoginPage(),

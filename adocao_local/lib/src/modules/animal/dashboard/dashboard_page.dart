@@ -44,6 +44,7 @@ class DashboardPage extends StatelessWidget {
                 child: Text(
                   description,
                   softWrap: true,
+                  style: _textStyle.descriptionStyle,
                 ),
               ),
             ],

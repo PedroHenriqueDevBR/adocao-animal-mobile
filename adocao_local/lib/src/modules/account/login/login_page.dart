@@ -1,3 +1,5 @@
+import 'package:adocao_local/src/modules/home/home_page.dart';
+
 import '../../../shares/core/app_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +53,14 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
+                          },
                           child: const Text('Entrar'),
                           style: ElevatedButton.styleFrom(
                               primary: Theme.of(context).colorScheme.secondary),
@@ -65,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text(
                       'Ainda não possui cadastro\n' +
                           'Clique aqui e cadastre-se',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
                       ),

@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     DashboardPage(),
     const ListAnimalsPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   void _changePage(int index) {
@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Adoção App'),
       ),
       body: _pages[_currentIndex],

@@ -3,17 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyle {
   TextStyle get titleStyle => GoogleFonts.openSans(
-        fontSize: 18,
+        fontSize: 20,
         height: 1.4,
         fontWeight: FontWeight.w600,
       );
 
   TextStyle get descriptionStyle => GoogleFonts.openSans(
-        height: 1.4,
-      );
-
-  TextStyle get subtitleStyle => GoogleFonts.openSans(
-        fontSize: 12,
+        height: 1.2,
         color: Colors.grey.shade700,
       );
 
@@ -21,5 +17,10 @@ class AppTextStyle {
         fontSize: 36,
         fontWeight: FontWeight.w600,
         color: Colors.grey.shade700,
+      );
+
+  TextStyle get textButton => GoogleFonts.openSans(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
       );
 }

@@ -59,6 +59,7 @@ class AppStyle {
       );
 
   InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
+        fillColor: Colors.white,
         border: OutlineInputBorder(
           borderSide: BorderSide(color: secondaryColor),
         ),
