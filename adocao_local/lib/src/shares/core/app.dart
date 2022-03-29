@@ -10,7 +10,8 @@ class App extends StatelessWidget {
 
   void changeNavigatorColor() {
     final uiOverlay = SystemUiOverlayStyle.light.copyWith(
-      systemNavigationBarColor: _appStyle.primaryColor,
+      statusBarColor: _appStyle.primaryColor,
+      systemNavigationBarColor: Colors.white,
     );
     SystemChrome.setSystemUIOverlayStyle(uiOverlay);
   }
@@ -26,9 +27,9 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Adoção Animal',
       theme: _appStyle.lightTheme,
-      initialRoute: 'account/login',
+      initialRoute: 'home',
       routes: {
-        '': (context) => const HomePage(),
+        'home': (context) => const HomePage(),
         'account/login': (context) => const LoginPage(),
       },
     );

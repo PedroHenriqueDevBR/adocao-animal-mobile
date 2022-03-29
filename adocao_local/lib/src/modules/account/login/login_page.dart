@@ -19,12 +19,15 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               color: Theme.of(context).primaryColor,
               padding: const EdgeInsets.only(
-                top: 50,
-                bottom: 50,
+                top: 110,
+                bottom: 110,
               ),
               child: Center(
                 child: Image.asset(
                   AppAssets.logo,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),
