@@ -6,11 +6,11 @@ class AppStyle {
 
   ThemeData get lightTheme => ThemeData(
         primaryColor: primaryColor,
-        accentColor: secondaryColor,
         colorScheme: _colorScheme,
         primarySwatch: Colors.deepPurple,
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.blueGrey.shade50,
+        backgroundColor: Colors.white,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
