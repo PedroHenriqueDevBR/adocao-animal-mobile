@@ -1,6 +1,5 @@
 import 'package:adocao_local/src/modules/home/home_page.dart';
-
-import '../../../shares/core/app_assets.dart';
+import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {

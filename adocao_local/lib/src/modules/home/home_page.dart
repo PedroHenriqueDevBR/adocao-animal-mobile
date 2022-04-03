@@ -1,4 +1,4 @@
-import 'package:adocao_local/src/modules/account/profile/profile_page.dart';
+import 'package:adocao_local/src/modules/account/pages/profile/profile_page.dart';
 import 'package:adocao_local/src/modules/animal/dashboard/dashboard_page.dart';
 import 'package:adocao_local/src/modules/animal/list_animals/list_animals_page.dart';
 import 'package:flutter/material.dart';
