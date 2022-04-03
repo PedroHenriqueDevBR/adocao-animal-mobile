@@ -7,7 +7,7 @@ class AnimalModel {
   dynamic id;
   String name;
   String breed;
-  String age;
+  int age;
   String sex;
   bool adopted;
   bool blocked;
@@ -15,7 +15,7 @@ class AnimalModel {
   List<AnimalPhotoModel> photos = [];
   List<VaccineModel> vaccines = [];
   List<AdoptionRequestModel> requests = [];
-  DateTime createAt = DateTime.now();
+  late DateTime createAt;
 
   AnimalModel({
     this.id,
@@ -26,5 +26,10 @@ class AnimalModel {
     required this.animalType,
     this.adopted = false,
     this.blocked = false,
-  });
+    DateTime? createAt,
+  }) {
+    this.createAt = createAt ?? DateTime.now();
+  }
+
+  get formattedCreateAt => '${createAt.day}/${createAt.month}/${createAt.year}';
 }

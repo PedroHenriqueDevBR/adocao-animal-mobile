@@ -12,4 +12,10 @@ class AdoptionRequestModel {
     required this.createAt,
     required this.requester,
   });
+
+  get accept => isAcepted = true;
+
+  get reject => isAcepted = false;
+
+  get formattedCreateAt => '${createAt.day}/${createAt.month}/${createAt.year}';
 }

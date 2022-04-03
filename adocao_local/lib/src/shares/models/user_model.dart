@@ -1,20 +1,23 @@
 import 'package:adocao_local/src/shares/models/animal_model.dart';
+import 'package:adocao_local/src/shares/models/city_model.dart';
 
 class UserModel {
   dynamic id;
   String username;
-  String? password;
   String name;
-  String image;
-  String contact;
+  String? password;
+  String? image;
+  String? contact;
+  CityModel city;
   List<AnimalModel> animals = [];
 
   UserModel({
     this.id,
     required this.username,
     required this.name,
+    required this.city,
     this.password,
-    this.image = '',
-    this.contact = '',
+    this.contact,
+    this.image,
   });
 }
