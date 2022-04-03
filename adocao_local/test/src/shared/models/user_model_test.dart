@@ -1,7 +1,7 @@
-import 'package:adocao_local/src/shares/models/animal_model.dart';
-import 'package:adocao_local/src/shares/models/animal_type_model.dart';
-import 'package:adocao_local/src/shares/models/city_model.dart';
-import 'package:adocao_local/src/shares/models/user_model.dart';
+import 'package:adocao_local/src/modules/account/models/city_model.dart';
+import 'package:adocao_local/src/modules/account/models/user_model.dart';
+import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
+import 'package:adocao_local/src/modules/animal/models/animal_type_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

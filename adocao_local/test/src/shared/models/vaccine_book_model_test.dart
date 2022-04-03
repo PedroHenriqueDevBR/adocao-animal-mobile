@@ -1,4 +1,4 @@
-import 'package:adocao_local/src/shares/models/vaccine_book_model.dart';
+import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

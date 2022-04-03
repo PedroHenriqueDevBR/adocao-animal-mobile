@@ -1,5 +1,5 @@
-import 'package:adocao_local/src/shares/models/animal_model.dart';
-import 'package:adocao_local/src/shares/models/city_model.dart';
+import 'city_model.dart';
+import '../../animal/models/animal_model.dart';
 
 class UserModel {
   dynamic id;

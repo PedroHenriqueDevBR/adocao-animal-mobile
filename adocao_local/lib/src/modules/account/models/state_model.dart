@@ -1,4 +1,4 @@
-import 'package:adocao_local/src/shares/models/city_model.dart';
+import 'city_model.dart';
 
 class StateModel {
   dynamic id;

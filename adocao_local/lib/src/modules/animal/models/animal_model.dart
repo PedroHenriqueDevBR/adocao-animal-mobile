@@ -1,7 +1,7 @@
-import 'package:adocao_local/src/shares/models/adoption_request_model.dart';
-import 'package:adocao_local/src/shares/models/animal_photo_model.dart';
-import 'package:adocao_local/src/shares/models/animal_type_model.dart';
-import 'package:adocao_local/src/shares/models/vaccine_book_model.dart';
+import 'adoption_request_model.dart';
+import 'animal_photo_model.dart';
+import 'animal_type_model.dart';
+import 'vaccine_book_model.dart';
 
 class AnimalModel {
   dynamic id;

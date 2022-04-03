@@ -1,4 +1,4 @@
-import 'package:adocao_local/src/shares/models/user_model.dart';
+import '../../account/models/user_model.dart';
 
 class AdoptionRequestModel {
   dynamic id;

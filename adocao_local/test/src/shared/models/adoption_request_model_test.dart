@@ -1,6 +1,6 @@
-import 'package:adocao_local/src/shares/models/adoption_request_model.dart';
-import 'package:adocao_local/src/shares/models/city_model.dart';
-import 'package:adocao_local/src/shares/models/user_model.dart';
+import 'package:adocao_local/src/modules/account/models/city_model.dart';
+import 'package:adocao_local/src/modules/account/models/user_model.dart';
+import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -9,8 +9,12 @@ void main() {
 
   setUpAll(() {
     final city = CityModel(name: 'name');
-    final requester =
-        UserModel(id: 1, username: 'username', name: 'name', city: city);
+    final requester = UserModel(
+      id: 1,
+      username: 'username',
+      name: 'name',
+      city: city,
+    );
     adoptionRequestModel =
         AdoptionRequestModel(createAt: now, requester: requester);
   });
