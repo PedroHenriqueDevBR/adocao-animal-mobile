@@ -11,11 +11,4 @@ class AuthTokenModel {
     refresh = json['refresh'];
     access = json['access'];
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'refresh': refresh,
-      'access': access,
-    };
-  }
 }
