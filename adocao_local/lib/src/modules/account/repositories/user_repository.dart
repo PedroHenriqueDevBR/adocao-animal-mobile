@@ -1,8 +1,10 @@
-import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart';
-import 'package:adocao_local/src/modules/account/models/auth_token_model.dart';
-import 'package:adocao_local/src/modules/account/models/user_model.dart';
-import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
-import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
+import 'dart:io';
+
+import '../interfaces/user_interface.dart';
+import '../models/auth_token_model.dart';
+import '../models/user_model.dart';
+import '../../../shares/interfaces/app_data_interface.dart';
+import '../../../shares/interfaces/client_http_interface.dart';
 
 class UserRepository implements IUser {
   final IClientHTTP _client;
@@ -13,38 +15,70 @@ class UserRepository implements IUser {
         _appData = appData;
 
   @override
-  Future<UserModel> getLoggedUserData() {
-    // TODO: implement getLoggedUserData
-    throw UnimplementedError();
+  Future<UserModel> getLoggedUserData() async {
+    const path = 'user/';
+    final jwtKey = await _appData.getJWT();
+    final response = await _client.get(path, jwtKey: jwtKey);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return UserModel.fromMap(response.data);
+    } else {
+      throw HttpException(
+        'ERRO: buscar dados do usuário',
+        uri: Uri(path: path),
+      );
+    }
   }
 
   @override
-  Future<AuthTokenModel> login(String username, String password) {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<AuthTokenModel> login(String username, String password) async {
+    const path = 'user/login/';
+    final response = await _client.post(path, {
+      "username": username,
+      "password": password,
+    });
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return AuthTokenModel.fromJson(response.data);
+    } else {
+      throw HttpException(
+        'ERRO: User login <<< ${response.statusCode} >>>',
+        uri: Uri(path: path),
+      );
+    }
   }
 
   @override
-  Future<void> removeImage() {
-    // TODO: implement removeImage
-    throw UnimplementedError();
+  Future<void> removeImage() async {
+    const path = 'user/image/';
+    final jwtKey = await _appData.getJWT();
+    final response = await _client.delete(path, jwtKey: jwtKey);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw HttpException(
+        'ERRO: remove user image',
+        uri: Uri(path: path),
+      );
+    }
   }
 
   @override
-  Future<void> updateData(UserModel user) {
-    // TODO: implement updateData
+  Future<void> updateData(UserModel user) async {
+    const path = 'user/';
+    final jwtKey = await _appData.getJWT();
+    final response = await _client.put(path, user.toMap(), jwtKey: jwtKey);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw HttpException(
+        'ERRO: update user data',
+        uri: Uri(path: path),
+      );
+    }
+  }
+
+  @override
+  Future<void> updatePassword(UserModel user) {
     throw UnimplementedError();
   }
 
   @override
   Future<String> updateImage(UserModel user) {
-    // TODO: implement updateImage
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updatePassword(UserModel user) {
-    // TODO: implement updatePassword
     throw UnimplementedError();
   }
 }
