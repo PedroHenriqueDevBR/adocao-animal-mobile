@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
+import 'package:adocao_local/src/shares/models/http_response_model.dart';
+import 'package:flutter/foundation.dart';
+
 import '../interfaces/user_interface.dart';
 import '../models/auth_token_model.dart';
 import '../models/user_model.dart';
 import '../../../shares/interfaces/app_data_interface.dart';
 import '../../../shares/interfaces/client_http_interface.dart';
 
-class UserRepository implements IUser {
+class UserRepository implements IUserStorage {
   final IClientHTTP _client;
   final IAppData _appData;
 
@@ -22,9 +26,14 @@ class UserRepository implements IUser {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return UserModel.fromMap(response.data);
     } else {
-      throw HttpException(
-        'ERRO: buscar dados do usuário',
-        uri: Uri(path: path),
+      if (kDebugMode) {
+        print('ERRO: buscar dados do usuário');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
       );
     }
   }
@@ -39,9 +48,14 @@ class UserRepository implements IUser {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return AuthTokenModel.fromJson(response.data);
     } else {
-      throw HttpException(
-        'ERRO: User login <<< ${response.statusCode} >>>',
-        uri: Uri(path: path),
+      if (kDebugMode) {
+        print('ERRO: User login <<< ${response.statusCode} >>>');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
       );
     }
   }
@@ -52,9 +66,14 @@ class UserRepository implements IUser {
     final jwtKey = await _appData.getJWT();
     final response = await _client.delete(path, jwtKey: jwtKey);
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw HttpException(
-        'ERRO: remove user image',
-        uri: Uri(path: path),
+      if (kDebugMode) {
+        print('ERRO: remove user image');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
       );
     }
   }
@@ -65,9 +84,14 @@ class UserRepository implements IUser {
     final jwtKey = await _appData.getJWT();
     final response = await _client.put(path, user.toMap(), jwtKey: jwtKey);
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw HttpException(
-        'ERRO: update user data',
-        uri: Uri(path: path),
+      if (kDebugMode) {
+        print('ERRO: update user data');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
       );
     }
   }
