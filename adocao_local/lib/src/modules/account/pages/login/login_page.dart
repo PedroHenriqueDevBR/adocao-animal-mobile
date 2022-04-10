@@ -1,12 +1,10 @@
-import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart';
+import 'package:adocao_local/src/modules/account/pages/login/login_store.dart';
 import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
-import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
-import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
-import 'package:asuka/asuka.dart' as asuka;
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,30 +14,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final txtLogin = TextEditingController();
-  final txtPassword = TextEditingController();
+  late LoginStore controller;
+  final client = HttpClientService();
   final appData = AppPreferenceService();
 
-  IUserStorage storage = UserRepository(
-    client: HttpClientService(),
-    appData: AppPreferenceService(),
-  );
-
-  void login() async {
-    try {
-      final token = await storage.login(txtLogin.text, txtPassword.text);
-      await appData.setJWT(token.access);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
-    } on HttpResponseException catch (error) {
-      asuka.showSnackBar(
-        asuka.AsukaSnackbar.alert('Verifique as suas credenciais'),
-      );
-    }
+  @override
+  void initState() {
+    controller = LoginStore(
+      context: context,
+      appData: appData,
+      storage: UserRepository(client: client, appData: appData),
+    );
+    controller.verifyLoggedUser();
+    super.initState();
   }
 
   @override
@@ -69,27 +56,51 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    controller: txtLogin,
+                    onChanged: (value) => controller.setLogin(value),
                     decoration: const InputDecoration(
                       labelText: 'Nome de usuário',
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: txtPassword,
-                    decoration: const InputDecoration(
-                      labelText: 'Senha',
-                    ),
-                  ),
+                  Observer(
+                      builder: (_) => TextFormField(
+                            onChanged: (value) => controller.setPassword(value),
+                            decoration: InputDecoration(
+                              labelText: 'Senha',
+                              suffixIcon: IconButton(
+                                onPressed: () =>
+                                    controller.toggleShowPassword(),
+                                icon: Icon(
+                                  controller.showPassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              ),
+                            ),
+                            obscureText: controller.showPassword ? false : true,
+                          )),
                   const SizedBox(height: 16.0),
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: login,
-                          child: const Text('Entrar'),
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary),
+                        child: Observer(
+                          builder: (_) => ElevatedButton(
+                            onPressed: controller.formIsValid
+                                ? controller.login
+                                : null,
+                            child: controller.loading
+                                ? const SizedBox(
+                                    width: 25,
+                                    height: 25,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text('Entrar'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
                         ),
                       )
                     ],
