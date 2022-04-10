@@ -42,6 +42,27 @@ class UserModel {
     return result;
   }
 
+  Map<String, dynamic> toRegisterMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'id': id});
+    result.addAll({'username': username});
+    result.addAll({'name': name});
+    result.addAll({'city': city.id});
+
+    if (password != null) {
+      result.addAll({'password': password});
+    }
+    if (image != null) {
+      result.addAll({'image': image});
+    }
+    if (contact != null) {
+      result.addAll({'contact': contact});
+    }
+
+    return result;
+  }
+
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'],

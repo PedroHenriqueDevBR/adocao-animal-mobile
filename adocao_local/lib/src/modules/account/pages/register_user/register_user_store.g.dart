@@ -9,6 +9,14 @@ part of 'register_user_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$RegisterUserStore on _RegisterUserStore, Store {
+  Computed<bool>? _$formIsValidComputed;
+
+  @override
+  bool get formIsValid =>
+      (_$formIsValidComputed ??= Computed<bool>(() => super.formIsValid,
+              name: '_RegisterUserStore.formIsValid'))
+          .value;
+
   final _$nameAtom = Atom(name: '_RegisterUserStore.name');
 
   @override
@@ -84,6 +92,67 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
+  final _$showPasswordAtom = Atom(name: '_RegisterUserStore.showPassword');
+
+  @override
+  bool get showPassword {
+    _$showPasswordAtom.reportRead();
+    return super.showPassword;
+  }
+
+  @override
+  set showPassword(bool value) {
+    _$showPasswordAtom.reportWrite(value, super.showPassword, () {
+      super.showPassword = value;
+    });
+  }
+
+  final _$showRepeatPasswordAtom =
+      Atom(name: '_RegisterUserStore.showRepeatPassword');
+
+  @override
+  bool get showRepeatPassword {
+    _$showRepeatPasswordAtom.reportRead();
+    return super.showRepeatPassword;
+  }
+
+  @override
+  set showRepeatPassword(bool value) {
+    _$showRepeatPasswordAtom.reportWrite(value, super.showRepeatPassword, () {
+      super.showRepeatPassword = value;
+    });
+  }
+
+  final _$loadingAtom = Atom(name: '_RegisterUserStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$updateAtom = Atom(name: '_RegisterUserStore.update');
+
+  @override
+  bool get update {
+    _$updateAtom.reportRead();
+    return super.update;
+  }
+
+  @override
+  set update(bool value) {
+    _$updateAtom.reportWrite(value, super.update, () {
+      super.update = value;
+    });
+  }
+
   final _$_RegisterUserStoreActionController =
       ActionController(name: '_RegisterUserStore');
 
@@ -143,13 +212,62 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
   }
 
   @override
+  void toggleShowPassword() {
+    final _$actionInfo = _$_RegisterUserStoreActionController.startAction(
+        name: '_RegisterUserStore.toggleShowPassword');
+    try {
+      return super.toggleShowPassword();
+    } finally {
+      _$_RegisterUserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void toggleRepeatShowPassword() {
+    final _$actionInfo = _$_RegisterUserStoreActionController.startAction(
+        name: '_RegisterUserStore.toggleRepeatShowPassword');
+    try {
+      return super.toggleRepeatShowPassword();
+    } finally {
+      _$_RegisterUserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$_RegisterUserStoreActionController.startAction(
+        name: '_RegisterUserStore.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_RegisterUserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setUpdate() {
+    final _$actionInfo = _$_RegisterUserStoreActionController.startAction(
+        name: '_RegisterUserStore.setUpdate');
+    try {
+      return super.setUpdate();
+    } finally {
+      _$_RegisterUserStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 name: ${name},
 username: ${username},
 contact: ${contact},
 password: ${password},
-repeatPassword: ${repeatPassword}
+repeatPassword: ${repeatPassword},
+showPassword: ${showPassword},
+showRepeatPassword: ${showRepeatPassword},
+loading: ${loading},
+update: ${update},
+formIsValid: ${formIsValid}
     ''';
   }
 }

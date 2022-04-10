@@ -61,6 +61,23 @@ class UserRepository implements IUserStorage {
   }
 
   @override
+  Future<void> registerUser(UserModel user) async {
+    const path = 'user/login/';
+    final response = await _client.post(path, user.toMap());
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      if (kDebugMode) {
+        print('ERRO: User register <<< ${response.statusCode} >>>');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<void> removeImage() async {
     const path = 'user/image/';
     final jwtKey = await _appData.getJWT();
