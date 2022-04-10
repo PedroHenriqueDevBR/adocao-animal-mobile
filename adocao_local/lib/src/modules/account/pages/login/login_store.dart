@@ -1,4 +1,5 @@
 import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart';
+import 'package:adocao_local/src/modules/account/pages/register_user/register_user_page.dart';
 import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
@@ -87,6 +88,15 @@ abstract class _LoginStore with Store {
       context,
       MaterialPageRoute(
         builder: (context) => const HomePage(),
+      ),
+    );
+  }
+
+  void goToRegisterUserPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RegisterUserPage(),
       ),
     );
   }

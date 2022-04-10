@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       appData: appData,
       storage: UserRepository(client: client, appData: appData),
     );
-    controller.verifyLoggedUser();
+    // controller.verifyLoggedUser();
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16.0),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: controller.goToRegisterUserPage,
                     child: const Text(
                       'Ainda não possui cadastro\n' +
                           'Clique aqui e cadastre-se',
