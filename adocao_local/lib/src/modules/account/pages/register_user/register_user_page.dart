@@ -1,6 +1,7 @@
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
 import 'package:adocao_local/src/modules/account/models/state_model.dart';
 import 'package:adocao_local/src/modules/account/pages/register_user/register_user_store.dart';
+import 'package:adocao_local/src/modules/account/repositories/location_repository.dart';
 import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
@@ -30,7 +31,8 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
     controller = RegisterUserStore(
       context: context,
       appData: appData,
-      storage: UserRepository(client: client, appData: appData),
+      userStorage: UserRepository(client: client, appData: appData),
+      locationStorage: LocationRepository(client: client, appData: appData),
     );
     controller.populateStates();
     super.initState();

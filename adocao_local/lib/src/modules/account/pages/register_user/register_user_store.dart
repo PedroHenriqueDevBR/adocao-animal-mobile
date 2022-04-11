@@ -1,3 +1,4 @@
+import 'package:adocao_local/src/modules/account/interfaces/location_interface.dart';
 import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart';
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
 import 'package:adocao_local/src/modules/account/models/state_model.dart';
@@ -14,18 +15,21 @@ part 'register_user_store.g.dart';
 class RegisterUserStore extends _RegisterUserStore with _$RegisterUserStore {
   RegisterUserStore({
     required IAppData appData,
-    required IUserStorage storage,
+    required IUserStorage userStorage,
+    required ILocationStorage locationStorage,
     required BuildContext context,
   }) {
     super.appData = appData;
-    super.storage = storage;
+    super.userStorage = userStorage;
     super.context = context;
+    super.locationStorage = locationStorage;
   }
 }
 
 abstract class _RegisterUserStore with Store {
   late IAppData appData;
-  late IUserStorage storage;
+  late IUserStorage userStorage;
+  late ILocationStorage locationStorage;
   late BuildContext context;
 
   ObservableList<StateModel> stateList = ObservableList<StateModel>();
@@ -72,11 +76,13 @@ abstract class _RegisterUserStore with Store {
   @action
   void setUpdate() => update = !update;
 
-  void populateStates() {
-    for (int i = 0; i < 10; i++) {
-      final state = StateModel(id: i, name: 'Estado $i');
-      state.cities = [CityModel(id: i, name: 'Cidade $i')];
-      stateList.add(state);
+  void populateStates() async {
+    try {
+      setLoading(true);
+      List<StateModel> states = await locationStorage.getStates();
+      stateList.addAll(states);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -124,8 +130,8 @@ abstract class _RegisterUserStore with Store {
         city: selectedCity!,
       );
 
-      await storage.registerUser(user).then((_) async {
-        final token = await storage.login(username, password);
+      await userStorage.registerUser(user).then((_) async {
+        final token = await userStorage.login(username, password);
         appData.setJWT(token.access);
         asuka.showSnackBar(
           asuka.AsukaSnackbar.success('Usuário registrado com sucesso'),

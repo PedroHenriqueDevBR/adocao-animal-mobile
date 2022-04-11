@@ -19,7 +19,7 @@ class StateModel {
     return result;
   }
 
-  factory StateModel.fromMap(Map<String, dynamic> map) {
+  factory StateModel.fromMap(Map<dynamic, dynamic> map) {
     final stateModel = StateModel(
       id: map['id'],
       name: map['name'] ?? '',
@@ -28,9 +28,9 @@ class StateModel {
     return stateModel;
   }
 
-  static List<StateModel> fromMapList(List<Map<String, dynamic>> list) {
+  static List<StateModel> fromMapList(List<dynamic> list) {
     List<StateModel> result = [];
-    for (Map<String, dynamic> map in list) {
+    for (Map<dynamic, dynamic> map in list) {
       result.add(StateModel.fromMap(map));
     }
     return result;

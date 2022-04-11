@@ -16,14 +16,14 @@ class CityModel {
     return result;
   }
 
-  factory CityModel.fromMap(Map<String, dynamic> map) {
+  factory CityModel.fromMap(Map<dynamic, dynamic> map) {
     return CityModel(
       id: map['id'],
       name: map['name'] ?? '',
     );
   }
 
-  static List<CityModel> fromMapList(List<Map<String, dynamic>> list) {
+  static List<CityModel> fromMapList(List<dynamic> list) {
     List<CityModel> result = [];
     for (Map<String, dynamic> map in list) {
       result.add(CityModel.fromMap(map));
