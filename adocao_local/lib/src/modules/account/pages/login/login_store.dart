@@ -84,11 +84,9 @@ abstract class _LoginStore with Store {
   }
 
   void goToHomePage() {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ),
+      'account/register',
     );
   }
 

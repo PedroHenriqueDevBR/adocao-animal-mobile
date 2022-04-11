@@ -41,8 +41,11 @@ class HttpClientService implements IClientHTTP {
   }
 
   @override
-  Future<HttpResponseModel> post(String url, Map<String, dynamic> data,
-      {String? jwtKey}) async {
+  Future<HttpResponseModel> post(
+    String url,
+    Map<String, dynamic> data, {
+    String? jwtKey,
+  }) async {
     Map<String, String> headers = _setAuthorization(key: jwtKey);
     final uri = _getBaseUrl(url);
     try {
@@ -50,7 +53,11 @@ class HttpClientService implements IClientHTTP {
           await http.post(uri, body: jsonEncode(data), headers: headers);
       return HttpResponseModel(
         statusCode: response.statusCode,
-        data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
+        data: json.decode(
+          utf8.decode(response.body.isNotEmpty
+              ? response.body.codeUnits
+              : '{}'.codeUnits),
+        ),
         headers: response.headers,
       );
     } catch (error) {

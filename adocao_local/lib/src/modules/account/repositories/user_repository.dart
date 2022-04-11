@@ -60,8 +60,9 @@ class UserRepository implements IUserStorage {
 
   @override
   Future<void> registerUser(UserModel user) async {
-    const path = 'user/login/';
-    final response = await _client.post(path, user.toMap());
+    const path = 'user/register';
+    final data = user.toRegisterMap();
+    final response = await _client.post(path, data);
     if (response.statusCode < 200 || response.statusCode >= 300) {
       if (kDebugMode) {
         print('ERRO: User register <<< ${response.statusCode} >>>');

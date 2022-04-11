@@ -1,4 +1,5 @@
 import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
+import 'package:adocao_local/src/modules/account/pages/register_user/register_user_page.dart';
 import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/core/app_style.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class App extends StatelessWidget {
       routes: {
         'home': (context) => const HomePage(),
         'account/login': (context) => const LoginPage(),
+        'account/register': (context) => const RegisterUserPage(),
       },
     );
   }

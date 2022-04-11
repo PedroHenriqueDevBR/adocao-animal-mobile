@@ -2,7 +2,9 @@ import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart'
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
 import 'package:adocao_local/src/modules/account/models/state_model.dart';
 import 'package:adocao_local/src/modules/account/models/user_model.dart';
+import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -29,6 +31,7 @@ abstract class _RegisterUserStore with Store {
   ObservableList<StateModel> stateList = ObservableList<StateModel>();
   ObservableList<CityModel> cityList = ObservableList<CityModel>();
   StateModel? selectedState;
+  @observable
   CityModel? selectedCity;
 
   @observable
@@ -96,6 +99,7 @@ abstract class _RegisterUserStore with Store {
         username.length >= 5 &&
         phoneNumberIsValid(contact) &&
         password.length >= 8 &&
+        selectedCity != null &&
         repeatPassword == password;
   }
 
@@ -109,21 +113,47 @@ abstract class _RegisterUserStore with Store {
   }
 
   void registerUser() async {
-    setLoading(true);
-    FocusManager.instance.primaryFocus?.unfocus();
+    try {
+      setLoading(true);
+      FocusManager.instance.primaryFocus?.unfocus();
+      final user = UserModel(
+        name: name,
+        username: username,
+        contact: contact,
+        password: password,
+        city: selectedCity!,
+      );
 
-    CityModel city = CityModel(name: 'name');
-    UserModel(
-      name: name,
-      username: username,
-      contact: contact,
-      password: password,
-      city: city,
-    );
+      await storage.registerUser(user).then((_) async {
+        final token = await storage.login(username, password);
+        appData.setJWT(token.access);
+        asuka.showSnackBar(
+          asuka.AsukaSnackbar.success('Usuário registrado com sucesso'),
+        );
+        goToHomePage();
+      });
+    } on HttpResponseException catch (error) {
+      final responseError = error.response;
+      if (responseError.statusCode == 406) {
+        if (responseError.data['errors'] != null) {
+          String errors = '';
+          for (String error in responseError.data['errors']) {
+            print(error);
+            errors += error + '\n';
+          }
+          asuka.showSnackBar(asuka.AsukaSnackbar.alert(errors));
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    setLoading(false);
-    asuka.showSnackBar(
-      asuka.AsukaSnackbar.success('Usuário registrado com sucesso'),
+  void goToHomePage() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      'home',
+      (Route<dynamic> route) => false,
     );
   }
 

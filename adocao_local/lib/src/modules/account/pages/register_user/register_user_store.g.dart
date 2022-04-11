@@ -17,6 +17,21 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
               name: '_RegisterUserStore.formIsValid'))
           .value;
 
+  final _$selectedCityAtom = Atom(name: '_RegisterUserStore.selectedCity');
+
+  @override
+  CityModel? get selectedCity {
+    _$selectedCityAtom.reportRead();
+    return super.selectedCity;
+  }
+
+  @override
+  set selectedCity(CityModel? value) {
+    _$selectedCityAtom.reportWrite(value, super.selectedCity, () {
+      super.selectedCity = value;
+    });
+  }
+
   final _$nameAtom = Atom(name: '_RegisterUserStore.name');
 
   @override
@@ -258,6 +273,7 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
   @override
   String toString() {
     return '''
+selectedCity: ${selectedCity},
 name: ${name},
 username: ${username},
 contact: ${contact},

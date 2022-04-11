@@ -44,21 +44,11 @@ class UserModel {
 
   Map<String, dynamic> toRegisterMap() {
     final result = <String, dynamic>{};
-
-    result.addAll({'id': id});
     result.addAll({'username': username});
     result.addAll({'name': name});
     result.addAll({'city': city.id});
-
-    if (password != null) {
-      result.addAll({'password': password});
-    }
-    if (image != null) {
-      result.addAll({'image': image});
-    }
-    if (contact != null) {
-      result.addAll({'contact': contact});
-    }
+    result.addAll({'password': password});
+    result.addAll({'contact': contact});
 
     return result;
   }
