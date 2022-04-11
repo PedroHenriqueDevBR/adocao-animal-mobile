@@ -109,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     onPressed: controller.goToRegisterUserPage,
                     child: const Text(
-                      'Ainda não possui cadastro\n' +
-                          'Clique aqui e cadastre-se',
+                      'Ainda não possui cadastro\nClique aqui e cadastre-se',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,

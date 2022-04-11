@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class CityModel {
   dynamic id;
   String name;

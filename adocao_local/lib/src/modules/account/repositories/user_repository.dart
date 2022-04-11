@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
 import 'package:flutter/foundation.dart';

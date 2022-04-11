@@ -113,7 +113,7 @@ abstract class _RegisterUserStore with Store {
     FocusManager.instance.primaryFocus?.unfocus();
 
     CityModel city = CityModel(name: 'name');
-    UserModel user = UserModel(
+    UserModel(
       name: name,
       username: username,
       contact: contact,

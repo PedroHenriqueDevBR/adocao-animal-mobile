@@ -101,7 +101,7 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16.0),
-                Container(
+                SizedBox(
                   width: size.width,
                   child: TextButton(
                     onPressed: () {},

@@ -130,6 +130,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                       } else if (value.length < 3) {
                         return 'Mínimo de 3 caracteres';
                       }
+                      return null;
                     },
                     decoration: const InputDecoration(
                       labelText: 'Nome completo',
@@ -147,6 +148,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                       } else if (value.length < 5) {
                         return 'Mínimo de 5 caracteres';
                       }
+                      return null;
                     },
                     decoration: const InputDecoration(labelText: 'Username'),
                   ),
@@ -163,6 +165,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                 } else if (!controller.phoneNumberIsValid(value)) {
                   return 'Número informado não é válido';
                 }
+                return null;
               },
               keyboardType: TextInputType.number,
               inputFormatters: [
@@ -196,6 +199,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                   } else if (value.length < 8) {
                     return 'Mínimo de 8 caracteres';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                   labelText: 'Senha',
@@ -224,6 +228,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                   } else if (value != controller.password) {
                     return 'As senhas informadas não conferem';
                   }
+                  return null;
                 },
                 decoration: InputDecoration(
                   labelText: 'Repetir senha',
