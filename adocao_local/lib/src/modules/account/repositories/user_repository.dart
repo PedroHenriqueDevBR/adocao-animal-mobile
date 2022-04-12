@@ -98,7 +98,8 @@ class UserRepository implements IUserStorage {
   Future<void> updateData(UserModel user) async {
     const path = 'user/';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.put(path, user.toMap(), jwtKey: jwtKey);
+    final response =
+        await _client.put(path, user.toUpdateMap(), jwtKey: jwtKey);
     if (response.statusCode < 200 || response.statusCode >= 300) {
       if (kDebugMode) {
         print('ERRO: update user data');

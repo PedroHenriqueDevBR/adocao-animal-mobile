@@ -1,9 +1,11 @@
 class CityModel {
   dynamic id;
   String name;
+  int? stateId;
 
   CityModel({
     this.id,
+    this.stateId,
     required this.name,
   });
 
@@ -17,10 +19,14 @@ class CityModel {
   }
 
   factory CityModel.fromMap(Map<dynamic, dynamic> map) {
-    return CityModel(
+    final city = CityModel(
       id: map['id'],
       name: map['name'] ?? '',
     );
+    if (map['state'] != null && int.tryParse(map['state'].toString()) != null) {
+      city.stateId = int.parse(map['state'].toString());
+    }
+    return city;
   }
 
   static List<CityModel> fromMapList(List<dynamic> list) {

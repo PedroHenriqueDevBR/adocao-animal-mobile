@@ -53,6 +53,19 @@ class UserModel {
     return result;
   }
 
+  Map<String, dynamic> toUpdateMap() {
+    final result = <String, dynamic>{};
+    result.addAll({'name': name});
+    if (city.id != null) {
+      result.addAll({'city': city.id});
+    }
+    if (contact != null) {
+      result.addAll({'contact': contact});
+    }
+
+    return result;
+  }
+
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'],
