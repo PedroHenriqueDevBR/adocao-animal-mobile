@@ -276,7 +276,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: controller.logout,
                     child: const Text('Encerrar sessão'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red.shade600,
