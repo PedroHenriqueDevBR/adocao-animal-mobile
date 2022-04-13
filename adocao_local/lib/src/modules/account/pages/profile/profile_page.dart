@@ -139,13 +139,44 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 Expanded(
                                   child: TextButton(
-                                    onPressed: () {},
                                     child: Text(
                                       'Remover Imagem',
                                       style: appTextStyle.textButton.copyWith(
                                         color: Colors.white,
                                       ),
                                     ),
+                                    onPressed: controller.image != null
+                                        ? () => asuka.showDialog(
+                                              builder: (dialogContext) =>
+                                                  AlertDialog(
+                                                title: const Text(
+                                                  'Atenção',
+                                                ),
+                                                content: const Text(
+                                                  'Confirmar a remoção da imagem?',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          dialogContext);
+                                                    },
+                                                    child:
+                                                        const Text('Cancelar'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      controller.removeImage();
+                                                      Navigator.pop(
+                                                          dialogContext);
+                                                    },
+                                                    child:
+                                                        const Text('Confirmar'),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                        : null,
                                   ),
                                 ),
                               ],
