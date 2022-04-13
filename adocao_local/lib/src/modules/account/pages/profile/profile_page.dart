@@ -269,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: controller.updateUser,
                     child: const Text('Atualizar dados'),
                   ),
                 ),
