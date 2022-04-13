@@ -39,7 +39,7 @@ abstract class _ProfileStore with Store {
   CityModel? selectedCity;
 
   @observable
-  String? image = '';
+  String? image;
   TextEditingController name = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController contact = TextEditingController();
@@ -49,7 +49,7 @@ abstract class _ProfileStore with Store {
   bool update = false;
 
   @action
-  void setImage(String value) => image = value;
+  void setImage(String? value) => image = value;
   @action
   void setLoading(bool value) => loading = value;
   @action
@@ -139,6 +139,33 @@ abstract class _ProfileStore with Store {
 
       await userStorage.updateData(user);
       asuka.showSnackBar(asuka.AsukaSnackbar.success('Dados atualizados'));
+    } on HttpResponseException catch (error) {
+      final responseError = error.response;
+      if (responseError.statusCode == 406) {
+        if (responseError.data['errors'] != null) {
+          String errors = '';
+          for (String error in responseError.data['errors']) {
+            if (kDebugMode) {
+              print(error);
+            }
+            errors += error + '\n';
+          }
+          asuka.showSnackBar(asuka.AsukaSnackbar.alert(errors));
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  void removeImage() async {
+    try {
+      setLoading(true);
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      await userStorage.removeImage();
+      setImage(null);
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Imagem removida'));
     } on HttpResponseException catch (error) {
       final responseError = error.response;
       if (responseError.statusCode == 406) {

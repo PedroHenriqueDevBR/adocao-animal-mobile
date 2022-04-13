@@ -66,7 +66,7 @@ mixin _$ProfileStore on _ProfileStore, Store {
       ActionController(name: '_ProfileStore');
 
   @override
-  void setImage(String value) {
+  void setImage(String? value) {
     final _$actionInfo = _$_ProfileStoreActionController.startAction(
         name: '_ProfileStore.setImage');
     try {

@@ -1,18 +1,21 @@
-import 'package:adocao_local/src/modules/account/models/city_model.dart';
-import 'package:adocao_local/src/modules/account/models/state_model.dart';
-import 'package:adocao_local/src/modules/account/repositories/location_repository.dart';
-import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
-import 'package:adocao_local/src/shares/core/app_assets.dart';
-import 'package:adocao_local/src/shares/core/app_text_theme.dart';
-import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
-import 'package:adocao_local/src/shares/services/http_client_service.dart';
-import 'package:adocao_local/src/shares/widgets/dropdown_conrtainer/dropdown_container_widget.dart';
-import 'package:brasil_fields/brasil_fields.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import './profile_store.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:mobx/mobx.dart';
+import 'package:asuka/asuka.dart' as asuka;
+
+import './profile_store.dart';
+import '../../models/city_model.dart';
+import '../../models/state_model.dart';
+import '../../repositories/location_repository.dart';
+import '../../repositories/user_repository.dart';
+import '../../../../shares/core/app_assets.dart';
+import '../../../../shares/core/app_text_theme.dart';
+import '../../../../shares/services/app_preferences_service.dart';
+import '../../../../shares/services/http_client_service.dart';
+import '../../../../shares/widgets/dropdown_conrtainer/dropdown_container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -61,44 +64,94 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: size.width,
                         padding: const EdgeInsets.all(16.0),
                         color: Theme.of(context).colorScheme.secondary,
-                        child: Observer(builder: (_) {
-                          return Column(
-                            children: [
-                              Image.asset(
-                                AppAssets.avatar,
-                                width: 150,
-                                fit: BoxFit.fill,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Atualizar Imagem',
-                                        style: appTextStyle.textButton.copyWith(
-                                          color: Colors.white,
+                        child: Column(
+                          children: [
+                            Observer(
+                                builder: (_) => controller.image != null
+                                    ? GestureDetector(
+                                        onTap: () => asuka.showDialog(
+                                          barrierColor:
+                                              Theme.of(context).backgroundColor,
+                                          useSafeArea: true,
+                                          builder: (context) => Dialog(
+                                            child: ExtendedImage.network(
+                                              '${client.host}${controller.image}',
+                                              fit: BoxFit.contain,
+                                              //enableLoadState: false,
+                                              mode: ExtendedImageMode.gesture,
+                                              initGestureConfigHandler:
+                                                  (state) {
+                                                return GestureConfig(
+                                                  minScale: 1,
+                                                  animationMinScale: 0.9,
+                                                  maxScale: 2.0,
+                                                  animationMaxScale: 3.0,
+                                                  speed: 1.0,
+                                                  inertialSpeed: 100.0,
+                                                  initialScale: 1.0,
+                                                  inPageView: true,
+                                                  initialAlignment:
+                                                      InitialAlignment.center,
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
+                                        child: Container(
+                                          height: 150,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 6,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              75.0,
+                                            ),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                '${client.host}${controller.image}',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Image.asset(
+                                        AppAssets.avatar,
+                                        width: 150,
+                                        fit: BoxFit.fill,
+                                      )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Atualizar Imagem',
+                                      style: appTextStyle.textButton.copyWith(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Remover Imagem',
-                                        style: appTextStyle.textButton.copyWith(
-                                          color: Colors.white,
-                                        ),
+                                ),
+                                Expanded(
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Remover Imagem',
+                                      style: appTextStyle.textButton.copyWith(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                ],
-                              )
-                            ],
-                          );
-                        }),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                       Container(
                         color: Theme.of(context).backgroundColor,

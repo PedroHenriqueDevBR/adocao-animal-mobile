@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import '../interfaces/client_http_interface.dart';
 
 class HttpClientService implements IClientHTTP {
-  Uri _getBaseUrl(String path) => Uri.parse('http://192.168.2.3:8000/$path');
+  String host = 'http://192.168.2.3:8000';
+  Uri _getBaseUrl(String path) => Uri.parse('${host}/$path');
 
   Map<String, String> _setAuthorization({String? key}) {
     Map<String, String> map = {};

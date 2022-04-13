@@ -1,6 +1,8 @@
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
 
 abstract class IClientHTTP {
+  String host = '';
+
   Future<HttpResponseModel> get(
     String url, {
     String? jwtKey,
