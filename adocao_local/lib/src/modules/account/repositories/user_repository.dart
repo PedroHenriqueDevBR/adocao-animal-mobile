@@ -1,6 +1,7 @@
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 
 import '../interfaces/user_interface.dart';
 import '../models/auth_token_model.dart';
@@ -119,7 +120,34 @@ class UserRepository implements IUserStorage {
   }
 
   @override
-  Future<String> updateImage(UserModel user) {
-    throw UnimplementedError();
+  Future<UserModel> updateImage(String imagePath) async {
+    const uri = 'user/image/';
+    final jwtKey = await _appData.getJWT();
+    try {
+      final file = await MultipartFile.fromPath('image', imagePath);
+      final response = await _client.multipartFormImage(
+        uri,
+        file,
+        jwtKey: jwtKey,
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return UserModel.fromMap(response.data);
+      } else {
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('======================================');
+        print(error);
+        print('======================================');
+      }
+      rethrow;
+    }
   }
 }

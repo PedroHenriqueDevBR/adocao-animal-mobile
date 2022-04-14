@@ -9,6 +9,7 @@ import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart'
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -120,6 +121,17 @@ abstract class _ProfileStore with Store {
   Future<void> getImageFromGalery() async {
     final image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) setImageFile(File(image.path));
+  }
+
+  void updateImage(BuildContext modalContext) async {
+    setLoading(true);
+    if (selectedImage != null) {
+      UserModel response = await userStorage.updateImage(selectedImage!.path);
+      image = response.image;
+      selectedImage = null;
+      Navigator.pop(modalContext);
+    }
+    setLoading(false);
   }
 
   @computed

@@ -193,13 +193,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                             onPressed: () async {
                                               await controller
                                                   .getImageFromGalery()
-                                                  .then((value) =>
-                                                      setState(() {}));
+                                                  .then(
+                                                    (value) => setState(() {}),
+                                                  );
                                             },
                                             child: const Text('Abrir galeria'),
                                           ),
                                           TextButton(
-                                            onPressed: () {},
+                                            onPressed: () => controller
+                                                .updateImage(modalContext),
                                             child: const Text('Salvar imagem'),
                                           ),
                                         ],

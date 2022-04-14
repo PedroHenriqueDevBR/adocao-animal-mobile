@@ -32,6 +32,21 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
+  final _$selectedImageAtom = Atom(name: '_ProfileStore.selectedImage');
+
+  @override
+  File? get selectedImage {
+    _$selectedImageAtom.reportRead();
+    return super.selectedImage;
+  }
+
+  @override
+  set selectedImage(File? value) {
+    _$selectedImageAtom.reportWrite(value, super.selectedImage, () {
+      super.selectedImage = value;
+    });
+  }
+
   final _$imageAtom = Atom(name: '_ProfileStore.image');
 
   @override
@@ -99,9 +114,21 @@ mixin _$ProfileStore on _ProfileStore, Store {
   }
 
   @override
+  void setImageFile(File file) {
+    final _$actionInfo = _$_ProfileStoreActionController.startAction(
+        name: '_ProfileStore.setImageFile');
+    try {
+      return super.setImageFile(file);
+    } finally {
+      _$_ProfileStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 selectedCity: ${selectedCity},
+selectedImage: ${selectedImage},
 image: ${image},
 update: ${update},
 formIsValid: ${formIsValid}
