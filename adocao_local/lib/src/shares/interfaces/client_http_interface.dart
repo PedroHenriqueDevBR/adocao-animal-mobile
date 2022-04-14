@@ -1,4 +1,5 @@
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
+import 'package:http/http.dart';
 
 abstract class IClientHTTP {
   String host = '';
@@ -23,5 +24,12 @@ abstract class IClientHTTP {
   Future<HttpResponseModel> delete(
     String url, {
     String? jwtKey,
+  });
+
+  Future<HttpResponseModel> multipartFormImage(
+    String url,
+    MultipartFile path, {
+    String? jwtKey,
+    String method,
   });
 }

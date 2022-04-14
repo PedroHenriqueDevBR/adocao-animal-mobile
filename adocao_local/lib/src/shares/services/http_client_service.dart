@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 import '../interfaces/client_http_interface.dart';
 
 class HttpClientService implements IClientHTTP {
+  @override
   String host = 'http://192.168.2.3:8000';
-  Uri _getBaseUrl(String path) => Uri.parse('${host}/$path');
+
+  Uri _getBaseUrl(String path) => Uri.parse('$host/$path');
 
   Map<String, String> _setAuthorization({String? key}) {
     Map<String, String> map = {};
@@ -100,6 +102,32 @@ class HttpClientService implements IClientHTTP {
       return HttpResponseModel(
         statusCode: response.statusCode,
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
+        headers: response.headers,
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<HttpResponseModel> multipartFormImage(
+    String url,
+    MultipartFile path, {
+    String? jwtKey,
+    String method = 'PUT',
+  }) async {
+    Map<String, String> headers = _setAuthorization(key: jwtKey);
+    final uri = _getBaseUrl(url);
+    try {
+      final request = http.MultipartRequest(method, uri)
+        ..headers.addAll(headers)
+        ..files.add(path);
+      final response = await request.send();
+      final responsed = await http.Response.fromStream(response);
+
+      return HttpResponseModel(
+        statusCode: responsed.statusCode,
+        data: responsed.body,
         headers: response.headers,
       );
     } catch (error) {
