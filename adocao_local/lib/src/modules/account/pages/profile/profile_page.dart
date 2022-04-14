@@ -55,173 +55,241 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Observer(
-        builder: (_) => Stack(
+      builder: (_) => Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
               children: [
-                SingleChildScrollView(
+                Container(
+                  width: size.width,
+                  padding: const EdgeInsets.all(16.0),
+                  color: Theme.of(context).colorScheme.secondary,
                   child: Column(
                     children: [
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.all(16.0),
-                        color: Theme.of(context).colorScheme.secondary,
-                        child: Column(
-                          children: [
-                            Observer(
-                                builder: (_) => controller.image != null
-                                    ? GestureDetector(
-                                        onTap: () => asuka.showDialog(
-                                          barrierColor:
-                                              Theme.of(context).backgroundColor,
-                                          useSafeArea: true,
-                                          builder: (context) => Dialog(
-                                            child: ExtendedImage.network(
-                                              '${client.host}${controller.image}',
-                                              fit: BoxFit.contain,
-                                              //enableLoadState: false,
-                                              mode: ExtendedImageMode.gesture,
-                                              initGestureConfigHandler:
-                                                  (state) {
-                                                return GestureConfig(
-                                                  minScale: 1,
-                                                  animationMinScale: 0.9,
-                                                  maxScale: 2.0,
-                                                  animationMaxScale: 3.0,
-                                                  speed: 1.0,
-                                                  inertialSpeed: 100.0,
-                                                  initialScale: 1.0,
-                                                  inPageView: true,
-                                                  initialAlignment:
-                                                      InitialAlignment.center,
-                                                );
+                      Observer(
+                        builder: (_) => controller.image != null
+                            ? GestureDetector(
+                                onTap: () => asuka.showDialog(
+                                  barrierColor:
+                                      Theme.of(context).backgroundColor,
+                                  useSafeArea: true,
+                                  builder: (context) => Dialog(
+                                    child: ExtendedImage.network(
+                                      '${client.host}${controller.image}',
+                                      fit: BoxFit.contain,
+                                      //enableLoadState: false,
+                                      mode: ExtendedImageMode.gesture,
+                                      initGestureConfigHandler: (state) {
+                                        return GestureConfig(
+                                          minScale: 1,
+                                          animationMinScale: 0.9,
+                                          maxScale: 2.0,
+                                          animationMaxScale: 3.0,
+                                          speed: 1.0,
+                                          inertialSpeed: 100.0,
+                                          initialScale: 1.0,
+                                          inPageView: true,
+                                          initialAlignment:
+                                              InitialAlignment.center,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 6,
+                                      style: BorderStyle.solid,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      75.0,
+                                    ),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        '${client.host}${controller.image}',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Image.asset(
+                                AppAssets.avatar,
+                                width: 150,
+                                fit: BoxFit.fill,
+                              ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              child: Text(
+                                'Atualizar Imagem',
+                                style: appTextStyle.textButton.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () => asuka.showModalBottomSheet(
+                                builder: (modalContext) => StatefulBuilder(
+                                    builder: (_, StateSetter setState) {
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        width: size.width,
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Atualizar imagem',
+                                              style: appTextStyle.textButton
+                                                  .copyWith(
+                                                      color: Colors.white),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                Navigator.pop(modalContext);
                                               },
-                                            ),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          height: 150,
-                                          width: 150,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 6,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              75.0,
-                                            ),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                '${client.host}${controller.image}',
+                                              icon: const Icon(
+                                                Icons.close,
+                                                color: Colors.white,
                                               ),
                                             ),
+                                          ],
+                                        ),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blueGrey.shade100,
+                                            image: controller.selectedImage !=
+                                                    null
+                                                ? DecorationImage(
+                                                    image: FileImage(
+                                                      controller.selectedImage!,
+                                                    ),
+                                                  )
+                                                : DecorationImage(
+                                                    image: AssetImage(
+                                                        AppAssets.avatar),
+                                                  ),
                                           ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await controller
+                                                  .getImageFromGalery()
+                                                  .then((value) =>
+                                                      setState(() {}));
+                                            },
+                                            child: const Text('Abrir galeria'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: const Text('Salvar imagem'),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: TextButton(
+                              child: Text(
+                                'Remover Imagem',
+                                style: appTextStyle.textButton.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: controller.image != null
+                                  ? () => asuka.showDialog(
+                                        builder: (dialogContext) => AlertDialog(
+                                          title: const Text(
+                                            'Atenção',
+                                          ),
+                                          content: const Text(
+                                            'Confirmar a remoção da imagem?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(dialogContext);
+                                              },
+                                              child: const Text('Cancelar'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                controller.removeImage();
+                                                Navigator.pop(dialogContext);
+                                              },
+                                              child: const Text('Confirmar'),
+                                            ),
+                                          ],
                                         ),
                                       )
-                                    : Image.asset(
-                                        AppAssets.avatar,
-                                        width: 150,
-                                        fit: BoxFit.fill,
-                                      )),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Atualizar Imagem',
-                                      style: appTextStyle.textButton.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: TextButton(
-                                    child: Text(
-                                      'Remover Imagem',
-                                      style: appTextStyle.textButton.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onPressed: controller.image != null
-                                        ? () => asuka.showDialog(
-                                              builder: (dialogContext) =>
-                                                  AlertDialog(
-                                                title: const Text(
-                                                  'Atenção',
-                                                ),
-                                                content: const Text(
-                                                  'Confirmar a remoção da imagem?',
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(
-                                                          dialogContext);
-                                                    },
-                                                    child:
-                                                        const Text('Cancelar'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      controller.removeImage();
-                                                      Navigator.pop(
-                                                          dialogContext);
-                                                    },
-                                                    child:
-                                                        const Text('Confirmar'),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                        : null,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Theme.of(context).backgroundColor,
-                        padding: const EdgeInsets.all(16.0),
-                        child: updateUserFormWidget(),
+                                  : null,
+                            ),
+                          ),
+                        ],
                       )
                     ],
                   ),
                 ),
-                controller.loading
-                    ? Container(
-                        width: size.width,
-                        height: size.height,
-                        color: Colors.black.withOpacity(0.3),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              Text(
-                                'Carregando..',
-                                style: appTextStyle.titleStyle
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Container(),
+                Container(
+                  color: Theme.of(context).backgroundColor,
+                  padding: const EdgeInsets.all(16.0),
+                  child: updateUserFormWidget(),
+                )
               ],
-            ));
+            ),
+          ),
+          controller.loading ? loadingWidget(size) : Container(),
+        ],
+      ),
+    );
   }
+
+  Widget loadingWidget(Size size) => Container(
+        width: size.width,
+        height: size.height,
+        color: Colors.black.withOpacity(0.3),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                'Carregando..',
+                style: appTextStyle.titleStyle.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      );
 
   Widget updateUserFormWidget() => Form(
         child: Column(

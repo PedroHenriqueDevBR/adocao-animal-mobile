@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adocao_local/src/modules/account/interfaces/location_interface.dart';
 import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart';
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
@@ -7,6 +9,7 @@ import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart'
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
 
@@ -31,6 +34,7 @@ abstract class _ProfileStore with Store {
   late IUserStorage userStorage;
   late ILocationStorage locationStorage;
   late BuildContext context;
+  final ImagePicker picker = ImagePicker();
 
   ObservableList<StateModel> stateList = ObservableList<StateModel>();
   ObservableList<CityModel> cityList = ObservableList<CityModel>();
@@ -38,6 +42,8 @@ abstract class _ProfileStore with Store {
   @observable
   CityModel? selectedCity;
 
+  @observable
+  File? selectedImage;
   @observable
   String? image;
   TextEditingController name = TextEditingController();
@@ -54,6 +60,8 @@ abstract class _ProfileStore with Store {
   void setLoading(bool value) => loading = value;
   @action
   void setUpdate() => update = !update;
+  @action
+  void setImageFile(File file) => selectedImage = file;
 
   void populateStates() async {
     try {
@@ -107,6 +115,11 @@ abstract class _ProfileStore with Store {
   void selectCity(CityModel? city) {
     selectedCity = city;
     setUpdate();
+  }
+
+  Future<void> getImageFromGalery() async {
+    final image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) setImageFile(File(image.path));
   }
 
   @computed
