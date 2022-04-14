@@ -127,7 +127,11 @@ class HttpClientService implements IClientHTTP {
 
       return HttpResponseModel(
         statusCode: responsed.statusCode,
-        data: responsed.body,
+        data: json.decode(
+          utf8.decode(responsed.body.isNotEmpty
+              ? responsed.body.codeUnits
+              : '{}'.codeUnits),
+        ),
         headers: response.headers,
       );
     } catch (error) {
