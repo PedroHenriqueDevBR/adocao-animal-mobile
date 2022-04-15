@@ -5,6 +5,7 @@ import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:rive/rive.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -36,17 +37,30 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             Container(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.secondary,
               padding: const EdgeInsets.only(
-                top: 110,
-                bottom: 110,
+                top: 100,
+                bottom: 75,
               ),
               child: Center(
-                child: Image.asset(
-                  AppAssets.logo,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.fill,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  child: RiveAnimation.asset(
+                    AppAnimations.avatarAnimation,
+                    animations: const ['idlePreview'],
+                    antialiasing: true,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 5.0,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                  ),
                 ),
               ),
             ),

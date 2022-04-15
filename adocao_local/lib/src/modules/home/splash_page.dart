@@ -6,6 +6,7 @@ import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:rive/rive.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   void verifyLoggedUser() async {
     try {
       final jwt = await appData.getJWT();
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 1200));
 
       if (jwt.isNotEmpty) {
         goToHomePage();
@@ -72,11 +73,10 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Center(
-        child: Image.asset(
-          AppAssets.logo,
-          width: 100,
-          height: 100,
-          fit: BoxFit.fill,
+        child: SizedBox(
+          width: 200,
+          height: 200,
+          child: RiveAnimation.asset(AppAnimations.logoAnimation),
         ),
       ),
     );
