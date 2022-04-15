@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     DashboardPage(),
     const ListAnimalsPage(),
-    ProfilePage(),
+    const ProfilePage(),
   ];
 
   void _changePage(int index) {

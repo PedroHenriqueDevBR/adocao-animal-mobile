@@ -32,6 +32,7 @@ dependencies:
   brasil_fields: ^1.4.2
   extended_image: ^6.0.2+1
   image_picker: ^0.8.5
+  page_transition: ^2.0.5
 
 dev_dependencies:
   flutter_test:

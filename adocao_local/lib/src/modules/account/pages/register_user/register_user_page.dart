@@ -55,46 +55,47 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
       appBar: AppBar(
         title: const Text('Cadastrar-se'),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: registerUserFormWidget(),
-              ),
-            ),
-          ),
-          controller.loading
-              ? Container(
-                  width: size.width,
-                  height: size.height,
-                  color: Colors.black.withOpacity(0.3),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        Text(
-                          'Carregando..',
-                          style: appTextStyle.titleStyle
-                              .copyWith(color: Colors.white),
-                        ),
-                      ],
+      body: Observer(
+          builder: (_) => Stack(
+                children: [
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: registerUserFormWidget(),
+                      ),
                     ),
                   ),
-                )
-              : Container(),
-        ],
-      ),
+                  controller.loading
+                      ? Container(
+                          width: size.width,
+                          height: size.height,
+                          color: Colors.black.withOpacity(0.3),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  'Carregando..',
+                                  style: appTextStyle.titleStyle
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
+              )),
     );
   }
 

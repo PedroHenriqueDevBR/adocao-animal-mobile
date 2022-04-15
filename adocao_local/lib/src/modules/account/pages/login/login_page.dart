@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
       appData: appData,
       storage: UserRepository(client: client, appData: appData),
     );
-    // controller.verifyLoggedUser();
     super.initState();
   }
 

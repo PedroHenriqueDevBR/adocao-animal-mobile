@@ -3,12 +3,14 @@ import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart'
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
 import 'package:adocao_local/src/modules/account/models/state_model.dart';
 import 'package:adocao_local/src/modules/account/models/user_model.dart';
+import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:page_transition/page_transition.dart';
 
 part 'register_user_store.g.dart';
 
@@ -156,10 +158,14 @@ abstract class _RegisterUserStore with Store {
   }
 
   void goToHomePage() {
-    Navigator.pushNamedAndRemoveUntil(
+    Navigator.pushReplacement(
       context,
-      'home',
-      (Route<dynamic> route) => false,
+      PageTransition(
+        child: const HomePage(),
+        type: PageTransitionType.rightToLeft,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 500),
+      ),
     );
   }
 

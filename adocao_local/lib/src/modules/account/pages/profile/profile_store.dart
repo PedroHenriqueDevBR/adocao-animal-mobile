@@ -5,6 +5,7 @@ import 'package:adocao_local/src/modules/account/interfaces/user_interface.dart'
 import 'package:adocao_local/src/modules/account/models/city_model.dart';
 import 'package:adocao_local/src/modules/account/models/state_model.dart';
 import 'package:adocao_local/src/modules/account/models/user_model.dart';
+import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:page_transition/page_transition.dart';
 
 part 'profile_store.g.dart';
 
@@ -212,9 +214,15 @@ abstract class _ProfileStore with Store {
 
   void logout() {
     appData.setJWT('');
-    Navigator.pushNamedAndRemoveUntil(
+    Navigator.pushAndRemoveUntil(
       context,
-      'account/login',
+      PageTransition(
+        child: const LoginPage(),
+        type: PageTransitionType.size,
+        alignment: Alignment.center,
+        duration: const Duration(milliseconds: 700),
+        reverseDuration: const Duration(milliseconds: 500),
+      ),
       (Route<dynamic> route) => false,
     );
   }

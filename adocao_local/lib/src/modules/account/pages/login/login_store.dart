@@ -7,6 +7,7 @@ import 'package:asuka/asuka.dart' as asuka;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:page_transition/page_transition.dart';
 
 part 'login_store.g.dart';
 
@@ -84,16 +85,26 @@ abstract class _LoginStore with Store {
   }
 
   void goToHomePage() {
-    Navigator.pushNamed(
+    Navigator.pushReplacement(
       context,
-      'home',
+      PageTransition(
+        child: const HomePage(),
+        type: PageTransitionType.rightToLeft,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 500),
+      ),
     );
   }
 
   void goToRegisterUserPage() {
-    Navigator.pushReplacementNamed(
+    Navigator.push(
       context,
-      'account/register',
+      PageTransition(
+        child: const RegisterUserPage(),
+        type: PageTransitionType.rightToLeft,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 500),
+      ),
     );
   }
 }

@@ -1,8 +1,11 @@
+import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
+import 'package:adocao_local/src/modules/home/home_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -33,17 +36,29 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void goToHomePage() {
-    Navigator.pushNamed(
+    Navigator.pushReplacement(
       context,
-      'home',
+      PageTransition(
+        child: const HomePage(),
+        type: PageTransitionType.size,
+        duration: const Duration(microseconds: 1700),
+        alignment: Alignment.center,
+      ),
     );
   }
 
   void goToLoginPage() {
-    Navigator.pushNamed(
+    Navigator.pushReplacement(
       context,
-      'account/login',
+      PageTransition(
+        child: const LoginPage(),
+        type: PageTransitionType.rightToLeft,
+      ),
     );
+    // Navigator.pushReplacementNamed(
+    //   context,
+    //   'account/login',
+    // );
   }
 
   @override
