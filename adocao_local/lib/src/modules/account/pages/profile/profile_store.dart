@@ -8,7 +8,10 @@ import 'package:adocao_local/src/modules/account/models/user_model.dart';
 import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
+import 'package:adocao_local/src/shares/services/http_client_service.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +41,7 @@ abstract class _ProfileStore with Store {
   late ILocationStorage locationStorage;
   late BuildContext context;
   final ImagePicker picker = ImagePicker();
+  final client = HttpClientService();
 
   ObservableList<StateModel> stateList = ObservableList<StateModel>();
   ObservableList<CityModel> cityList = ObservableList<CityModel>();

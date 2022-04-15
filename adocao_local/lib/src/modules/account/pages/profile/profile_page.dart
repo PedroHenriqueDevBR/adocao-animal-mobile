@@ -62,67 +62,41 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Container(
                   width: size.width,
-                  padding: const EdgeInsets.all(16.0),
                   color: Theme.of(context).colorScheme.secondary,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      const SizedBox(height: 36.0),
                       Observer(
                         builder: (_) => controller.image != null
-                            ? GestureDetector(
-                                onTap: () => asuka.showDialog(
-                                  barrierColor:
-                                      Theme.of(context).backgroundColor,
-                                  useSafeArea: true,
-                                  builder: (context) => Dialog(
-                                    child: ExtendedImage.network(
-                                      '${client.host}${controller.image}',
-                                      fit: BoxFit.contain,
-                                      //enableLoadState: false,
-                                      mode: ExtendedImageMode.gesture,
-                                      initGestureConfigHandler: (state) {
-                                        return GestureConfig(
-                                          minScale: 1,
-                                          animationMinScale: 0.9,
-                                          maxScale: 2.0,
-                                          animationMaxScale: 3.0,
-                                          speed: 1.0,
-                                          inertialSpeed: 100.0,
-                                          initialScale: 1.0,
-                                          inPageView: true,
-                                          initialAlignment:
-                                              InitialAlignment.center,
-                                        );
-                                      },
-                                    ),
+                            ? Container(
+                                height: 175.0,
+                                width: 175.0,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 6,
+                                    style: BorderStyle.solid,
                                   ),
-                                ),
-                                child: Container(
-                                  height: 150,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 6,
-                                      style: BorderStyle.solid,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                      75.0,
-                                    ),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        '${client.host}${controller.image}',
-                                      ),
+                                  borderRadius: BorderRadius.circular(
+                                    100.0,
+                                  ),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                    image: NetworkImage(
+                                      '${client.host}${controller.image}',
                                     ),
                                   ),
                                 ),
                               )
                             : Image.asset(
                                 AppAssets.avatar,
-                                width: 150,
+                                width: 175,
                                 fit: BoxFit.fill,
                               ),
                       ),
+                      const SizedBox(height: 16.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -135,80 +109,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               onPressed: () => asuka.showModalBottomSheet(
-                                builder: (modalContext) => StatefulBuilder(
-                                    builder: (_, StateSetter setState) {
-                                  return Column(
-                                    children: [
-                                      Container(
-                                        width: size.width,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Atualizar imagem',
-                                              style: appTextStyle.textButton
-                                                  .copyWith(
-                                                      color: Colors.white),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                Navigator.pop(modalContext);
-                                              },
-                                              icon: const Icon(
-                                                Icons.close,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.blueGrey.shade100,
-                                            image: controller.selectedImage !=
-                                                    null
-                                                ? DecorationImage(
-                                                    image: FileImage(
-                                                      controller.selectedImage!,
-                                                    ),
-                                                  )
-                                                : DecorationImage(
-                                                    image: AssetImage(
-                                                        AppAssets.avatar),
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () async {
-                                              await controller
-                                                  .getImageFromGalery()
-                                                  .then(
-                                                    (value) => setState(() {}),
-                                                  );
-                                            },
-                                            child: const Text('Abrir galeria'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => controller
-                                                .updateImage(modalContext),
-                                            child: const Text('Salvar imagem'),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  );
-                                }),
+                                builder: (modalContext) {
+                                  return updateImageModal(modalContext, size);
+                                },
                               ),
                             ),
                           ),
@@ -222,35 +125,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               onPressed: controller.image != null
                                   ? () => asuka.showDialog(
-                                        builder: (dialogContext) => AlertDialog(
-                                          title: const Text(
-                                            'Atenção',
-                                          ),
-                                          content: const Text(
-                                            'Confirmar a remoção da imagem?',
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(dialogContext);
-                                              },
-                                              child: const Text('Cancelar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                controller.removeImage();
-                                                Navigator.pop(dialogContext);
-                                              },
-                                              child: const Text('Confirmar'),
-                                            ),
-                                          ],
-                                        ),
+                                        builder: (dialogContext) {
+                                          return confirmImageRemove(
+                                            dialogContext,
+                                          );
+                                        },
                                       )
                                   : null,
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 ),
@@ -292,6 +178,107 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       );
+
+  Widget confirmImageRemove(BuildContext dialogContext) {
+    return AlertDialog(
+      title: const Text(
+        'Atenção',
+      ),
+      content: const Text(
+        'Confirmar a remoção da imagem?',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(dialogContext);
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            controller.removeImage();
+            Navigator.pop(dialogContext);
+          },
+          child: const Text('Confirmar'),
+        ),
+      ],
+    );
+  }
+
+  Widget updateImageModal(BuildContext modalContext, Size size) {
+    return StatefulBuilder(
+      builder: (_, StateSetter setState) {
+        return Column(
+          children: [
+            Container(
+              width: size.width,
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Atualizar imagem',
+                    style:
+                        appTextStyle.textButton.copyWith(color: Colors.white),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(modalContext);
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  await controller.getImageFromGalery().then(
+                        (value) => setState(() {}),
+                      );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade900,
+                    image: controller.selectedImage != null
+                        ? DecorationImage(
+                            image: FileImage(
+                              controller.selectedImage!,
+                            ),
+                          )
+                        : DecorationImage(
+                            image: AssetImage(AppAssets.avatar),
+                          ),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () async {
+                    await controller.getImageFromGalery().then(
+                          (value) => setState(() {}),
+                        );
+                  },
+                  child: const Text('Abrir galeria'),
+                ),
+                TextButton(
+                  onPressed: () => controller.updateImage(modalContext),
+                  child: const Text('Salvar imagem'),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
 
   Widget updateUserFormWidget() => Form(
         child: Column(
