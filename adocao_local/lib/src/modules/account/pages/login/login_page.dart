@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:adocao_local/src/modules/account/pages/login/login_store.dart';
 import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
+import 'package:adocao_local/src/modules/account/widgets/avatar_container_widget.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
+import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   late LoginStore controller;
   final client = HttpClientService();
   final appData = AppPreferenceService();
+  final appTextStyle = AppTextStyle();
 
   @override
   void initState() {
@@ -34,107 +39,108 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Theme.of(context).colorScheme.secondary,
-              padding: const EdgeInsets.only(
-                top: 100,
-                bottom: 75,
-              ),
-              child: Center(
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  child: RiveAnimation.asset(
-                    AppAnimations.avatarAnimation,
-                    animations: const ['idlePreview'],
-                    antialiasing: true,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Theme.of(context).primaryColor,
-                      width: 5.0,
+        child: Platform.isAndroid || Platform.isIOS
+            ? Column(
+                children: [
+                  const AvatarContainerWidget(),
+                  formContainer(),
+                ],
+              )
+            : SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Row(
+                  children: [
+                    const Expanded(
+                      flex: 2,
+                      child: AvatarContainerWidget(),
                     ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(100),
+                    Expanded(
+                      flex: 1,
+                      child: formContainer(),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    onChanged: (value) => controller.setLogin(value),
-                    decoration: const InputDecoration(
-                      labelText: 'Nome de usuário',
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Observer(
-                      builder: (_) => TextFormField(
-                            onChanged: (value) => controller.setPassword(value),
-                            decoration: InputDecoration(
-                              labelText: 'Senha',
-                              suffixIcon: IconButton(
-                                onPressed: () =>
-                                    controller.toggleShowPassword(),
-                                icon: Icon(
-                                  controller.showPassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                              ),
-                            ),
-                            obscureText: controller.showPassword ? false : true,
-                          )),
-                  const SizedBox(height: 16.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Observer(
-                          builder: (_) => ElevatedButton(
-                            onPressed: controller.formIsValid
-                                ? controller.login
-                                : null,
-                            child: controller.loading
-                                ? const SizedBox(
-                                    width: 25,
-                                    height: 25,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : const Text('Entrar'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextButton(
-                    onPressed: controller.goToRegisterUserPage,
-                    child: const Text(
-                      'Ainda não possui cadastro\nClique aqui e cadastre-se',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
+
+  Widget formContainer() => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(
+              'Login',
+              style: appTextStyle.titleStyle,
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Entre com as suas credenciais',
+              style: appTextStyle.descriptionStyle,
+            ),
+            const SizedBox(height: 16.0),
+            const Divider(),
+            const SizedBox(height: 16.0),
+            TextFormField(
+              onChanged: (value) => controller.setLogin(value),
+              decoration: const InputDecoration(
+                labelText: 'Nome de usuário',
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Observer(
+                builder: (_) => TextFormField(
+                      onChanged: (value) => controller.setPassword(value),
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        suffixIcon: IconButton(
+                          onPressed: () => controller.toggleShowPassword(),
+                          icon: Icon(
+                            controller.showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ),
+                      obscureText: controller.showPassword ? false : true,
+                    )),
+            const SizedBox(height: 16.0),
+            Row(
+              children: [
+                Expanded(
+                  child: Observer(
+                    builder: (_) => ElevatedButton(
+                      onPressed:
+                          controller.formIsValid ? controller.login : null,
+                      child: controller.loading
+                          ? const SizedBox(
+                              width: 25,
+                              height: 25,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('Entrar'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            TextButton(
+              onPressed: controller.goToRegisterUserPage,
+              child: const Text(
+                'Ainda não possui cadastro\nClique aqui e cadastre-se',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 }

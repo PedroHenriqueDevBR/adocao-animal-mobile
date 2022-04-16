@@ -3,6 +3,7 @@ import 'package:adocao_local/src/modules/account/models/state_model.dart';
 import 'package:adocao_local/src/modules/account/pages/register_user/register_user_store.dart';
 import 'package:adocao_local/src/modules/account/repositories/location_repository.dart';
 import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
+import 'package:adocao_local/src/modules/account/widgets/avatar_container_widget.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'dart:io';
 
 class RegisterUserPage extends StatefulWidget {
   const RegisterUserPage({Key? key}) : super(key: key);
@@ -51,53 +53,78 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Cadastrar-se'),
       ),
       body: Observer(
-          builder: (_) => Stack(
-                children: [
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: registerUserFormWidget(),
-                      ),
+        builder: (_) => Stack(
+          children: [
+            Platform.isAndroid || Platform.isIOS
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const AvatarContainerWidget(),
+                        page(),
+                      ],
+                    ),
+                  )
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          flex: 1,
+                          child: AvatarContainerWidget(),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: page(),
+                        ),
+                      ],
                     ),
                   ),
-                  controller.loading
-                      ? Container(
-                          width: size.width,
-                          height: size.height,
-                          color: Colors.black.withOpacity(0.3),
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 16.0),
-                                Text(
-                                  'Carregando..',
-                                  style: appTextStyle.titleStyle
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ],
+            controller.loading
+                ? Container(
+                    width: size.width,
+                    height: size.height,
+                    color: Colors.black.withOpacity(0.3),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
                           ),
-                        )
-                      : Container(),
-                ],
-              )),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Carregando..',
+                            style: appTextStyle.titleStyle
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(),
+          ],
+        ),
+      ),
     );
   }
+
+  Widget page() => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: registerUserFormWidget(),
+          ),
+        ),
+      );
 
   Widget registerUserFormWidget() => Form(
         child: Column(
@@ -328,6 +355,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
             TextButton(
               onPressed: controller.goToLoginPage,
               child: const Text(
