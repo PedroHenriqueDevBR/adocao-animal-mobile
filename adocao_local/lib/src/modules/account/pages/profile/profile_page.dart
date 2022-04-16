@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -237,9 +239,13 @@ class _ProfilePageState extends State<ProfilePage> {
             Expanded(
               child: GestureDetector(
                 onTap: () async {
-                  await controller.getImageFromGalery().then(
-                        (value) => setState(() {}),
-                      );
+                  Platform.isAndroid || Platform.isIOS
+                      ? await controller.getImageFromGalery().then(
+                            (value) => setState(() {}),
+                          )
+                      : await controller.getImageFromGaleryDesktop().then(
+                            (value) => setState(() {}),
+                          );
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -262,9 +268,13 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    await controller.getImageFromGalery().then(
-                          (value) => setState(() {}),
-                        );
+                    Platform.isAndroid || Platform.isIOS
+                        ? await controller.getImageFromGalery().then(
+                              (value) => setState(() {}),
+                            )
+                        : await controller.getImageFromGaleryDesktop().then(
+                              (value) => setState(() {}),
+                            );
                   },
                   child: const Text('Abrir galeria'),
                 ),

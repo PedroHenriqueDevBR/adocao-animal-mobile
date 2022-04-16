@@ -10,6 +10,7 @@ import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart'
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -127,6 +128,17 @@ abstract class _ProfileStore with Store {
   Future<void> getImageFromGalery() async {
     final image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) setImageFile(File(image.path));
+  }
+
+  Future<void> getImageFromGaleryDesktop() async {
+    FilePickerResult? file = await FilePicker.platform.pickFiles(
+      dialogTitle: 'Selecionar imagem',
+      type: FileType.image,
+      allowMultiple: false,
+    );
+    if (file != null && file.files.first.path != null) {
+      setImageFile(File(file.files.first.path!));
+    }
   }
 
   void updateImage(BuildContext modalContext) async {
