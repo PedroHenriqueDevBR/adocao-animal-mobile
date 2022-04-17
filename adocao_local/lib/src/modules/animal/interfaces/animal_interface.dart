@@ -1,6 +1,5 @@
 import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
-import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 
 abstract class IAnimal {
   Future<List<AnimalModel>> allAnimals();
@@ -22,4 +21,6 @@ abstract class IAnimal {
   Future<void> confirmAdoptionRequest(AdoptionRequestModel adoptionRequest);
 
   Future<void> rejectAdoptionRequest(AdoptionRequestModel adoptionRequest);
+
+  Future<void> deleteAdoptionRequest(AdoptionRequestModel adoptionRequest);
 }
