@@ -138,4 +138,36 @@ class HttpClientService implements IClientHTTP {
       rethrow;
     }
   }
+
+  @override
+  Future<HttpResponseModel> multipartFormData(
+    String url,
+    MultipartFile path,
+    Map<String, String> data, {
+    String? jwtKey,
+    String method = 'POST',
+  }) async {
+    Map<String, String> headers = _setAuthorization(key: jwtKey);
+    final uri = _getBaseUrl(url);
+    try {
+      final request = http.MultipartRequest(method, uri)
+        ..headers.addAll(headers)
+        ..files.add(path)
+        ..fields.addAll(data);
+      final response = await request.send();
+      final responsed = await http.Response.fromStream(response);
+
+      return HttpResponseModel(
+        statusCode: responsed.statusCode,
+        data: json.decode(
+          utf8.decode(responsed.body.isNotEmpty
+              ? responsed.body.codeUnits
+              : '{}'.codeUnits),
+        ),
+        headers: response.headers,
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

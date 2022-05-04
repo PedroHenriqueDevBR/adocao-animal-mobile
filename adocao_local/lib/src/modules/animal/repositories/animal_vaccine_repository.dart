@@ -42,7 +42,6 @@ class AnimalVaccineRepository implements IAnimalVaccine {
 
   @override
   Future<List<VaccineModel>> allVaccinesFromAnimal(AnimalModel animal) async {
-    // TODO: implement removeVaccine
     throw UnimplementedError();
   }
 

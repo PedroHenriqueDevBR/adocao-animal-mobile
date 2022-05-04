@@ -32,4 +32,12 @@ abstract class IClientHTTP {
     String? jwtKey,
     String method,
   });
+
+  Future<HttpResponseModel> multipartFormData(
+    String url,
+    MultipartFile path,
+    Map<String, String> data, {
+    String? jwtKey,
+    String method,
+  });
 }
