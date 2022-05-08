@@ -57,7 +57,8 @@ void main() {
     animalModel.createAt = now;
     expect(
       animalModel.formattedCreateAt,
-      equals('${now.day}/${now.month}/${now.year}'),
+      equals(
+          '${animalModel.formatDateNumber(now.day)}/${animalModel.formatDateNumber(now.month)}/${now.year}'),
     );
   });
 }

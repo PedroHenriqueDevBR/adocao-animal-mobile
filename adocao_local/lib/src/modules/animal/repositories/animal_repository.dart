@@ -26,7 +26,109 @@ class AnimalRepository implements IAnimal {
       return AnimalModel.fromMapList(response.data);
     } else {
       if (kDebugMode) {
-        print('ERRO: buscar dados do usuário');
+        print('ERRO: buscar animais do dono');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<AnimalModel> create(AnimalModel animal) async {
+    const path = 'animal/my';
+    final jwtKey = await _appData.getJWT();
+
+    final response = await _client.post(path, animal.toMap(), jwtKey: jwtKey);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return AnimalModel.fromMap(response.data);
+    } else {
+      if (kDebugMode) {
+        print('ERRO: Cadastrar novo animal');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> upadte(AnimalModel animal) async {
+    final path = 'animal/my/${animal.id}';
+    final jwtKey = await _appData.getJWT();
+
+    final response = await _client.put(path, animal.toMap(), jwtKey: jwtKey);
+
+    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+      if (kDebugMode) {
+        print('ERRO: Atualizar dados do animal');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> delete(AnimalModel animal) async {
+    final path = 'animal/my/${animal.id}';
+    final jwtKey = await _appData.getJWT();
+
+    final response = await _client.delete(path, jwtKey: jwtKey);
+
+    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+      if (kDebugMode) {
+        print('ERRO: Deletar animal');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> blockAnimal(AnimalModel animal) async {
+    final path = 'animal/my/${animal.id}/block';
+    final jwtKey = await _appData.getJWT();
+
+    final response = await _client.patch(path, {}, jwtKey: jwtKey);
+
+    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+      if (kDebugMode) {
+        print('ERRO: Bloquear animal');
+      }
+      throw HttpResponseException(
+        response: HttpResponseModel(
+          statusCode: response.statusCode,
+          data: response.data,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> unlockAnimal(AnimalModel animal) async {
+    final path = 'animal/my/${animal.id}/unlock';
+    final jwtKey = await _appData.getJWT();
+
+    final response = await _client.patch(path, {}, jwtKey: jwtKey);
+
+    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+      if (kDebugMode) {
+        print('ERRO: Desbloquear animal');
       }
       throw HttpResponseException(
         response: HttpResponseModel(
@@ -45,12 +147,6 @@ class AnimalRepository implements IAnimal {
   }
 
   @override
-  Future<void> blockAnimal(AnimalModel animal) async {
-    // TODO: implement blockAnimal
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> confirmAdoptionRequest(
       AdoptionRequestModel adoptionRequest) async {
     // TODO: implement confirmAdoptionRequest
@@ -58,33 +154,9 @@ class AnimalRepository implements IAnimal {
   }
 
   @override
-  Future<AnimalModel> create(AnimalModel animal) async {
-    // TODO: implement create
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> delete(AnimalModel animal) async {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> rejectAdoptionRequest(
       AdoptionRequestModel adoptionRequest) async {
     // TODO: implement rejectAdoptionRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> unlockAnimal(AnimalModel animal) async {
-    // TODO: implement unlockAnimal
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> upadte(AnimalModel animal) async {
-    // TODO: implement upadte
     throw UnimplementedError();
   }
 

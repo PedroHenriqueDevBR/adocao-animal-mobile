@@ -33,7 +33,10 @@ class AnimalModel {
     this.createAt = createAt ?? DateTime.now();
   }
 
-  get formattedCreateAt => '${createAt.day}/${createAt.month}/${createAt.year}';
+  get formattedCreateAt =>
+      '${formatDateNumber(createAt.day)}/${formatDateNumber(createAt.month)}/${createAt.year}';
+
+  String formatDateNumber(int number) => number >= 10 ? '$number' : '0$number';
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
@@ -48,27 +51,37 @@ class AnimalModel {
   }
 
   factory AnimalModel.fromMap(Map<String, dynamic> map) {
+    AnimalTypeModel animalType = AnimalTypeModel(
+      name: map['type'] ?? 'Não definido',
+    );
+
     final animalModel = AnimalModel(
-      id: map['id'] ?? null,
+      id: map['id'],
       name: map['name'] ?? '',
       breed: map['breed'] ?? '',
       age: map['age']?.toInt() ?? 0,
       sex: map['sex'] ?? '',
       adopted: map['adopted'] ?? false,
       blocked: map['blocked'] ?? false,
-      createAt: DateTime.parse(map['create_at']),
-      animalType: AnimalTypeModel.fromMap(map['type']),
+      createAt: map['create_at'] != null
+          ? DateTime.parse(map['create_at'])
+          : DateTime.now(),
+      animalType: animalType,
     );
-    animalModel.photos = List<AnimalPhotoModel>.from(
-      map['all_photos']?.map((x) => AnimalPhotoModel.fromMap(x)),
-    );
-    animalModel.vaccines = List<VaccineModel>.from(
-      map['all_vaccines']?.map((x) => VaccineModel.fromMap(x)),
-    );
+    if (map['all_photos'] != null) {
+      animalModel.photos = List<AnimalPhotoModel>.from(
+        map['all_photos']?.map((x) => AnimalPhotoModel.fromMap(x)),
+      );
+    }
+    if (map['all_vaccines'] != null) {
+      animalModel.vaccines = List<VaccineModel>.from(
+        map['all_vaccines']?.map((x) => VaccineModel.fromMap(x)),
+      );
+    }
     return animalModel;
   }
 
-  static List<AnimalModel> fromMapList(List<dynamic> list) {
+  static List<AnimalModel> fromMapList(List<Map<String, dynamic>> list) {
     List<AnimalModel> result = [];
     for (Map<String, dynamic> map in list) {
       result.add(AnimalModel.fromMap(map));
