@@ -21,6 +21,12 @@ abstract class IClientHTTP {
     String? jwtKey,
   });
 
+  Future<HttpResponseModel> patch(
+    String url,
+    Map<String, dynamic> data, {
+    String? jwtKey,
+  });
+
   Future<HttpResponseModel> delete(
     String url, {
     String? jwtKey,

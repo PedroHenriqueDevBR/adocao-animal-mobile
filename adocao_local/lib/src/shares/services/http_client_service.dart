@@ -170,4 +170,29 @@ class HttpClientService implements IClientHTTP {
       rethrow;
     }
   }
+
+  @override
+  Future<HttpResponseModel> patch(
+    String url,
+    Map<String, dynamic> data, {
+    String? jwtKey,
+  }) async {
+    Map<String, String> headers = _setAuthorization(key: jwtKey);
+    final uri = _getBaseUrl(url);
+
+    try {
+      Response response = await http.patch(
+        uri,
+        body: jsonEncode(data),
+        headers: headers,
+      );
+      return HttpResponseModel(
+        statusCode: response.statusCode,
+        data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
+        headers: response.headers,
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
