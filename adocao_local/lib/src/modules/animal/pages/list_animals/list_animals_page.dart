@@ -112,9 +112,25 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                             animal.name,
                             style: _textStyle.titleStyle,
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.more_vert),
+                          PopupMenuButton(
+                            itemBuilder: (_) => <PopupMenuItem<String>>[
+                              const PopupMenuItem(
+                                value: '1',
+                                child: Text('Editar'),
+                              ),
+                              const PopupMenuItem(
+                                value: '2',
+                                child: Text('Bloquear'),
+                              ),
+                              const PopupMenuItem(
+                                value: '3',
+                                child: Text('Desbloquear'),
+                              ),
+                              const PopupMenuItem(
+                                value: '4',
+                                child: Text('Deletar'),
+                              ),
+                            ],
                           ),
                         ],
                       ),
