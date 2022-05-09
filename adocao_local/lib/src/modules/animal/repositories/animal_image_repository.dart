@@ -8,7 +8,7 @@ import 'package:adocao_local/src/shares/models/http_response_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-class AnimalImageRepository implements IAnimalImage {
+class AnimalImageRepository implements IAnimalImageStorage {
   final IClientHTTP _client;
   final IAppData _appData;
 

@@ -1,7 +1,7 @@
 import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 
-abstract class IAnimal {
+abstract class IAnimalStorage {
   Future<List<AnimalModel>> allAnimals();
 
   Future<AnimalModel> create(AnimalModel animal);
