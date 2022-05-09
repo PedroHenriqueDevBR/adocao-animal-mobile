@@ -1,10 +1,17 @@
-import 'package:adocao_local/src/shares/core/app_text_theme.dart';
-import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
+
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:flutter/material.dart';
+
+import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
+import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 
 class ShowAnimalPage extends StatefulWidget {
-  const ShowAnimalPage({Key? key}) : super(key: key);
+  AnimalModel animal;
+  ShowAnimalPage({
+    Key? key,
+    required this.animal,
+  }) : super(key: key);
 
   @override
   State<ShowAnimalPage> createState() => _ShowAnimalPageState();

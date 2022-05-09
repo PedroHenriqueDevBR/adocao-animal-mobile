@@ -76,63 +76,66 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => controller.goToCreateAnimalPage(),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Widget animalCard(AnimalModel animal) => Card(
-        margin: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 200,
-              width: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: controller.getAnimalPhoto(animal),
-                  fit: BoxFit.cover,
+  Widget animalCard(AnimalModel animal) => GestureDetector(
+        onTap: () => controller.goToShowAnimalPage(animal),
+        child: Card(
+          margin: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 200,
+                width: 150,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: controller.getAnimalPhoto(animal),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          animal.name,
-                          style: _textStyle.titleStyle,
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '-> ${animal.animalType.name}\n -> Raça ${animal.breed}\n -> Sexo: ${animal.sex}',
-                            textAlign: TextAlign.left,
-                            style: _textStyle.descriptionStyle,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            animal.name,
+                            style: _textStyle.titleStyle,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_vert),
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '-> ${animal.animalType.name}\n -> Raça ${animal.breed}\n -> Sexo: ${animal.sex}',
+                              textAlign: TextAlign.left,
+                              style: _textStyle.descriptionStyle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 }
