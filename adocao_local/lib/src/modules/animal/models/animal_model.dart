@@ -81,7 +81,7 @@ class AnimalModel {
     return animalModel;
   }
 
-  static List<AnimalModel> fromMapList(List<Map<String, dynamic>> list) {
+  static List<AnimalModel> fromMapList(List<dynamic> list) {
     List<AnimalModel> result = [];
     for (Map<String, dynamic> map in list) {
       result.add(AnimalModel.fromMap(map));
