@@ -1,4 +1,3 @@
-import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 
 abstract class IAnimalStorage {
@@ -13,14 +12,4 @@ abstract class IAnimalStorage {
   Future<void> blockAnimal(AnimalModel animal);
 
   Future<void> unlockAnimal(AnimalModel animal);
-
-  Future<List<AdoptionRequestModel>> allAdoptionRequestFromAnimal(
-    AnimalModel animal,
-  );
-
-  Future<void> confirmAdoptionRequest(AdoptionRequestModel adoptionRequest);
-
-  Future<void> rejectAdoptionRequest(AdoptionRequestModel adoptionRequest);
-
-  Future<void> deleteAdoptionRequest(AdoptionRequestModel adoptionRequest);
 }

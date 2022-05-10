@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../account/models/user_model.dart';
 
 class AdoptionRequestModel {
@@ -18,4 +20,37 @@ class AdoptionRequestModel {
   get reject => isAcepted = false;
 
   get formattedCreateAt => '${createAt.day}/${createAt.month}/${createAt.year}';
+
+  AdoptionRequestModel copyWith({
+    dynamic? id,
+    bool? isAcepted,
+    DateTime? createAt,
+    UserModel? requester,
+  }) {
+    return AdoptionRequestModel(
+      id: id ?? this.id,
+      isAcepted: isAcepted ?? this.isAcepted,
+      createAt: createAt ?? this.createAt,
+      requester: requester ?? this.requester,
+    );
+  }
+
+  factory AdoptionRequestModel.fromMap(Map<String, dynamic> map) {
+    return AdoptionRequestModel(
+      id: map['id'],
+      isAcepted: map['is_acepted'],
+      createAt: map['create_at'] != null
+          ? DateTime.parse(map['create_at'])
+          : DateTime.now(),
+      requester: UserModel.fromMap(map['requester']),
+    );
+  }
+
+  static List<AdoptionRequestModel> fromMapList(List<dynamic> list) {
+    List<AdoptionRequestModel> result = [];
+    for (Map<String, dynamic> map in list) {
+      result.add(AdoptionRequestModel.fromMap(map));
+    }
+    return result;
+  }
 }
