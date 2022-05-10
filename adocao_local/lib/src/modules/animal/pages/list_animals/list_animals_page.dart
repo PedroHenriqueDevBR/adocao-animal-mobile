@@ -89,15 +89,49 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 200,
-                width: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: controller.getAnimalPhoto(animal),
-                    fit: BoxFit.cover,
+              Column(
+                children: [
+                  Container(
+                    height: 200,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: controller.getAnimalPhoto(animal),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
+                  animal.blocked
+                      ? Container(
+                          padding: EdgeInsets.all(2),
+                          width: 150,
+                          color: Colors.red,
+                          child: Center(
+                            child: Text(
+                              'Bloqueado',
+                              style: _textStyle.descriptionStyle.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  animal.adopted
+                      ? Container(
+                          padding: EdgeInsets.all(2),
+                          width: 150,
+                          color: Colors.green,
+                          child: Center(
+                            child: Text(
+                              'Adotado',
+                              style: _textStyle.descriptionStyle.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
               Expanded(
                 child: Padding(
@@ -137,12 +171,10 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                       const Divider(),
                       Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              '-> ${animal.animalType.name}\n -> Raça ${animal.breed}\n -> Sexo: ${animal.sex}',
-                              textAlign: TextAlign.left,
-                              style: _textStyle.descriptionStyle,
-                            ),
+                          Text(
+                            '-> ${animal.animalType.name}\n -> Raça ${animal.breed}\n -> Sexo: ${animal.sex}',
+                            textAlign: TextAlign.left,
+                            style: _textStyle.descriptionStyle,
                           ),
                         ],
                       ),
