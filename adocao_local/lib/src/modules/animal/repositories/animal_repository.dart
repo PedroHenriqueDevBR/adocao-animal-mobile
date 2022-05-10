@@ -1,5 +1,4 @@
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
-import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
@@ -137,33 +136,5 @@ class AnimalRepository implements IAnimalStorage {
         ),
       );
     }
-  }
-
-  @override
-  Future<List<AdoptionRequestModel>> allAdoptionRequestFromAnimal(
-    AnimalModel animal,
-  ) async {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> confirmAdoptionRequest(
-      AdoptionRequestModel adoptionRequest) async {
-    // TODO: implement confirmAdoptionRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> rejectAdoptionRequest(
-      AdoptionRequestModel adoptionRequest) async {
-    // TODO: implement rejectAdoptionRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteAdoptionRequest(
-      AdoptionRequestModel adoptionRequest) async {
-    // TODO: implement deleteAdoptionRequest
-    throw UnimplementedError();
   }
 }
