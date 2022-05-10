@@ -36,4 +36,9 @@ class VaccineModel {
     }
     return result;
   }
+
+  get formattedDate =>
+      '${formatDateNumber(date!.day)}/${formatDateNumber(date!.month)}/${date!.year}';
+
+  String formatDateNumber(int number) => number >= 10 ? '$number' : '0$number';
 }

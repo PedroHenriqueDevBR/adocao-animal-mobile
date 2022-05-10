@@ -1,10 +1,17 @@
 import 'dart:io' show Platform;
 
+import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
+import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_store.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
+import 'package:adocao_local/src/shares/core/app_assets.dart';
+import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
+import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:flutter/material.dart';
 
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
+import 'package:flutter/services.dart';
 
 class ShowAnimalPage extends StatefulWidget {
   AnimalModel animal;
@@ -19,6 +26,23 @@ class ShowAnimalPage extends StatefulWidget {
 
 class _ShowAnimalPageState extends State<ShowAnimalPage> {
   final _textStyle = AppTextStyle();
+  late ShowAnimalStore controller;
+  final appData = AppPreferenceService();
+  final client = HttpClientService();
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ShowAnimalStore(
+      context: context,
+      appData: appData,
+      storage: AnimalRepository(
+        client: client,
+        appData: appData,
+      ),
+      animal: widget.animal,
+    );
+  }
 
   void showBottomPage() {
     asuka.showModalBottomSheet(
@@ -60,126 +84,64 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Adoção App'),
-      ),
-      body: Platform.isAndroid || Platform.isIOS
-          ? childrenWidgets()
-          : desktopChildrenWidgets(size),
+  void removeTopBar() {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
     );
   }
 
-  Widget desktopChildrenWidgets(Size size) => Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: size.height,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-                ),
+  @override
+  Widget build(BuildContext context) {
+    removeTopBar();
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            snap: true,
+            floating: true,
+            centerTitle: true,
+            expandedHeight: 350.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                controller.animal.name,
+                textScaleFactor: 1.0,
               ),
+              background: controller.getAnimalPhoto(),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: SizedBox(
-              height: size.height,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Rex',
-                            style: _textStyle.titleStyle,
-                          ),
-                          ElevatedButton(
-                            onPressed: showBottomPage,
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 4.0),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4.0),
-                                  margin: const EdgeInsets.only(right: 4.0),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    '5',
-                                    style: _textStyle.textButton,
-                                  ),
-                                ),
-                                const Text('Solicitações'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Cachorro viralata muito bem cuidado e buscando um novo lar.',
-                        textAlign: TextAlign.center,
-                        style: _textStyle.descriptionStyle,
-                      ),
-                    ),
-                    const Divider(),
-                    Text(
-                      'Caderno de vacinação',
-                      style: _textStyle.textButton,
-                    ),
-                    ListView.separated(
-                      itemCount: 5,
-                      itemBuilder: (ctx, index) => ListTile(
-                        leading: const Icon(Icons.vaccines),
-                        title: Text('data ${index + 1}'),
-                        subtitle: const Text('00/00/0000'),
-                      ),
-                      separatorBuilder: (_, __) => const Divider(),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                    ),
-                  ],
-                ),
-              ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => childrenWidgets(),
+              childCount: 1,
             ),
           ),
         ],
-      );
+      ),
+    );
+  }
 
   Widget childrenWidgets() => SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              width: double.infinity,
-              height: 250,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(8.0),
+              color: controller.animal.adopted
+                  ? Colors.green
+                  : controller.animal.blocked
+                      ? Colors.red
+                      : Theme.of(context).primaryColor,
+              child: Center(
+                child: Text(
+                  controller.animal.adopted
+                      ? 'Adotado'
+                      : controller.animal.blocked
+                          ? 'Bloqueado'
+                          : 'Disponível para adoção',
+                  style: _textStyle.textButton.copyWith(color: Colors.white),
                 ),
               ),
             ),
@@ -189,7 +151,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Rex',
+                    controller.animal.name,
                     style: _textStyle.titleStyle,
                   ),
                   ElevatedButton(
@@ -197,7 +159,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.secondary,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 4.0),
+                          vertical: 12.0, horizontal: 8.0),
                     ),
                     child: Row(
                       children: [
@@ -210,10 +172,10 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                               Radius.circular(4.0),
                             ),
                           ),
-                          child: Text(
-                            '5',
-                            style: _textStyle.textButton,
-                          ),
+                          // child: Text(
+                          //   '${controller.animal.requests.length}',
+                          //   style: _textStyle.textButton,
+                          // ),
                         ),
                         const Text('Solicitações'),
                       ],
@@ -223,12 +185,12 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Cachorro viralata muito bem cuidado e buscando um novo lar.',
+                '${controller.animal.animalType.name} da raça ${controller.animal.breed}, sexo: ${controller.animal.sex}',
                 textAlign: TextAlign.center,
                 style: _textStyle.descriptionStyle,
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
             ),
             const Divider(),
             Text(
@@ -236,12 +198,15 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
               style: _textStyle.textButton,
             ),
             ListView.separated(
-              itemCount: 5,
-              itemBuilder: (ctx, index) => ListTile(
-                leading: const Icon(Icons.vaccines),
-                title: Text('data ${index + 1}'),
-                subtitle: const Text('00/00/0000'),
-              ),
+              itemCount: controller.animal.vaccines.length,
+              itemBuilder: (_, index) {
+                final vaccine = controller.animal.vaccines[index];
+                return ListTile(
+                  leading: const Icon(Icons.vaccines),
+                  title: Text('${vaccine.name}'),
+                  subtitle: Text(vaccine.formattedDate),
+                );
+              },
               separatorBuilder: (_, __) => const Divider(),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
