@@ -1,7 +1,6 @@
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_type_model.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
-import 'package:adocao_local/src/modules/animal/repositories/animal_type_repository.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';

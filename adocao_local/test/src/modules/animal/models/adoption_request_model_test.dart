@@ -39,7 +39,8 @@ void main() {
   test('O formato da data deve ser 00/00/0000', () {
     expect(
       adoptionRequestModel.formattedCreateAt,
-      equals('${now.day}/${now.month}/${now.year}'),
+      equals(
+          '${adoptionRequestModel.formatDateNumber(now.day)}/${adoptionRequestModel.formatDateNumber(now.month)}/${now.year}'),
     );
   });
 }

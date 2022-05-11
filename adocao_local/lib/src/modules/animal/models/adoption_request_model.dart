@@ -19,7 +19,10 @@ class AdoptionRequestModel {
 
   get reject => isAcepted = false;
 
-  get formattedCreateAt => '${createAt.day}/${createAt.month}/${createAt.year}';
+  get formattedCreateAt =>
+      '${formatDateNumber(createAt.day)}/${formatDateNumber(createAt.month)}/${createAt.year}';
+
+  String formatDateNumber(int number) => number >= 10 ? '$number' : '0$number';
 
   AdoptionRequestModel copyWith({
     dynamic? id,
