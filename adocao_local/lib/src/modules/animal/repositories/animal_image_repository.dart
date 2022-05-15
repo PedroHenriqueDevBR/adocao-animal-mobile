@@ -60,17 +60,21 @@ class AnimalImageRepository implements IAnimalImageStorage {
   Future<void> removePhoto(AnimalPhotoModel photo) async {
     final path = 'animal/photo/${photo.id}';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.delete(path, jwtKey: jwtKey);
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      if (kDebugMode) {
-        print('ERRO: remove animal photo');
+    try {
+      final response = await _client.delete(path, jwtKey: jwtKey);
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        if (kDebugMode) {
+          print('ERRO: remove animal photo');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 }

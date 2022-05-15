@@ -19,20 +19,24 @@ class AnimalTypeRepository implements IAnimalTypeStorage {
     const path = 'animal/all_types/';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.get(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.get(path, jwtKey: jwtKey);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return AnimalTypeModel.fromMapList(response.data);
-    } else {
-      if (kDebugMode) {
-        print('ERRO: buscar dados do usuário');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return AnimalTypeModel.fromMapList(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: buscar dados do usuário');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 }

@@ -68,17 +68,21 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
   ) async {
     final path = 'adoption/${animal.id}/reject/${adoptionRequest.id}';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.put(path, {}, jwtKey: jwtKey);
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: buscar animais do dono');
+    try {
+      final response = await _client.put(path, {}, jwtKey: jwtKey);
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: buscar animais do dono');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -89,18 +93,22 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
   ) async {
     final path = 'adoption/${animal.id}/delete/${adoptionRequest.id}';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.delete(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.delete(path, jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: buscar animais do dono');
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: buscar animais do dono');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 }

@@ -22,21 +22,25 @@ class AnimalVaccineRepository implements IAnimalVaccineStorage {
     const path = 'animal/vaccine';
     final jwtKey = await _appData.getJWT();
 
-    final response =
-        await _client.post(path, vaccine.toMap(animal), jwtKey: jwtKey);
+    try {
+      final response =
+          await _client.post(path, vaccine.toMap(animal), jwtKey: jwtKey);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return VaccineModel.fromMap(response.data);
-    } else {
-      if (kDebugMode) {
-        print('ERRO: adicionar vacina');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return VaccineModel.fromMap(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: adicionar vacina');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -50,18 +54,22 @@ class AnimalVaccineRepository implements IAnimalVaccineStorage {
     final path = 'animal/vaccine/${vaccine.id}';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.delete(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.delete(path, jwtKey: jwtKey);
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      if (kDebugMode) {
-        print('ERRO: buscar dados do usuário');
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        if (kDebugMode) {
+          print('ERRO: buscar dados do usuário');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 }

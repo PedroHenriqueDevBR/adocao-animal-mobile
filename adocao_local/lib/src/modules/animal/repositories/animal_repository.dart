@@ -19,20 +19,24 @@ class AnimalRepository implements IAnimalStorage {
     const path = 'animal/my';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.get(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.get(path, jwtKey: jwtKey);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return AnimalModel.fromMapList(response.data);
-    } else {
-      if (kDebugMode) {
-        print('ERRO: buscar animais do dono');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return AnimalModel.fromMapList(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: buscar animais do dono');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -41,20 +45,24 @@ class AnimalRepository implements IAnimalStorage {
     const path = 'animal/my';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.post(path, animal.toMap(), jwtKey: jwtKey);
+    try {
+      final response = await _client.post(path, animal.toMap(), jwtKey: jwtKey);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return AnimalModel.fromMap(response.data);
-    } else {
-      if (kDebugMode) {
-        print('ERRO: Cadastrar novo animal');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return AnimalModel.fromMap(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: Cadastrar novo animal');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -63,18 +71,22 @@ class AnimalRepository implements IAnimalStorage {
     final path = 'animal/my/${animal.id}';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.put(path, animal.toMap(), jwtKey: jwtKey);
+    try {
+      final response = await _client.put(path, animal.toMap(), jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: Atualizar dados do animal');
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: Atualizar dados do animal');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -83,18 +95,22 @@ class AnimalRepository implements IAnimalStorage {
     final path = 'animal/my/${animal.id}';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.delete(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.delete(path, jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: Deletar animal');
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: Deletar animal');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -103,18 +119,22 @@ class AnimalRepository implements IAnimalStorage {
     final path = 'animal/my/${animal.id}/block';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.patch(path, {}, jwtKey: jwtKey);
+    try {
+      final response = await _client.patch(path, {}, jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: Bloquear animal');
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: Bloquear animal');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -123,18 +143,22 @@ class AnimalRepository implements IAnimalStorage {
     final path = 'animal/my/${animal.id}/unlock';
     final jwtKey = await _appData.getJWT();
 
-    final response = await _client.patch(path, {}, jwtKey: jwtKey);
+    try {
+      final response = await _client.patch(path, {}, jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: Desbloquear animal');
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: Desbloquear animal');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } catch (error) {
+      rethrow;
     }
   }
 }
