@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:adocao_local/src/shares/exceptions/connection_refused_exception.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
 import 'package:http/http.dart';
@@ -32,6 +34,8 @@ class HttpClientService implements IClientHTTP {
             response.body.isNotEmpty ? utf8.decode(response.bodyBytes) : '{}'),
         headers: response.headers,
       );
+    } on SocketException catch (_) {
+      throw ConnectionRefusedException();
     } catch (error) {
       throw HttpResponseException(
         response: HttpResponseModel(
@@ -63,6 +67,8 @@ class HttpClientService implements IClientHTTP {
         ),
         headers: response.headers,
       );
+    } on SocketException catch (_) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
@@ -88,6 +94,8 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
+    } on SocketException catch (error) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
@@ -104,6 +112,8 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
+    } on SocketException catch (error) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
@@ -134,6 +144,8 @@ class HttpClientService implements IClientHTTP {
         ),
         headers: response.headers,
       );
+    } on SocketException catch (error) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
@@ -166,6 +178,8 @@ class HttpClientService implements IClientHTTP {
         ),
         headers: response.headers,
       );
+    } on SocketException catch (error) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
@@ -191,6 +205,8 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
+    } on SocketException catch (error) {
+      throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
     }
