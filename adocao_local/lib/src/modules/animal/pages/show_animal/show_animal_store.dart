@@ -42,17 +42,15 @@ abstract class _ShowAnimalStore with Store {
   @action
   void setUpdate() => update = !update;
 
-  Widget getAnimalPhoto() {
+  ImageProvider getAnimalPhoto() {
     if (animal.photos.isNotEmpty) {
       IClientHTTP client = HttpClientService();
-      return Image.network(
+      return NetworkImage(
         client.host + animal.photos.first.url,
-        fit: BoxFit.cover,
       );
     }
-    return Image.asset(
+    return AssetImage(
       AppAssets.catAndDog,
-      fit: BoxFit.cover,
     );
   }
 }

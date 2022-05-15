@@ -84,41 +84,27 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
     );
   }
 
-  void removeTopBar() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    removeTopBar();
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            snap: true,
-            floating: true,
-            centerTitle: true,
-            expandedHeight: 350.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                controller.animal.name,
-                textScaleFactor: 1.0,
+      appBar: AppBar(
+        title: Text('Apresentação'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 350.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: controller.getAnimalPhoto(),
+                  fit: BoxFit.cover,
+                ),
               ),
-              background: controller.getAnimalPhoto(),
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => childrenWidgets(),
-              childCount: 1,
-            ),
-          ),
-        ],
+            childrenWidgets(),
+          ],
+        ),
       ),
     );
   }

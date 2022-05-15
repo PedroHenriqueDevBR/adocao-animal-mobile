@@ -3,12 +3,13 @@ import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/pages/edit_animal/edit_animal_page.dart';
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
+import 'package:adocao_local/src/shares/exceptions/connection_refused_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
+import 'package:asuka/asuka.dart' as asuka;
 
 part 'list_animals_store.g.dart';
 
@@ -46,6 +47,10 @@ abstract class _ListAnimalsStore with Store {
       setLoading(true);
       List<AnimalModel> responseList = await storage.allAnimals();
       animalList.addAll(responseList);
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
     } finally {
       setLoading(false);
     }
