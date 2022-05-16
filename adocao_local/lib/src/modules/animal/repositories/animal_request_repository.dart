@@ -2,6 +2,7 @@ import 'package:adocao_local/src/modules/animal/interfaces/animal_request_interf
 import 'package:adocao_local/src/modules/animal/models/adoption_request_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
+import 'package:adocao_local/src/shares/exceptions/unauthorized_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
@@ -22,20 +23,27 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
   ) async {
     final path = 'adoption/${animal.id}';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.get(path, jwtKey: jwtKey);
+    try {
+      final response = await _client.get(path, jwtKey: jwtKey);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return AdoptionRequestModel.fromMapList(response.data);
-    } else {
-      if (kDebugMode) {
-        print('ERRO: buscar animais do dono');
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return AdoptionRequestModel.fromMapList(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: buscar animais do dono');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -46,18 +54,26 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
   ) async {
     final path = 'adoption/${animal.id}/accept/${adoptionRequest.id}';
     final jwtKey = await _appData.getJWT();
-    final response = await _client.put(path, {}, jwtKey: jwtKey);
 
-    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
-      if (kDebugMode) {
-        print('ERRO: buscar animais do dono');
+    try {
+      final response = await _client.put(path, {}, jwtKey: jwtKey);
+
+      if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+        if (kDebugMode) {
+          print('ERRO: buscar animais do dono');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
       }
-      throw HttpResponseException(
-        response: HttpResponseModel(
-          statusCode: response.statusCode,
-          data: response.data,
-        ),
-      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
+    } catch (error) {
+      rethrow;
     }
   }
 
@@ -81,6 +97,9 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
           ),
         );
       }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
     } catch (error) {
       rethrow;
     }
@@ -107,6 +126,9 @@ class AnimalRequestRepository implements IAnimalRequestStorage {
           ),
         );
       }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
     } catch (error) {
       rethrow;
     }

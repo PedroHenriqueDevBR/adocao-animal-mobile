@@ -2,6 +2,7 @@ import 'package:adocao_local/src/modules/animal/interfaces/animal_image_interfac
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_photo_model.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
+import 'package:adocao_local/src/shares/exceptions/unauthorized_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
 import 'package:adocao_local/src/shares/models/http_response_model.dart';
@@ -41,6 +42,9 @@ class AnimalImageRepository implements IAnimalImageStorage {
           ),
         );
       }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
     } catch (error) {
       if (kDebugMode) {
         print('======================================');
@@ -73,6 +77,9 @@ class AnimalImageRepository implements IAnimalImageStorage {
           ),
         );
       }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
     } catch (error) {
       rethrow;
     }
