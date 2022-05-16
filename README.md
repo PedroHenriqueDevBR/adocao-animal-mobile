@@ -13,7 +13,7 @@ Este projeto está sendo desenvolvido para a disciplina de projeto integrador, m
 
 # :memo: Visão Geral
 
-Aplicação desenvovida para se comunicar com o backend do projeto adoçõ doguinho, que está disponível no seguinte link ![Adoção Doguinho](https://github.com/PedroHenriqueDevBR/adocao-doguinho).
+Aplicação desenvovida para se comunicar com o backend do projeto adoçõ doguinho, que está disponível no seguinte link ![Adoção de animais - Clique aqui para saber mais](https://github.com/PedroHenriqueDevBR/adocao-doguinho).
 
  * <strong><a href="#description">Descrição completa da aplicação</a></strong>
  * <strong><a href="#tecnologias">Tecnologias utilizadas</a></strong>
@@ -27,11 +27,11 @@ Aplicação desenvovida para se comunicar com o backend do projeto adoçõ dogui
 
 <h1 id="description">:speech_balloon: Descrição</h1>
 
-**Trata-se do desenvolvimento de uma aplicação para facilitar a comunicação entre quem possui um animal para adoção com quem deseja adotar.**
+**Trata-se do desenvolvimento de uma aplicação para facilitar o controle das informações por parte das organizações que disponibilizam animais para adoção.**
 
-Essa aplicação está sendo desenvolvida para facilitar o uso das funcionalidades do projeto adoção doguinho, o projeto adoção doguinho possui o backend em Django já implementado e um frontend em Angular que consome os dados e disponiiliza para o usuário, a aplicação frontend em Angular possui todos as funcionalidades para quem deseja colocar um animal para adoção e para quem deseja adotar um animal.
+Essa aplicação está sendo desenvolvida para facilitar o uso das funcionalidades do projeto **adoção de animais**, o projeto adoção de animais possui o backend em Django já implementado e um frontend em Angular que consome os dados e disponiiliza para o usuário, a aplicação frontend em Angular possui todos as funcionalidades para quem deseja colocar um animal para adoção e para quem deseja adotar um animal.
 
-Essa aplicação possui o objetivo de atender os usuários que desejam colocar os animais para a adoção, pois são eles quem mais vão precisar ficar acessando o sistema para verifiar o status daa adoções.
+Essa aplicação possui o objetivo de atender os usuários que desejam colocar os animais para a adoção, pois são eles quem mais vão precisar ficar acessando o sistema para verifiar o status das adoções e as informações dos animais.
 
 <br>
 
@@ -50,26 +50,22 @@ A modelagem foi criada antes de iniciar o desenvolvimento da aplicação, com o 
 
 <h2 id="modelagem-classes">Modelagem do banco de dados</h2>
 
-<!-- <img width="100%" src="https://raw.githubusercontent.com/PedroHenriqueDevBR/aplicacao-para-adocao-de-animais/main/docs/assets/database.png" /> -->
+<img width="100%" src="https://raw.githubusercontent.com/PedroHenriqueDevBR/adocao-animal-mobile/main/docs/modelagem/adocao-local-mobile.png" />
 
 <h2 id="modelagem-mapa-aplicacao">Protótipo da aplicação</h2>
 
-<!-- <img width="100%" src="https://raw.githubusercontent.com/PedroHenriqueDevBR/aplicacao-para-adocao-de-animais/main/docs/assets/hight-quality-prototype-web.png" /> -->
+<img width="100%" src="https://raw.githubusercontent.com/PedroHenriqueDevBR/adocao-animal-mobile/main/docs/prototipo/all.png" />
 
 <h1 id="requisitos">:warning: Pré-requisitos</h1>
 
 O desenvolvimento dessa aplicação utiliza como base as seguintes tecnologias e versões apresentadas abaixo.
 
-<!-- 1. Node: 14.17.6
-2. Angular CLI: 12.2.5
-3. Python 3.6 ou superior
-4. Django 3.2.6 ou superior
-5. git version 2.17.1 -->
-
 <h1 id="instalacao">:information_source: Instalação</h1>
 
 ```bash
-
+1. Dart: 2.0.0
+2. Flutter: 2.0.0
+3. git version 2.17.1
 ```
 
 <h2 id="funcionalidades">:heavy_check_mark: Funcionalidades</h2>
