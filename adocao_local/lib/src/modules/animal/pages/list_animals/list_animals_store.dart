@@ -1,9 +1,11 @@
+import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/pages/edit_animal/edit_animal_page.dart';
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/exceptions/connection_refused_exception.dart';
+import 'package:adocao_local/src/shares/exceptions/unauthorized_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
@@ -51,6 +53,18 @@ abstract class _ListAnimalsStore with Store {
       asuka.showSnackBar(asuka.AsukaSnackbar.alert(
         'Sem conexão com o servidor',
       ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+        (route) => false,
+      );
     } finally {
       setLoading(false);
     }

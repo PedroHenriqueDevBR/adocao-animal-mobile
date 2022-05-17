@@ -1,9 +1,5 @@
-import 'dart:io' show Platform;
-
-import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_store.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
-import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -11,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
-import 'package:flutter/services.dart';
 
 class ShowAnimalPage extends StatefulWidget {
   AnimalModel animal;
@@ -93,15 +88,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 350.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: controller.getAnimalPhoto(),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            animalPhotoContainerWidget(),
             childrenWidgets(),
           ],
         ),
@@ -109,12 +96,23 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
     );
   }
 
+  Widget animalPhotoContainerWidget() => Container(
+        height: 400.0,
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          image: DecorationImage(
+            image: controller.getAnimalPhoto(),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+
   Widget childrenWidgets() => SingleChildScrollView(
         child: Column(
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               color: controller.animal.adopted
                   ? Colors.green
                   : controller.animal.blocked
@@ -147,25 +145,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 8.0),
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(4.0),
-                          margin: const EdgeInsets.only(right: 4.0),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(4.0),
-                            ),
-                          ),
-                          // child: Text(
-                          //   '${controller.animal.requests.length}',
-                          //   style: _textStyle.textButton,
-                          // ),
-                        ),
-                        const Text('Solicitações'),
-                      ],
-                    ),
+                    child: const Text('Solicitações'),
                   ),
                 ],
               ),
