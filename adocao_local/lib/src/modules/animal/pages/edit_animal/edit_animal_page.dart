@@ -169,8 +169,6 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                 ),
               ),
               const SizedBox(height: 8.0),
-              const Divider(),
-              const SizedBox(height: 8.0),
               Row(
                 children: [
                   Expanded(
@@ -180,6 +178,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                       style: _textStyle.titleStyle,
                     ),
                   ),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.add)),
                 ],
               ),
               const SizedBox(height: 16.0),
@@ -205,13 +204,8 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                   Container(
                     color: Colors.grey,
                   ),
-                  Container(
-                    color: Colors.grey,
-                  ),
                 ],
               ),
-              const SizedBox(height: 8.0),
-              const Divider(),
               const SizedBox(height: 8.0),
               Row(
                 children: [
@@ -222,6 +216,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                       style: _textStyle.titleStyle,
                     ),
                   ),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.add)),
                 ],
               ),
               ListView.separated(
