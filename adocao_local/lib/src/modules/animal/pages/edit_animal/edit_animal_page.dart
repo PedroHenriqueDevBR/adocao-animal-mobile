@@ -56,10 +56,12 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Adoção de animais'),
       ),
       body: SingleChildScrollView(
+        physics: const ScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -207,7 +209,33 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                     color: Colors.grey,
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 8.0),
+              const Divider(),
+              const SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Caderneta de vacinação',
+                      textAlign: TextAlign.left,
+                      style: _textStyle.titleStyle,
+                    ),
+                  ),
+                ],
+              ),
+              ListView.separated(
+                primary: false,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (_, __) => const Divider(),
+                itemCount: 5,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text('Nome da vacina ${index + 1}'),
+                  subtitle: const Text('00/00/0000'),
+                  trailing: TextButton(onPressed: () {}, child: Text('Editar')),
+                ),
+              ),
             ],
           ),
         ),
