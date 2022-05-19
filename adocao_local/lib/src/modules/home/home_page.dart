@@ -22,14 +22,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adoção App'),
-        automaticallyImplyLeading:
-            Platform.isWindows || Platform.isLinux ? false : true,
-        leading: Platform.isWindows || Platform.isLinux
-            ? IconButton(
-                onPressed: controller.toggleShowDrawer,
-                icon: const Icon(Icons.menu),
-              )
-            : null,
+        automaticallyImplyLeading: true,
       ),
       body: Row(
         children: [
@@ -80,28 +73,26 @@ class _HomePageState extends State<HomePage> {
           }),
         ],
       ),
-      bottomNavigationBar: Platform.isAndroid || Platform.isIOS
-          ? Observer(
-              builder: (_) => BottomNavigationBar(
-                currentIndex: controller.pageIndex,
-                onTap: (int value) => controller.setPageIndex(value),
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.pets),
-                    label: 'Meus Animais',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Perfil',
-                  ),
-                ],
-              ),
-            )
-          : null,
+      bottomNavigationBar: Observer(
+        builder: (_) => BottomNavigationBar(
+          currentIndex: controller.pageIndex,
+          onTap: (int value) => controller.setPageIndex(value),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pets),
+              label: 'Meus Animais',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Perfil',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

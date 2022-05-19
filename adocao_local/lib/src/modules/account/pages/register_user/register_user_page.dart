@@ -59,30 +59,14 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
       body: Observer(
         builder: (_) => Stack(
           children: [
-            Platform.isAndroid || Platform.isIOS
-                ? SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const AvatarContainerWidget(),
-                        page(),
-                      ],
-                    ),
-                  )
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          flex: 1,
-                          child: AvatarContainerWidget(),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: page(),
-                        ),
-                      ],
-                    ),
-                  ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const AvatarContainerWidget(),
+                  page(),
+                ],
+              ),
+            ),
             controller.loading
                 ? Container(
                     width: size.width,

@@ -39,28 +39,12 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Platform.isAndroid || Platform.isIOS
-            ? Column(
-                children: [
-                  const AvatarContainerWidget(),
-                  formContainer(),
-                ],
-              )
-            : SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Row(
-                  children: [
-                    const Expanded(
-                      flex: 2,
-                      child: AvatarContainerWidget(),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: formContainer(),
-                    ),
-                  ],
-                ),
-              ),
+        child: Column(
+          children: [
+            const AvatarContainerWidget(),
+            formContainer(),
+          ],
+        ),
       ),
     );
   }
