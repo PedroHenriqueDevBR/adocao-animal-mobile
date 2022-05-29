@@ -75,8 +75,10 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Observer(
         builder: (_) => BottomNavigationBar(
+          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
           currentIndex: controller.pageIndex,
           onTap: (int value) => controller.setPageIndex(value),
+          showUnselectedLabels: false,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

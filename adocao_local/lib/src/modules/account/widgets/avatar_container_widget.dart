@@ -8,7 +8,7 @@ class AvatarContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.primary,
       padding: const EdgeInsets.only(
         top: 100,
         bottom: 75,
@@ -25,7 +25,7 @@ class AvatarContainerWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.secondary,
               width: 5.0,
             ),
             borderRadius: const BorderRadius.all(

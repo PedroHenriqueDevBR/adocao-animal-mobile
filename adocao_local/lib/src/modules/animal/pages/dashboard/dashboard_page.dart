@@ -8,47 +8,79 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          cardInfo('6', 'Total de animais disponíveis para adoção no momento.'),
-          Row(
-            children: [
-              Expanded(
-                child: cardInfo('35', 'Solicitações pendentes para adoção'),
-              ),
-              Expanded(
-                child: cardInfo('12', 'Animais adotados'),
-              ),
-            ],
-          )
-        ],
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      height: size.height,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            cardInfo(
+              '6',
+              'Total de animais disponíveis para adoção no momento.',
+              fullLine: true,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: cardInfo('35', 'Solicitações\npendentes'),
+                ),
+                Expanded(
+                  child: cardInfo('12', 'Animais\nadotados'),
+                ),
+              ],
+            ),
+            cardInfo(
+              '120',
+              'Total de visitas recebidas (Pendente)',
+              fullLine: true,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget cardInfo(String number, String description) => Card(
+  Widget cardInfo(String number, String description, {fullLine = false}) =>
+      Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 16.0),
-                child: Text(
-                  number,
-                  style: _textStyle.cardDashboardNumber,
+          child: fullLine
+              ? Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 16.0),
+                      child: Text(
+                        number,
+                        style: _textStyle.cardDashboardNumber,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        description,
+                        softWrap: true,
+                        style: _textStyle.descriptionStyle,
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      number,
+                      style: _textStyle.cardDashboardNumber,
+                    ),
+                    Text(
+                      description,
+                      softWrap: true,
+                      style: _textStyle.descriptionStyle,
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  description,
-                  softWrap: true,
-                  style: _textStyle.descriptionStyle,
-                ),
-              ),
-            ],
-          ),
         ),
       );
 }

@@ -53,6 +53,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         title: const Text('Cadastrar-se'),
       ),
@@ -344,6 +345,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
               onPressed: controller.goToLoginPage,
               child: const Text(
                 'Já tenho cadastro, retornar para a tela de login',
+                textAlign: TextAlign.center,
               ),
             ),
           ],

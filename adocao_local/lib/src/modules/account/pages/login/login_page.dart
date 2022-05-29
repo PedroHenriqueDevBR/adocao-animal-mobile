@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:adocao_local/src/modules/account/pages/login/login_store.dart';
 import 'package:adocao_local/src/modules/account/repositories/user_repository.dart';
 import 'package:adocao_local/src/modules/account/widgets/avatar_container_widget.dart';
-import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:rive/rive.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -37,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -105,9 +100,6 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             )
                           : const Text('Entrar'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
-                      ),
                     ),
                   ),
                 )

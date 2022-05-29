@@ -37,11 +37,12 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,6 +79,8 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => controller.goToCreateAnimalPage(),
         child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
       ),
     );
   }
