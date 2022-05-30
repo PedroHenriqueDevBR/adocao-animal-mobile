@@ -1,12 +1,19 @@
+import 'dart:io';
+import 'dart:io' show Platform;
+
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
+import 'package:adocao_local/src/modules/animal/interfaces/animal_type_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_photo_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_sex_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_type_model.dart';
 import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
-import 'package:flutter/widgets.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:asuka/asuka.dart' as asuka;
 
 part 'edit_animal_store.g.dart';
 
@@ -14,11 +21,13 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
   EditAnimalStore({
     required IAppData appData,
     required IAnimalStorage storage,
+    required IAnimalTypeStorage animalTypeStorage,
     required BuildContext context,
     AnimalModel? animal,
   }) {
     super.appData = appData;
     super.storage = storage;
+    super.animalTypeStorage = animalTypeStorage;
     super.context = context;
     super.animal = animal;
   }
@@ -27,8 +36,10 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
 abstract class _EditAnimalStore with Store {
   late IAppData appData;
   late IAnimalStorage storage;
+  late IAnimalTypeStorage animalTypeStorage;
   late BuildContext context;
   late AnimalModel? animal;
+  final ImagePicker picker = ImagePicker();
 
   ObservableList<AnimalTypeModel> animalTypeList =
       ObservableList<AnimalTypeModel>();
@@ -38,6 +49,8 @@ abstract class _EditAnimalStore with Store {
 
   ObservableList<AnimalPhotoModel> animalPhotoList =
       ObservableList<AnimalPhotoModel>();
+
+  ObservableList<File> animalPhotoPendingList = ObservableList<File>();
 
   ObservableList<VaccineModel> animalVaccineList =
       ObservableList<VaccineModel>();
@@ -66,47 +79,18 @@ abstract class _EditAnimalStore with Store {
   @action
   void setUpdate() => update = !update;
 
-  void loadAnimalTypeList() {
-    animalTypeList.addAll(
-      [
-        AnimalTypeModel(id: 1, name: 'Cachorro'),
-        AnimalTypeModel(id: 1, name: 'Gato'),
-      ],
-    );
+  void loadAnimalTypeList() async {
     animalSexList.addAll(
       [
         AnimalSexModel(short: 'M', name: 'Macho'),
         AnimalSexModel(short: 'F', name: 'Fêmea'),
       ],
     );
+    final result = await animalTypeStorage.allTypes();
+    animalTypeList.addAll(result);
   }
 
-  void loadAnimalData() {
-    animalVaccineList.add(VaccineModel(id: 1, name: 'Vacina teste'));
-    animalVaccineList.add(VaccineModel(id: 2, name: 'Vacina contra a gripe'));
-
-    animalPhotoList.add(
-      AnimalPhotoModel(
-        id: 1,
-        url:
-            'https://images.pexels.com/photos/10311010/pexels-photo-10311010.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      ),
-    );
-    animalPhotoList.add(
-      AnimalPhotoModel(
-        id: 2,
-        url:
-            'https://images.pexels.com/photos/1928079/pexels-photo-1928079.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-      ),
-    );
-    animalPhotoList.add(
-      AnimalPhotoModel(
-        id: 3,
-        url:
-            'https://images.pexels.com/photos/4801686/pexels-photo-4801686.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      ),
-    );
-  }
+  void loadAnimalData() {}
 
   void selectAnimalType(AnimalTypeModel? animalType) {
     selectedAnimalType = animalType;
@@ -116,5 +100,43 @@ abstract class _EditAnimalStore with Store {
   void selectAnimalSex(AnimalSexModel? animalSex) {
     selectedAnimalSex = animalSex;
     setUpdate();
+  }
+
+  void removeImageAnimalPhoto(AnimalPhotoModel photo) {
+    animalPhotoList.remove(photo);
+  }
+
+  void removeImageFromPhotoPending(File file) {
+    animalPhotoPendingList.remove(file);
+  }
+
+  Future<void> openGalery() async {
+    final image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      animalPhotoPendingList.add(File(image.path));
+      setUpdate();
+    }
+  }
+
+  Future<void> openGaleryDesktop() async {
+    FilePickerResult? files = await FilePicker.platform.pickFiles(
+      dialogTitle: 'Selecionar imagem',
+      type: FileType.image,
+      allowMultiple: true,
+      lockParentWindow: true,
+    );
+    if (files != null) {
+      for (final file in files.files) {
+        if (file.path != null) animalPhotoPendingList.add(File(file.path!));
+      }
+    }
+  }
+
+  Future<void> openGamera() async {
+    final image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      animalPhotoPendingList.add(File(image.path));
+      setUpdate();
+    }
   }
 }

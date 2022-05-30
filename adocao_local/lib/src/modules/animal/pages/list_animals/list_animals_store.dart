@@ -5,6 +5,7 @@ import 'package:adocao_local/src/modules/animal/pages/edit_animal/edit_animal_pa
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/exceptions/connection_refused_exception.dart';
+import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/exceptions/unauthorized_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
@@ -65,6 +66,9 @@ abstract class _ListAnimalsStore with Store {
         ),
         (route) => false,
       );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 50)
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
     } finally {
       setLoading(false);
     }

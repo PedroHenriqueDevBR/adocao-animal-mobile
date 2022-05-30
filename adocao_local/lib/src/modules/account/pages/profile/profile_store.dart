@@ -106,6 +106,9 @@ abstract class _ProfileStore with Store {
         );
         selectCity(city);
       }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 50)
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
     } finally {
       setLoading(false);
       setUpdate();
