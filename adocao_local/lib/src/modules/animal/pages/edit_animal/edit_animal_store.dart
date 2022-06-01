@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:io' show Platform;
 
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_type_interface.dart';
@@ -13,7 +12,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:asuka/asuka.dart' as asuka;
 
 part 'edit_animal_store.g.dart';
 
@@ -41,26 +39,18 @@ abstract class _EditAnimalStore with Store {
   late AnimalModel? animal;
   final ImagePicker picker = ImagePicker();
 
+  List<AnimalPhotoModel> animalPhotoList = [];
+  List<File> animalPhotoPendingList = [];
+  List<VaccineModel> animalVaccineList = [];
+  ObservableList<AnimalSexModel> animalSexList =
+      ObservableList<AnimalSexModel>();
   ObservableList<AnimalTypeModel> animalTypeList =
       ObservableList<AnimalTypeModel>();
 
-  ObservableList<AnimalSexModel> animalSexList =
-      ObservableList<AnimalSexModel>();
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtBreed = TextEditingController();
+  TextEditingController txtAge = TextEditingController();
 
-  ObservableList<AnimalPhotoModel> animalPhotoList =
-      ObservableList<AnimalPhotoModel>();
-
-  ObservableList<File> animalPhotoPendingList = ObservableList<File>();
-
-  ObservableList<VaccineModel> animalVaccineList =
-      ObservableList<VaccineModel>();
-
-  @observable
-  String txtName = '';
-  @observable
-  String txtBreed = '';
-  @observable
-  int txtAge = 0;
   @observable
   AnimalTypeModel? selectedAnimalType;
   @observable
@@ -70,12 +60,6 @@ abstract class _EditAnimalStore with Store {
   @observable
   bool update = false;
 
-  @action
-  void setName(String value) => txtName = value;
-  @action
-  void setBreed(String value) => txtBreed = value;
-  @action
-  void setAge(int value) => txtAge = value;
   @action
   void setUpdate() => update = !update;
 

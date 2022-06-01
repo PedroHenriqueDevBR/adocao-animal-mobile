@@ -9,51 +9,6 @@ part of 'edit_animal_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$EditAnimalStore on _EditAnimalStore, Store {
-  final _$txtNameAtom = Atom(name: '_EditAnimalStore.txtName');
-
-  @override
-  String get txtName {
-    _$txtNameAtom.reportRead();
-    return super.txtName;
-  }
-
-  @override
-  set txtName(String value) {
-    _$txtNameAtom.reportWrite(value, super.txtName, () {
-      super.txtName = value;
-    });
-  }
-
-  final _$txtBreedAtom = Atom(name: '_EditAnimalStore.txtBreed');
-
-  @override
-  String get txtBreed {
-    _$txtBreedAtom.reportRead();
-    return super.txtBreed;
-  }
-
-  @override
-  set txtBreed(String value) {
-    _$txtBreedAtom.reportWrite(value, super.txtBreed, () {
-      super.txtBreed = value;
-    });
-  }
-
-  final _$txtAgeAtom = Atom(name: '_EditAnimalStore.txtAge');
-
-  @override
-  int get txtAge {
-    _$txtAgeAtom.reportRead();
-    return super.txtAge;
-  }
-
-  @override
-  set txtAge(int value) {
-    _$txtAgeAtom.reportWrite(value, super.txtAge, () {
-      super.txtAge = value;
-    });
-  }
-
   final _$selectedAnimalTypeAtom =
       Atom(name: '_EditAnimalStore.selectedAnimalType');
 
@@ -120,39 +75,6 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
       ActionController(name: '_EditAnimalStore');
 
   @override
-  void setName(String value) {
-    final _$actionInfo = _$_EditAnimalStoreActionController.startAction(
-        name: '_EditAnimalStore.setName');
-    try {
-      return super.setName(value);
-    } finally {
-      _$_EditAnimalStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setBreed(String value) {
-    final _$actionInfo = _$_EditAnimalStoreActionController.startAction(
-        name: '_EditAnimalStore.setBreed');
-    try {
-      return super.setBreed(value);
-    } finally {
-      _$_EditAnimalStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setAge(int value) {
-    final _$actionInfo = _$_EditAnimalStoreActionController.startAction(
-        name: '_EditAnimalStore.setAge');
-    try {
-      return super.setAge(value);
-    } finally {
-      _$_EditAnimalStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setUpdate() {
     final _$actionInfo = _$_EditAnimalStoreActionController.startAction(
         name: '_EditAnimalStore.setUpdate');
@@ -166,9 +88,6 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
   @override
   String toString() {
     return '''
-txtName: ${txtName},
-txtBreed: ${txtBreed},
-txtAge: ${txtAge},
 selectedAnimalType: ${selectedAnimalType},
 selectedAnimalSex: ${selectedAnimalSex},
 loading: ${loading},

@@ -17,7 +17,7 @@ class AnimalTypeRepository implements IAnimalTypeStorage {
 
   @override
   Future<List<AnimalTypeModel>> allTypes() async {
-    const path = 'animal/all_types/';
+    const path = 'animal/all_types';
     final jwtKey = await _appData.getJWT();
 
     try {

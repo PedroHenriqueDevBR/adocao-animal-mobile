@@ -106,7 +106,7 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                   ),
                   animal.blocked
                       ? Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           width: 150,
                           color: Colors.red,
                           child: Center(
@@ -121,7 +121,7 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                       : Container(),
                   animal.adopted
                       ? Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           width: 150,
                           color: Colors.green,
                           child: Center(

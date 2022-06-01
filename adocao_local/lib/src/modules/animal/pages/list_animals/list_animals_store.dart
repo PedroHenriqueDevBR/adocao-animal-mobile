@@ -62,13 +62,14 @@ abstract class _ListAnimalsStore with Store {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (context) => const LoginPage(),
         ),
         (route) => false,
       );
     } on HttpResponseException catch (error) {
-      if (error.response.statusCode >= 50)
+      if (error.response.statusCode >= 50) {
         asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
     } finally {
       setLoading(false);
     }
