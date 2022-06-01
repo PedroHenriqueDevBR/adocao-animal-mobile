@@ -84,7 +84,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Apresentação'),
+        title: const Text('Apresentação'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -170,7 +170,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                 final vaccine = controller.animal.vaccines[index];
                 return ListTile(
                   leading: const Icon(Icons.vaccines),
-                  title: Text('${vaccine.name}'),
+                  title: Text(vaccine.name),
                   subtitle: Text(vaccine.formattedDate),
                 );
               },

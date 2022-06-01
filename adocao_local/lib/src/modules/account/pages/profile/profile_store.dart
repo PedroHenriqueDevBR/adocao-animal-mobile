@@ -9,12 +9,10 @@ import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -107,8 +105,9 @@ abstract class _ProfileStore with Store {
         selectCity(city);
       }
     } on HttpResponseException catch (error) {
-      if (error.response.statusCode >= 50)
+      if (error.response.statusCode >= 50) {
         asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
     } finally {
       setLoading(false);
       setUpdate();

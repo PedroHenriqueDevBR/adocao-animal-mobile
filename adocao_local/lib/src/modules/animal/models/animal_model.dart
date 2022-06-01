@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'adoption_request_model.dart';
 import 'animal_photo_model.dart';

@@ -1,7 +1,5 @@
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
-import 'package:adocao_local/src/modules/animal/pages/edit_animal/edit_animal_page.dart';
-import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_page.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
 import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:adocao_local/src/modules/home/home/home_store.dart';
 import 'package:adocao_local/src/shares/core/app_assets.dart';

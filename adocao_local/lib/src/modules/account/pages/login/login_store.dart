@@ -84,6 +84,10 @@ abstract class _LoginStore with Store {
       asuka.showSnackBar(
         asuka.AsukaSnackbar.alert('Verifique as suas credenciais'),
       );
+    } catch (error) {
+      asuka.showSnackBar(
+        asuka.AsukaSnackbar.alert('Erro interno, já estamos resolvendo'),
+      );
     } finally {
       setLoading(false);
     }
