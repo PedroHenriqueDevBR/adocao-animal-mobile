@@ -26,6 +26,7 @@ class AnimalFormWidget extends StatelessWidget {
   final Function removeImageAnimalPhoto;
   final Function removeImageFromPhotoPending;
   final Function addVaccineDialog;
+  final Function removeVaccineDialog;
 
   final List<AnimalPhotoModel> animalPhotoList;
   final List<File> animalPhotoPendingList;
@@ -44,6 +45,7 @@ class AnimalFormWidget extends StatelessWidget {
     required this.animalSexList,
     required this.confirmImageProvider,
     required this.addVaccineDialog,
+    required this.removeVaccineDialog,
     required this.removeImageAnimalPhoto,
     required this.removeImageFromPhotoPending,
     required this.animalPhotoList,
@@ -184,52 +186,58 @@ class AnimalFormWidget extends StatelessWidget {
             style: textStyle.titleStyle,
           ),
           const SizedBox(height: 12.0),
-          GridView.builder(
-            itemCount: animalPhotoPendingList.length,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-            ),
-            itemBuilder: (_, index) {
-              File file = animalPhotoPendingList[index];
-              return Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: FileImage(file),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(8.0),
-                      ),
+          Observer(builder: (_) {
+            return animalPhotoPendingList.length > 0
+                ? GridView.builder(
+                    itemCount: animalPhotoPendingList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red.withAlpha(150),
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(12.0),
-                        ),
-                      ),
-                      child: IconButton(
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.white,
+                    itemBuilder: (_, index) {
+                      File file = animalPhotoPendingList[index];
+                      return Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: FileImage(file),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(8.0),
+                              ),
+                            ),
                           ),
-                          onPressed: () => removeImageFromPhotoPending()),
-                    ),
-                  ),
-                ],
-              );
-            },
-          )
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.red.withAlpha(150),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(12.0),
+                                ),
+                              ),
+                              child: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () =>
+                                      removeImageFromPhotoPending(file)),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                : Container();
+          })
         ],
       );
 
@@ -245,8 +253,8 @@ class AnimalFormWidget extends StatelessWidget {
             title: Text(vaccine.name),
             subtitle: Text(vaccine.formattedDate),
             trailing: TextButton(
-              onPressed: () {},
-              child: const Text('Editar'),
+              onPressed: () => removeVaccineDialog(index),
+              child: const Text('Remover'),
             ),
           );
         },

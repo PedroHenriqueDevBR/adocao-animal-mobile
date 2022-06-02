@@ -93,6 +93,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                   animalPhotoPendingList: controller.animalPhotoPendingList,
                   animalVaccineList: controller.animalVaccineList,
                   addVaccineDialog: addVaccineDialog,
+                  removeVaccineDialog: removeVaccineDialog,
                 ),
               ),
             ),
@@ -183,7 +184,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
             child: Wrap(
               children: [
                 TextFormField(
-                  controller: null,
+                  controller: controller.txtVaccineName,
                   decoration: const InputDecoration(
                     labelText: 'Nome da vacina',
                   ),
@@ -201,16 +202,43 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
+                          controller.registerVaccine();
+                          setState(() {});
                           Navigator.pop(dialogContext);
                         },
-                        child: Text('Registrar'),
+                        child: const Text('Registrar'),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
+        ),
+      );
+
+  void removeVaccineDialog(int index) => asuka.showDialog(
+        builder: (dialogContext) => AlertDialog(
+          backgroundColor: Theme.of(dialogContext).colorScheme.primaryContainer,
+          elevation: 16.0,
+          title: const Text('Atenção'),
+          content: Text('Confirmar a remoção da vacina'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Cancela'),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.removerVaccine(0);
+                setState(() {});
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Confirmar'),
+            ),
+          ],
         ),
       );
 }

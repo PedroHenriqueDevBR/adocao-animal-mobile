@@ -40,7 +40,7 @@ abstract class _EditAnimalStore with Store {
   final ImagePicker picker = ImagePicker();
 
   List<AnimalPhotoModel> animalPhotoList = [];
-  List<File> animalPhotoPendingList = [];
+  ObservableList<File> animalPhotoPendingList = ObservableList<File>();
   List<VaccineModel> animalVaccineList = [];
   ObservableList<AnimalSexModel> animalSexList =
       ObservableList<AnimalSexModel>();
@@ -50,6 +50,7 @@ abstract class _EditAnimalStore with Store {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtBreed = TextEditingController();
   TextEditingController txtAge = TextEditingController();
+  TextEditingController txtVaccineName = TextEditingController();
 
   @observable
   AnimalTypeModel? selectedAnimalType;
@@ -122,5 +123,14 @@ abstract class _EditAnimalStore with Store {
       animalPhotoPendingList.add(File(image.path));
       setUpdate();
     }
+  }
+
+  void registerVaccine() {
+    animalVaccineList.add(VaccineModel(name: txtVaccineName.text));
+    txtVaccineName.clear();
+  }
+
+  void removerVaccine(int index) {
+    animalVaccineList.removeAt(index);
   }
 }
