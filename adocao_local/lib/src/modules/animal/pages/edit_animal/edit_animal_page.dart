@@ -79,6 +79,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                   textStyle: _textStyle,
                   txtName: controller.txtName,
                   txtBreed: controller.txtBreed,
+                  txtAge: controller.txtAge,
                   selectAnimalType: controller.selectAnimalType,
                   selectedAnimalType: controller.selectedAnimalType,
                   animalTypeList: controller.animalTypeList,
@@ -94,6 +95,8 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                   animalVaccineList: controller.animalVaccineList,
                   addVaccineDialog: addVaccineDialog,
                   removeVaccineDialog: removeVaccineDialog,
+                  animalSaved: controller.animal != null &&
+                      controller.animal!.id != null,
                 ),
               ),
             ),
@@ -104,7 +107,10 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.saveAnimal();
+                      setState(() {});
+                    },
                     child: const Text('Salvar alterações'),
                   ),
                 ),

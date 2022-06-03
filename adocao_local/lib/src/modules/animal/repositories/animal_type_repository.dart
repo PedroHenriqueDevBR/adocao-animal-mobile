@@ -27,7 +27,36 @@ class AnimalTypeRepository implements IAnimalTypeStorage {
         return AnimalTypeModel.fromMapList(response.data);
       } else {
         if (kDebugMode) {
-          print('ERRO: buscar dados do usuário');
+          print('ERRO: buscar dados dos tipos de animais');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
+      }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AnimalTypeModel> typeById(int id) async {
+    final path = 'animal/type/get/$id';
+    final jwtKey = await _appData.getJWT();
+
+    try {
+      final response = await _client.get(path, jwtKey: jwtKey);
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return AnimalTypeModel.fromMap(response.data);
+      } else {
+        if (kDebugMode) {
+          print('ERRO: buscar dados do tipo de animais');
         }
         throw HttpResponseException(
           response: HttpResponseModel(

@@ -1,4 +1,3 @@
-
 class AnimalTypeModel {
   dynamic id;
   String name;
@@ -13,6 +12,15 @@ class AnimalTypeModel {
       id: map['id'],
       name: map['name'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'id': id});
+    result.addAll({'name': name});
+
+    return result;
   }
 
   static List<AnimalTypeModel> fromMapList(List<dynamic> list) {

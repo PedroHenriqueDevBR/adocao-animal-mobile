@@ -1,4 +1,3 @@
-
 import 'adoption_request_model.dart';
 import 'animal_photo_model.dart';
 import 'animal_type_model.dart';
@@ -44,15 +43,13 @@ class AnimalModel {
     result.addAll({'breed': breed});
     result.addAll({'age': age});
     result.addAll({'sex': sex});
-    result.addAll({'type': animalType.id});
+    result.addAll({'animal_type': animalType.id});
 
     return result;
   }
 
   factory AnimalModel.fromMap(Map<String, dynamic> map) {
-    AnimalTypeModel animalType = AnimalTypeModel(
-      name: map['type'] ?? 'Não definido',
-    );
+    AnimalTypeModel animalType = AnimalTypeModel.fromMap(map['animal_type']);
 
     final animalModel = AnimalModel(
       id: map['id'],

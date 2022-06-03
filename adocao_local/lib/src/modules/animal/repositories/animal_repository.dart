@@ -1,5 +1,6 @@
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_type_repository.dart';
 import 'package:adocao_local/src/shares/exceptions/http_response_exception.dart';
 import 'package:adocao_local/src/shares/exceptions/unauthorized_exception.dart';
 import 'package:adocao_local/src/shares/interfaces/app_data_interface.dart';
@@ -55,6 +56,13 @@ class AnimalRepository implements IAnimalStorage {
       final response = await _client.post(path, animal.toMap(), jwtKey: jwtKey);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        AnimalTypeRepository animalTypeRepository = AnimalTypeRepository(
+          client: _client,
+          appData: _appData,
+        );
+        final typeResponse =
+            await animalTypeRepository.typeById(response.data['animal_type']);
+        response.data['animal_type'] = typeResponse.toMap();
         return AnimalModel.fromMap(response.data);
       } else {
         if (kDebugMode) {

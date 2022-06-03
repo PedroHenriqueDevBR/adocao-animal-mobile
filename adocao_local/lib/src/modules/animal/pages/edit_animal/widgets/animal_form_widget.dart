@@ -13,6 +13,7 @@ class AnimalFormWidget extends StatelessWidget {
   final AppTextStyle textStyle;
   final TextEditingController txtName;
   final TextEditingController txtBreed;
+  final TextEditingController txtAge;
 
   final Function selectAnimalType;
   final AnimalTypeModel? selectedAnimalType;
@@ -32,11 +33,14 @@ class AnimalFormWidget extends StatelessWidget {
   final List<File> animalPhotoPendingList;
   final List<VaccineModel> animalVaccineList;
 
+  final bool animalSaved;
+
   const AnimalFormWidget({
     Key? key,
     required this.textStyle,
     required this.txtName,
     required this.txtBreed,
+    required this.txtAge,
     required this.selectAnimalType,
     required this.selectedAnimalType,
     required this.animalTypeList,
@@ -51,6 +55,7 @@ class AnimalFormWidget extends StatelessWidget {
     required this.animalPhotoList,
     required this.animalPhotoPendingList,
     required this.animalVaccineList,
+    required this.animalSaved,
   }) : super(key: key);
 
   @override
@@ -66,43 +71,53 @@ class AnimalFormWidget extends StatelessWidget {
         const SizedBox(height: 16.0),
         Form(child: firstAnimalData(context)),
         const SizedBox(height: 8.0),
-        const Divider(),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Album de fotos',
-                textAlign: TextAlign.left,
-                style: textStyle.titleStyle,
-              ),
-            ),
-            IconButton(
-              onPressed: () => confirmImageProvider(),
-              icon: const Icon(Icons.add),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16.0),
-        animalPhotoList.isNotEmpty ? albumWidget(context) : Container(),
-        animalPhotoPendingList.isNotEmpty ? pedingPhotos(context) : Container(),
-        const SizedBox(height: 8.0),
-        const Divider(),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Caderneta de vacinação',
-                textAlign: TextAlign.left,
-                style: textStyle.titleStyle,
-              ),
-            ),
-            IconButton(
-              onPressed: () => addVaccineDialog(),
-              icon: const Icon(Icons.add),
-            ),
-          ],
-        ),
-        vaccineBookWidget(),
+        animalSaved
+            ? Column(
+                children: [
+                  const Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Album de fotos',
+                          textAlign: TextAlign.left,
+                          style: textStyle.titleStyle,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => confirmImageProvider(),
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16.0),
+                  animalPhotoList.isNotEmpty
+                      ? albumWidget(context)
+                      : Container(),
+                  animalPhotoPendingList.isNotEmpty
+                      ? pedingPhotos(context)
+                      : Container(),
+                  const SizedBox(height: 8.0),
+                  const Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Caderneta de vacinação',
+                          textAlign: TextAlign.left,
+                          style: textStyle.titleStyle,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => addVaccineDialog(),
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  vaccineBookWidget(),
+                ],
+              )
+            : Container(),
       ],
     );
   }
@@ -296,6 +311,7 @@ class AnimalFormWidget extends StatelessWidget {
               const SizedBox(width: 16.0),
               Expanded(
                 child: TextFormField(
+                  controller: txtAge,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
