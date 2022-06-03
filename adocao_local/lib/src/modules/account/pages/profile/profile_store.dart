@@ -105,7 +105,7 @@ abstract class _ProfileStore with Store {
         selectCity(city);
       }
     } on HttpResponseException catch (error) {
-      if (error.response.statusCode >= 50) {
+      if (error.response.statusCode >= 500) {
         asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
       }
     } finally {
