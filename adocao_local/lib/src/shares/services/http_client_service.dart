@@ -94,7 +94,7 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
-    } on SocketException catch (error) {
+    } on SocketException {
       throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
@@ -112,7 +112,7 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
-    } on SocketException catch (error) {
+    } on SocketException {
       throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
@@ -144,7 +144,7 @@ class HttpClientService implements IClientHTTP {
         ),
         headers: response.headers,
       );
-    } on SocketException catch (error) {
+    } on SocketException {
       throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
@@ -178,7 +178,7 @@ class HttpClientService implements IClientHTTP {
         ),
         headers: response.headers,
       );
-    } on SocketException catch (error) {
+    } on SocketException {
       throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
@@ -205,7 +205,7 @@ class HttpClientService implements IClientHTTP {
         data: jsonDecode(response.body.isNotEmpty ? response.body : '{}'),
         headers: response.headers,
       );
-    } on SocketException catch (error) {
+    } on SocketException {
       throw ConnectionRefusedException();
     } catch (error) {
       rethrow;
