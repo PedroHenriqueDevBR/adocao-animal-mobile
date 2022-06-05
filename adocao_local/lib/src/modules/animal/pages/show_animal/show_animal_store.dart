@@ -14,12 +14,10 @@ class ShowAnimalStore extends _ShowAnimalStore with _$ShowAnimalStore {
   ShowAnimalStore({
     required IAppData appData,
     required IAnimalStorage storage,
-    required BuildContext context,
     required AnimalModel animal,
   }) {
     super.appData = appData;
     super.storage = storage;
-    super.context = context;
     super.animal = animal;
   }
 }
@@ -27,7 +25,6 @@ class ShowAnimalStore extends _ShowAnimalStore with _$ShowAnimalStore {
 abstract class _ShowAnimalStore with Store {
   late IAppData appData;
   late IAnimalStorage storage;
-  late BuildContext context;
   late AnimalModel animal;
 
   @observable

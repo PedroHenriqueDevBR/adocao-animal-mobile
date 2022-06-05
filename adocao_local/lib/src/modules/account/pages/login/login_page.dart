@@ -23,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     controller = LoginStore(
-      context: context,
       appData: appData,
       storage: UserRepository(client: client, appData: appData),
     );
@@ -37,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             const AvatarContainerWidget(),
-            formContainer(),
+            formContainer(context),
           ],
         ),
       ),
     );
   }
 
-  Widget formContainer() => Padding(
+  Widget formContainer(BuildContext context) => Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -89,8 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                 Expanded(
                   child: Observer(
                     builder: (_) => ElevatedButton(
-                      onPressed:
-                          controller.formIsValid ? controller.login : null,
+                      onPressed: () {
+                        if (controller.formIsValid) {
+                          controller.login(context);
+                        }
+                      },
                       child: controller.loading
                           ? const SizedBox(
                               width: 25,
@@ -107,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 16.0),
             TextButton(
-              onPressed: controller.goToRegisterUserPage,
+              onPressed: () => controller.goToRegisterUserPage(context),
               child: const Text(
                 'Ainda não possui cadastro\nClique aqui e cadastre-se',
                 textAlign: TextAlign.center,

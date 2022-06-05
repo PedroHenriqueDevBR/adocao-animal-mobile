@@ -34,7 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     controller = ProfileStore(
-      context: context,
       appData: appData,
       userStorage: UserRepository(client: client, appData: appData),
       locationStorage: LocationRepository(client: client, appData: appData),
@@ -426,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: controller.logout,
+                    onPressed: () => controller.logout(context),
                     child: const Text('Encerrar sessão'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red.shade600,

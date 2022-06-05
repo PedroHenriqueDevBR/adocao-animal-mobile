@@ -6,7 +6,7 @@ part of 'profile_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProfileStore on _ProfileStore, Store {
   Computed<bool>? _$formIsValidComputed;
@@ -17,7 +17,8 @@ mixin _$ProfileStore on _ProfileStore, Store {
               name: '_ProfileStore.formIsValid'))
           .value;
 
-  final _$selectedCityAtom = Atom(name: '_ProfileStore.selectedCity');
+  late final _$selectedCityAtom =
+      Atom(name: '_ProfileStore.selectedCity', context: context);
 
   @override
   CityModel? get selectedCity {
@@ -32,7 +33,8 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
-  final _$selectedImageAtom = Atom(name: '_ProfileStore.selectedImage');
+  late final _$selectedImageAtom =
+      Atom(name: '_ProfileStore.selectedImage', context: context);
 
   @override
   File? get selectedImage {
@@ -47,7 +49,7 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
-  final _$imageAtom = Atom(name: '_ProfileStore.image');
+  late final _$imageAtom = Atom(name: '_ProfileStore.image', context: context);
 
   @override
   String? get image {
@@ -62,7 +64,8 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
-  final _$updateAtom = Atom(name: '_ProfileStore.update');
+  late final _$updateAtom =
+      Atom(name: '_ProfileStore.update', context: context);
 
   @override
   bool get update {
@@ -77,8 +80,8 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
-  final _$_ProfileStoreActionController =
-      ActionController(name: '_ProfileStore');
+  late final _$_ProfileStoreActionController =
+      ActionController(name: '_ProfileStore', context: context);
 
   @override
   void setImage(String? value) {

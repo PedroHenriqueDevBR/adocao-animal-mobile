@@ -6,7 +6,7 @@ part of 'register_user_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RegisterUserStore on _RegisterUserStore, Store {
   Computed<bool>? _$formIsValidComputed;
@@ -17,7 +17,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
               name: '_RegisterUserStore.formIsValid'))
           .value;
 
-  final _$selectedCityAtom = Atom(name: '_RegisterUserStore.selectedCity');
+  late final _$selectedCityAtom =
+      Atom(name: '_RegisterUserStore.selectedCity', context: context);
 
   @override
   CityModel? get selectedCity {
@@ -32,7 +33,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$nameAtom = Atom(name: '_RegisterUserStore.name');
+  late final _$nameAtom =
+      Atom(name: '_RegisterUserStore.name', context: context);
 
   @override
   String get name {
@@ -47,7 +49,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$usernameAtom = Atom(name: '_RegisterUserStore.username');
+  late final _$usernameAtom =
+      Atom(name: '_RegisterUserStore.username', context: context);
 
   @override
   String get username {
@@ -62,7 +65,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$contactAtom = Atom(name: '_RegisterUserStore.contact');
+  late final _$contactAtom =
+      Atom(name: '_RegisterUserStore.contact', context: context);
 
   @override
   String get contact {
@@ -77,7 +81,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$passwordAtom = Atom(name: '_RegisterUserStore.password');
+  late final _$passwordAtom =
+      Atom(name: '_RegisterUserStore.password', context: context);
 
   @override
   String get password {
@@ -92,7 +97,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$repeatPasswordAtom = Atom(name: '_RegisterUserStore.repeatPassword');
+  late final _$repeatPasswordAtom =
+      Atom(name: '_RegisterUserStore.repeatPassword', context: context);
 
   @override
   String get repeatPassword {
@@ -107,7 +113,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$showPasswordAtom = Atom(name: '_RegisterUserStore.showPassword');
+  late final _$showPasswordAtom =
+      Atom(name: '_RegisterUserStore.showPassword', context: context);
 
   @override
   bool get showPassword {
@@ -122,8 +129,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$showRepeatPasswordAtom =
-      Atom(name: '_RegisterUserStore.showRepeatPassword');
+  late final _$showRepeatPasswordAtom =
+      Atom(name: '_RegisterUserStore.showRepeatPassword', context: context);
 
   @override
   bool get showRepeatPassword {
@@ -138,7 +145,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$loadingAtom = Atom(name: '_RegisterUserStore.loading');
+  late final _$loadingAtom =
+      Atom(name: '_RegisterUserStore.loading', context: context);
 
   @override
   bool get loading {
@@ -153,7 +161,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$updateAtom = Atom(name: '_RegisterUserStore.update');
+  late final _$updateAtom =
+      Atom(name: '_RegisterUserStore.update', context: context);
 
   @override
   bool get update {
@@ -168,8 +177,8 @@ mixin _$RegisterUserStore on _RegisterUserStore, Store {
     });
   }
 
-  final _$_RegisterUserStoreActionController =
-      ActionController(name: '_RegisterUserStore');
+  late final _$_RegisterUserStoreActionController =
+      ActionController(name: '_RegisterUserStore', context: context);
 
   @override
   void setName(String value) {

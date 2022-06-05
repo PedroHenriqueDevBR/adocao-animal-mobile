@@ -20,18 +20,15 @@ class ListAnimalsStore extends _ListAnimalsStore with _$ListAnimalsStore {
   ListAnimalsStore({
     required IAppData appData,
     required IAnimalStorage storage,
-    required BuildContext context,
   }) {
     super.appData = appData;
     super.storage = storage;
-    super.context = context;
   }
 }
 
 abstract class _ListAnimalsStore with Store {
   late IAppData appData;
   late IAnimalStorage storage;
-  late BuildContext context;
 
   ObservableList<AnimalModel> animalList = ObservableList<AnimalModel>();
 
@@ -45,7 +42,7 @@ abstract class _ListAnimalsStore with Store {
   @action
   void setUpdate() => update = !update;
 
-  void loadAnimals() async {
+  void loadAnimals(BuildContext context) async {
     try {
       setLoading(true);
       List<AnimalModel> responseList = await storage.allAnimals();
@@ -75,14 +72,15 @@ abstract class _ListAnimalsStore with Store {
     }
   }
 
-  void goToCreateAnimalPage({AnimalModel? animal}) {
+  void goToCreateAnimalPage(
+      {required BuildContext context, AnimalModel? animal}) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => CreateAnimalPage(animal: animal)),
     );
   }
 
-  void goToShowAnimalPage(AnimalModel animal) {
+  void goToShowAnimalPage(BuildContext context, AnimalModel animal) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => ShowAnimalPage(animal: animal)),

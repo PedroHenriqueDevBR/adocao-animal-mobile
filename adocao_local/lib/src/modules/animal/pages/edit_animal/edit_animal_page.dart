@@ -36,7 +36,6 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
   void initState() {
     super.initState();
     controller = EditAnimalStore(
-      context: context,
       appData: appData,
       storage: AnimalRepository(
         client: client,
@@ -108,7 +107,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.saveAnimal();
+                      controller.saveAnimal(context);
                       setState(() {});
                     },
                     child: const Text('Salvar alterações'),

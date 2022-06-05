@@ -6,11 +6,11 @@ part of 'edit_animal_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$EditAnimalStore on _EditAnimalStore, Store {
-  final _$selectedAnimalTypeAtom =
-      Atom(name: '_EditAnimalStore.selectedAnimalType');
+  late final _$selectedAnimalTypeAtom =
+      Atom(name: '_EditAnimalStore.selectedAnimalType', context: context);
 
   @override
   AnimalTypeModel? get selectedAnimalType {
@@ -25,8 +25,8 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
     });
   }
 
-  final _$selectedAnimalSexAtom =
-      Atom(name: '_EditAnimalStore.selectedAnimalSex');
+  late final _$selectedAnimalSexAtom =
+      Atom(name: '_EditAnimalStore.selectedAnimalSex', context: context);
 
   @override
   AnimalSexModel? get selectedAnimalSex {
@@ -41,7 +41,8 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
     });
   }
 
-  final _$loadingAtom = Atom(name: '_EditAnimalStore.loading');
+  late final _$loadingAtom =
+      Atom(name: '_EditAnimalStore.loading', context: context);
 
   @override
   bool get loading {
@@ -56,7 +57,8 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
     });
   }
 
-  final _$updateAtom = Atom(name: '_EditAnimalStore.update');
+  late final _$updateAtom =
+      Atom(name: '_EditAnimalStore.update', context: context);
 
   @override
   bool get update {
@@ -71,8 +73,8 @@ mixin _$EditAnimalStore on _EditAnimalStore, Store {
     });
   }
 
-  final _$_EditAnimalStoreActionController =
-      ActionController(name: '_EditAnimalStore');
+  late final _$_EditAnimalStoreActionController =
+      ActionController(name: '_EditAnimalStore', context: context);
 
   @override
   void setUpdate() {

@@ -16,18 +16,15 @@ class LoginStore extends _LoginStore with _$LoginStore {
   LoginStore({
     required IAppData appData,
     required IUserStorage storage,
-    required BuildContext context,
   }) {
     super.appData = appData;
     super.storage = storage;
-    super.context = context;
   }
 }
 
 abstract class _LoginStore with Store {
   late IAppData appData;
   late IUserStorage storage;
-  late BuildContext context;
 
   @observable
   String txtLogin = '';
@@ -53,12 +50,12 @@ abstract class _LoginStore with Store {
   @computed
   bool get formIsValid => txtLogin.length >= 5 && txtPassword.length >= 8;
 
-  void verifyLoggedUser() async {
+  void verifyLoggedUser(BuildContext context) async {
     setLoading(true);
     try {
       final jwt = await appData.getJWT();
       if (jwt.isNotEmpty) {
-        goToHomePage();
+        goToHomePage(context);
       }
     } catch (error) {
       if (kDebugMode) {
@@ -69,13 +66,13 @@ abstract class _LoginStore with Store {
     }
   }
 
-  void login() async {
+  void login(BuildContext context) async {
     try {
       setLoading(true);
       FocusManager.instance.primaryFocus?.unfocus();
       final token = await storage.login(txtLogin, txtPassword);
       appData.setJWT(token.access);
-      goToHomePage();
+      goToHomePage(context);
     } on UnauthorizedException catch (_) {
       asuka.showSnackBar(
         asuka.AsukaSnackbar.alert('Verifique as suas credenciais'),
@@ -93,7 +90,7 @@ abstract class _LoginStore with Store {
     }
   }
 
-  void goToHomePage() {
+  void goToHomePage(BuildContext context) {
     Navigator.pushReplacement(
       context,
       PageTransition(
@@ -105,7 +102,7 @@ abstract class _LoginStore with Store {
     );
   }
 
-  void goToRegisterUserPage() {
+  void goToRegisterUserPage(BuildContext context) {
     Navigator.push(
       context,
       PageTransition(

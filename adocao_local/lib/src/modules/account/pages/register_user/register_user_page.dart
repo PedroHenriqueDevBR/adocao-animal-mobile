@@ -30,7 +30,6 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
   @override
   void initState() {
     controller = RegisterUserStore(
-      context: context,
       appData: appData,
       userStorage: UserRepository(client: client, appData: appData),
       locationStorage: LocationRepository(client: client, appData: appData),
@@ -330,8 +329,8 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
                 Expanded(
                   child: Observer(builder: (_) {
                     return ElevatedButton(
-                      onPressed: controller.formIsValid
-                          ? controller.registerUser
+                      onPressed: () => controller.formIsValid
+                          ? controller.registerUser(context)
                           : null,
                       child: const Text('Registrar'),
                     );
@@ -341,7 +340,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
             ),
             const SizedBox(height: 16.0),
             TextButton(
-              onPressed: controller.goToLoginPage,
+              onPressed: () => controller.goToLoginPage(context),
               child: const Text(
                 'Já tenho cadastro, retornar para a tela de login',
                 textAlign: TextAlign.center,

@@ -6,10 +6,11 @@ part of 'show_animal_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ShowAnimalStore on _ShowAnimalStore, Store {
-  final _$loadingAtom = Atom(name: '_ShowAnimalStore.loading');
+  late final _$loadingAtom =
+      Atom(name: '_ShowAnimalStore.loading', context: context);
 
   @override
   bool get loading {
@@ -24,7 +25,8 @@ mixin _$ShowAnimalStore on _ShowAnimalStore, Store {
     });
   }
 
-  final _$updateAtom = Atom(name: '_ShowAnimalStore.update');
+  late final _$updateAtom =
+      Atom(name: '_ShowAnimalStore.update', context: context);
 
   @override
   bool get update {
@@ -39,8 +41,8 @@ mixin _$ShowAnimalStore on _ShowAnimalStore, Store {
     });
   }
 
-  final _$_ShowAnimalStoreActionController =
-      ActionController(name: '_ShowAnimalStore');
+  late final _$_ShowAnimalStoreActionController =
+      ActionController(name: '_ShowAnimalStore', context: context);
 
   @override
   void setLoading(bool value) {

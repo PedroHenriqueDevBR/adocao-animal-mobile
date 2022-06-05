@@ -29,7 +29,6 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
   void initState() {
     super.initState();
     controller = ShowAnimalStore(
-      context: context,
       appData: appData,
       storage: AnimalRepository(
         client: client,

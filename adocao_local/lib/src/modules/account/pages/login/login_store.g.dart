@@ -6,7 +6,7 @@ part of 'login_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$LoginStore on _LoginStore, Store {
   Computed<bool>? _$formIsValidComputed;
@@ -17,7 +17,8 @@ mixin _$LoginStore on _LoginStore, Store {
               name: '_LoginStore.formIsValid'))
           .value;
 
-  final _$txtLoginAtom = Atom(name: '_LoginStore.txtLogin');
+  late final _$txtLoginAtom =
+      Atom(name: '_LoginStore.txtLogin', context: context);
 
   @override
   String get txtLogin {
@@ -32,7 +33,8 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
-  final _$txtPasswordAtom = Atom(name: '_LoginStore.txtPassword');
+  late final _$txtPasswordAtom =
+      Atom(name: '_LoginStore.txtPassword', context: context);
 
   @override
   String get txtPassword {
@@ -47,7 +49,8 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
-  final _$showPasswordAtom = Atom(name: '_LoginStore.showPassword');
+  late final _$showPasswordAtom =
+      Atom(name: '_LoginStore.showPassword', context: context);
 
   @override
   bool get showPassword {
@@ -62,7 +65,8 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
-  final _$loadingAtom = Atom(name: '_LoginStore.loading');
+  late final _$loadingAtom =
+      Atom(name: '_LoginStore.loading', context: context);
 
   @override
   bool get loading {
@@ -77,7 +81,8 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
-  final _$_LoginStoreActionController = ActionController(name: '_LoginStore');
+  late final _$_LoginStoreActionController =
+      ActionController(name: '_LoginStore', context: context);
 
   @override
   void setLogin(String value) {

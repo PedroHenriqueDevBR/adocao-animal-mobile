@@ -25,13 +25,11 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
     required IAppData appData,
     required IAnimalStorage storage,
     required IAnimalTypeStorage animalTypeStorage,
-    required BuildContext context,
     AnimalModel? animal,
   }) {
     super.appData = appData;
     super.storage = storage;
     super.animalTypeStorage = animalTypeStorage;
-    super.context = context;
     super.animal = animal;
   }
 }
@@ -40,7 +38,6 @@ abstract class _EditAnimalStore with Store {
   late IAppData appData;
   late IAnimalStorage storage;
   late IAnimalTypeStorage animalTypeStorage;
-  late BuildContext context;
   late AnimalModel? animal;
   final ImagePicker picker = ImagePicker();
 
@@ -130,7 +127,7 @@ abstract class _EditAnimalStore with Store {
     return valid;
   }
 
-  Future<void> saveAnimal() async {
+  Future<void> saveAnimal(BuildContext context) async {
     if (formIsValid()) {
       final animalData = AnimalModel(
         name: txtName.text,

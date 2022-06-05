@@ -24,14 +24,13 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   void initState() {
     super.initState();
     controller = ListAnimalsStore(
-      context: context,
       appData: appData,
       storage: AnimalRepository(
         client: client,
         appData: appData,
       ),
     );
-    controller.loadAnimals();
+    controller.loadAnimals(context);
   }
 
   @override
@@ -77,7 +76,7 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => controller.goToCreateAnimalPage(),
+        onPressed: () => controller.goToCreateAnimalPage(context: context),
         child: const Icon(Icons.add),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         foregroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -86,7 +85,7 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   }
 
   Widget animalCard(AnimalModel animal) => GestureDetector(
-        onTap: () => controller.goToShowAnimalPage(animal),
+        onTap: () => controller.goToShowAnimalPage(context, animal),
         child: Card(
           margin: const EdgeInsets.all(8.0),
           child: Row(

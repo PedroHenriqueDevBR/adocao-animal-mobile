@@ -25,11 +25,9 @@ class ProfileStore extends _ProfileStore with _$ProfileStore {
     required IAppData appData,
     required IUserStorage userStorage,
     required ILocationStorage locationStorage,
-    required BuildContext context,
   }) {
     super.appData = appData;
     super.userStorage = userStorage;
-    super.context = context;
     super.locationStorage = locationStorage;
   }
 }
@@ -38,7 +36,6 @@ abstract class _ProfileStore with Store {
   late IAppData appData;
   late IUserStorage userStorage;
   late ILocationStorage locationStorage;
-  late BuildContext context;
   final ImagePicker picker = ImagePicker();
   final client = HttpClientService();
 
@@ -230,7 +227,7 @@ abstract class _ProfileStore with Store {
     }
   }
 
-  void logout() {
+  void logout(BuildContext context) {
     appData.setJWT('');
     Navigator.pushAndRemoveUntil(
       context,

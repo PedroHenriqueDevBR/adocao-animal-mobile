@@ -19,11 +19,9 @@ class RegisterUserStore extends _RegisterUserStore with _$RegisterUserStore {
     required IAppData appData,
     required IUserStorage userStorage,
     required ILocationStorage locationStorage,
-    required BuildContext context,
   }) {
     super.appData = appData;
     super.userStorage = userStorage;
-    super.context = context;
     super.locationStorage = locationStorage;
   }
 }
@@ -32,7 +30,6 @@ abstract class _RegisterUserStore with Store {
   late IAppData appData;
   late IUserStorage userStorage;
   late ILocationStorage locationStorage;
-  late BuildContext context;
 
   ObservableList<StateModel> stateList = ObservableList<StateModel>();
   ObservableList<CityModel> cityList = ObservableList<CityModel>();
@@ -120,7 +117,7 @@ abstract class _RegisterUserStore with Store {
     return false;
   }
 
-  void registerUser() async {
+  void registerUser(BuildContext context) async {
     try {
       setLoading(true);
       FocusManager.instance.primaryFocus?.unfocus();
@@ -138,7 +135,7 @@ abstract class _RegisterUserStore with Store {
         asuka.showSnackBar(
           asuka.AsukaSnackbar.success('Usuário registrado com sucesso'),
         );
-        goToHomePage();
+        goToHomePage(context);
       });
     } on HttpResponseException catch (error) {
       final responseError = error.response;
@@ -157,7 +154,7 @@ abstract class _RegisterUserStore with Store {
     }
   }
 
-  void goToHomePage() {
+  void goToHomePage(BuildContext context) {
     Navigator.pushReplacement(
       context,
       PageTransition(
@@ -169,7 +166,7 @@ abstract class _RegisterUserStore with Store {
     );
   }
 
-  void goToLoginPage() {
+  void goToLoginPage(BuildContext context) {
     Navigator.pop(context);
   }
 }
