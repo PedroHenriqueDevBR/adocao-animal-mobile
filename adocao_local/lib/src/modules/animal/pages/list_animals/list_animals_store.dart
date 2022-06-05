@@ -42,10 +42,11 @@ abstract class _ListAnimalsStore with Store {
   @action
   void setUpdate() => update = !update;
 
-  void loadAnimals(BuildContext context) async {
+  Future<void> loadAnimals(BuildContext context) async {
     try {
       setLoading(true);
       List<AnimalModel> responseList = await storage.allAnimals();
+      animalList.clear();
       animalList.addAll(responseList);
     } on ConnectionRefusedException {
       asuka.showSnackBar(asuka.AsukaSnackbar.alert(
@@ -72,12 +73,17 @@ abstract class _ListAnimalsStore with Store {
     }
   }
 
-  void goToCreateAnimalPage(
-      {required BuildContext context, AnimalModel? animal}) {
-    Navigator.push(
+  void goToCreateAnimalPage({
+    required BuildContext context,
+    AnimalModel? animal,
+  }) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => CreateAnimalPage(animal: animal)),
-    );
+    ).then((_) async {
+      loadAnimals(context);
+      setUpdate();
+    });
   }
 
   void goToShowAnimalPage(BuildContext context, AnimalModel animal) {

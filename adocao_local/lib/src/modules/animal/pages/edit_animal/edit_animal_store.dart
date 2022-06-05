@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
+import 'package:adocao_local/src/modules/animal/interfaces/animal_image_interface.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_type_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
@@ -25,12 +26,14 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
     required IAppData appData,
     required IAnimalStorage storage,
     required IAnimalTypeStorage animalTypeStorage,
+    required IAnimalImageStorage imageStorage,
     AnimalModel? animal,
   }) {
     super.appData = appData;
     super.storage = storage;
     super.animalTypeStorage = animalTypeStorage;
     super.animal = animal;
+    super.imageStorage = imageStorage;
   }
 }
 
@@ -38,6 +41,7 @@ abstract class _EditAnimalStore with Store {
   late IAppData appData;
   late IAnimalStorage storage;
   late IAnimalTypeStorage animalTypeStorage;
+  late IAnimalImageStorage imageStorage;
   late AnimalModel? animal;
   final ImagePicker picker = ImagePicker();
 
@@ -77,7 +81,15 @@ abstract class _EditAnimalStore with Store {
     animalTypeList.addAll(result);
   }
 
-  void loadAnimalData() {}
+  void loadAnimalData() {
+    if (animal != null) {
+      txtName.text = animal!.name;
+      txtBreed.text = animal!.breed;
+      txtAge.text = '${animal!.age}';
+      animalPhotoList.addAll(animal!.photos);
+      animalVaccineList.addAll(animal!.vaccines);
+    }
+  }
 
   void selectAnimalType(AnimalTypeModel? animalType) {
     selectedAnimalType = animalType;
@@ -87,10 +99,6 @@ abstract class _EditAnimalStore with Store {
   void selectAnimalSex(AnimalSexModel? animalSex) {
     selectedAnimalSex = animalSex;
     setUpdate();
-  }
-
-  void removeImageAnimalPhoto(AnimalPhotoModel photo) {
-    animalPhotoList.remove(photo);
   }
 
   void removeImageFromPhotoPending(File file) {
@@ -137,34 +145,76 @@ abstract class _EditAnimalStore with Store {
         animalType: selectedAnimalType!,
       );
 
-      try {
-        final response = await storage.create(animalData);
-        animal = response;
-        asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal registrado'));
-      } on ConnectionRefusedException {
-        asuka.showSnackBar(asuka.AsukaSnackbar.alert(
-          'Sem conexão com o servidor',
-        ));
-      } on UnauthorizedException {
-        asuka.showSnackBar(asuka.AsukaSnackbar.alert(
-          'Sessão encerrada, entre novamente',
-        ));
-        appData.setJWT('');
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-          (route) => false,
-        );
-      } on HttpResponseException catch (error) {
-        if (error.response.statusCode >= 500) {
-          asuka
-              .showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
-        }
-      } catch (error) {
-        asuka.showSnackBar(asuka.AsukaSnackbar.alert('$error'));
+      if (animal == null) {
+        await addAnmal(context, animalData);
+      } else {
+        await updateAnimal(context, animalData);
       }
+    }
+  }
+
+  Future<void> addAnmal(
+    BuildContext context,
+    AnimalModel animalData,
+  ) async {
+    try {
+      final response = await storage.create(animalData);
+      animal = response;
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal registrado'));
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } catch (error) {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert('$error'));
+    }
+  }
+
+  Future<void> updateAnimal(
+    BuildContext context,
+    AnimalModel animalData,
+  ) async {
+    try {
+      await storage.upadte(animalData);
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Dados  atualizados'));
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } catch (error) {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert('$error'));
     }
   }
 
@@ -195,6 +245,73 @@ abstract class _EditAnimalStore with Store {
     if (image != null) {
       animalPhotoPendingList.add(File(image.path));
       setUpdate();
+    }
+  }
+
+  Future<void> removePhoto({
+    required BuildContext context,
+    required AnimalPhotoModel photo,
+  }) async {
+    try {
+      await imageStorage.removePhoto(photo);
+      animalPhotoList.remove(photo);
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Imagem removida'));
+      setUpdate();
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } catch (error) {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert('$error'));
+    }
+  }
+
+  Future<void> savePhotos(BuildContext context) async {
+    try {
+      for (final file in animalPhotoPendingList) {
+        final response = await imageStorage.addPhoto(animal!, file.path);
+        animalPhotoList.add(response);
+      }
+      animalPhotoPendingList.clear();
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Imagens salvas'));
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } catch (error) {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert('$error'));
     }
   }
 

@@ -149,6 +149,12 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                             style: _textStyle.titleStyle,
                           ),
                           PopupMenuButton(
+                            onSelected: (value) {
+                              if (value == '1') {
+                                controller.goToCreateAnimalPage(
+                                    context: context, animal: animal);
+                              }
+                            },
                             itemBuilder: (_) => <PopupMenuItem<String>>[
                               const PopupMenuItem(
                                 value: '1',

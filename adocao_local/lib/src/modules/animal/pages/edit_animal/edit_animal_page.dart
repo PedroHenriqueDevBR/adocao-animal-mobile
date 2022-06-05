@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:io' show Platform;
 
 import 'package:adocao_local/src/modules/animal/pages/edit_animal/widgets/animal_form_widget.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_image_repository.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_type_repository.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
@@ -42,6 +43,10 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
         appData: appData,
       ),
       animalTypeStorage: AnimalTypeRepository(
+        client: client,
+        appData: appData,
+      ),
+      imageStorage: AnimalImageRepository(
         client: client,
         appData: appData,
       ),
@@ -86,7 +91,11 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
                   selectedAnimalSex: controller.selectedAnimalSex,
                   animalSexList: controller.animalSexList,
                   confirmImageProvider: confirmImageProvider,
-                  removeImageAnimalPhoto: controller.removeImageAnimalPhoto,
+                  saveImages: () async {
+                    await controller.savePhotos(context);
+                    setState(() {});
+                  },
+                  removeImageAnimalPhoto: controller.removePhoto,
                   removeImageFromPhotoPending:
                       controller.removeImageFromPhotoPending,
                   animalPhotoList: controller.animalPhotoList,
@@ -106,8 +115,8 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      controller.saveAnimal(context);
+                    onPressed: () async {
+                      await controller.saveAnimal(context);
                       setState(() {});
                     },
                     child: const Text('Salvar alterações'),

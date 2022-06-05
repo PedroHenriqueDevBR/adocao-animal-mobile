@@ -5,6 +5,8 @@ import 'package:adocao_local/src/modules/animal/models/animal_sex_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_type_model.dart';
 import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
+import 'package:adocao_local/src/shares/interfaces/client_http_interface.dart';
+import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:adocao_local/src/shares/widgets/dropdown_conrtainer/dropdown_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -24,6 +26,7 @@ class AnimalFormWidget extends StatelessWidget {
   final List<AnimalSexModel> animalSexList;
 
   final Function confirmImageProvider;
+  final Function saveImages;
   final Function removeImageAnimalPhoto;
   final Function removeImageFromPhotoPending;
   final Function addVaccineDialog;
@@ -34,8 +37,10 @@ class AnimalFormWidget extends StatelessWidget {
   final List<VaccineModel> animalVaccineList;
 
   final bool animalSaved;
+  // ignore: non_constant_identifier_names
+  late IClientHTTP clientHTTP;
 
-  const AnimalFormWidget({
+  AnimalFormWidget({
     Key? key,
     required this.textStyle,
     required this.txtName,
@@ -48,6 +53,7 @@ class AnimalFormWidget extends StatelessWidget {
     required this.selectedAnimalSex,
     required this.animalSexList,
     required this.confirmImageProvider,
+    required this.saveImages,
     required this.addVaccineDialog,
     required this.removeVaccineDialog,
     required this.removeImageAnimalPhoto,
@@ -56,7 +62,9 @@ class AnimalFormWidget extends StatelessWidget {
     required this.animalPhotoPendingList,
     required this.animalVaccineList,
     required this.animalSaved,
-  }) : super(key: key);
+  }) : super(key: key) {
+    clientHTTP = HttpClientService();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +167,7 @@ class AnimalFormWidget extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(photo.url),
+                    image: NetworkImage(clientHTTP.host + photo.url),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: const BorderRadius.all(
@@ -178,11 +186,15 @@ class AnimalFormWidget extends StatelessWidget {
                     ),
                   ),
                   child: IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => removeImageAnimalPhoto()),
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => removeImageAnimalPhoto(
+                      context: context,
+                      photo: photo,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -195,10 +207,20 @@ class AnimalFormWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 8.0),
           const Divider(),
-          Text(
-            'Imagens preparadas',
-            textAlign: TextAlign.left,
-            style: textStyle.titleStyle,
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Imagens preparadas',
+                  textAlign: TextAlign.left,
+                  style: textStyle.titleStyle,
+                ),
+              ),
+              TextButton(
+                onPressed: () => saveImages(),
+                child: const Text('Salvar'),
+              ),
+            ],
           ),
           const SizedBox(height: 12.0),
           Observer(builder: (_) {

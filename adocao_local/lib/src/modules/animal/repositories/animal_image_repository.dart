@@ -22,9 +22,9 @@ class AnimalImageRepository implements IAnimalImageStorage {
   Future<AnimalPhotoModel> addPhoto(AnimalModel animal, String path) async {
     const uri = 'animal/photo';
     final jwtKey = await _appData.getJWT();
-    Map<String, String> animalData = {'animal': animal.id};
+    Map<String, String> animalData = {'animal': '${animal.id}'};
     try {
-      final file = await MultipartFile.fromPath('image', path);
+      final file = await MultipartFile.fromPath('photo', path);
       final response = await _client.multipartFormData(
         uri,
         file,
