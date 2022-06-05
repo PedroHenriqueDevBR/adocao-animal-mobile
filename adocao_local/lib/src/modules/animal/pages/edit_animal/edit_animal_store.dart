@@ -4,6 +4,7 @@ import 'package:adocao_local/src/modules/account/pages/login/login_page.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_image_interface.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/interfaces/animal_type_interface.dart';
+import 'package:adocao_local/src/modules/animal/interfaces/animal_vaccine_interface.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_photo_model.dart';
 import 'package:adocao_local/src/modules/animal/models/animal_sex_model.dart';
@@ -27,6 +28,7 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
     required IAnimalStorage storage,
     required IAnimalTypeStorage animalTypeStorage,
     required IAnimalImageStorage imageStorage,
+    required IAnimalVaccineStorage vaccineStorage,
     AnimalModel? animal,
   }) {
     super.appData = appData;
@@ -34,6 +36,7 @@ class EditAnimalStore extends _EditAnimalStore with _$EditAnimalStore {
     super.animalTypeStorage = animalTypeStorage;
     super.animal = animal;
     super.imageStorage = imageStorage;
+    super.vaccineStorage = vaccineStorage;
   }
 }
 
@@ -42,6 +45,7 @@ abstract class _EditAnimalStore with Store {
   late IAnimalStorage storage;
   late IAnimalTypeStorage animalTypeStorage;
   late IAnimalImageStorage imageStorage;
+  late IAnimalVaccineStorage vaccineStorage;
   late AnimalModel? animal;
   final ImagePicker picker = ImagePicker();
 
@@ -315,12 +319,17 @@ abstract class _EditAnimalStore with Store {
     }
   }
 
-  void registerVaccine() {
-    animalVaccineList.add(VaccineModel(name: txtVaccineName.text));
+  Future<void> registerVaccine() async {
+    final vaccine = VaccineModel(name: txtVaccineName.text);
+    final response = await vaccineStorage.addVaccine(vaccine, animal!);
+    animalVaccineList.add(response);
     txtVaccineName.clear();
+    setUpdate();
   }
 
-  void removerVaccine(int index) {
-    animalVaccineList.removeAt(index);
+  Future<void> removerVaccine(VaccineModel vaccine) async {
+    final response = await vaccineStorage.removeVaccine(vaccine);
+    animalVaccineList.remove(vaccine);
+    setUpdate();
   }
 }

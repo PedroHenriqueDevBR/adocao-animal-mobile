@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:io' show Platform;
 
+import 'package:adocao_local/src/modules/animal/models/vaccine_book_model.dart';
 import 'package:adocao_local/src/modules/animal/pages/edit_animal/widgets/animal_form_widget.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_image_repository.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_type_repository.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_vaccine_repository.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
@@ -47,6 +49,10 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
         appData: appData,
       ),
       imageStorage: AnimalImageRepository(
+        client: client,
+        appData: appData,
+      ),
+      vaccineStorage: AnimalVaccineRepository(
         client: client,
         appData: appData,
       ),
@@ -231,12 +237,12 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
         ),
       );
 
-  void removeVaccineDialog(int index) => asuka.showDialog(
+  void removeVaccineDialog(VaccineModel vaccine) => asuka.showDialog(
         builder: (dialogContext) => AlertDialog(
           backgroundColor: Theme.of(dialogContext).colorScheme.primaryContainer,
           elevation: 16.0,
           title: const Text('Atenção'),
-          content: Text('Confirmar a remoção da vacina'),
+          content: const Text('Confirmar a remoção da vacina'),
           actions: [
             TextButton(
               onPressed: () {
@@ -246,7 +252,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
             ),
             TextButton(
               onPressed: () {
-                controller.removerVaccine(0);
+                controller.removerVaccine(vaccine);
                 setState(() {});
                 Navigator.pop(dialogContext);
               },

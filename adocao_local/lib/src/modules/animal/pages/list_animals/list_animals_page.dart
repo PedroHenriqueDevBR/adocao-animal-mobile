@@ -36,7 +36,6 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: Column(
         children: [
           Container(

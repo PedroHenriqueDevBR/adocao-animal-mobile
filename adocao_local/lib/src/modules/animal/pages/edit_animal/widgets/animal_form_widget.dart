@@ -290,7 +290,7 @@ class AnimalFormWidget extends StatelessWidget {
             title: Text(vaccine.name),
             subtitle: Text(vaccine.formattedDate),
             trailing: TextButton(
-              onPressed: () => removeVaccineDialog(index),
+              onPressed: () => removeVaccineDialog(vaccine),
               child: const Text('Remover'),
             ),
           );

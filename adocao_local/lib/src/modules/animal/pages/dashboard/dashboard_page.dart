@@ -10,7 +10,6 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      color: Theme.of(context).colorScheme.primaryContainer,
       height: size.height,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(8.0),
