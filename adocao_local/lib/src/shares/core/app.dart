@@ -13,9 +13,6 @@ class App extends StatelessWidget {
   void changeNavigatorColor() {
     final uiOverlay = SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: _appStyle.primaryColor,
-      systemNavigationBarColor: Colors.white,
-      statusBarBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness: Brightness.dark,
     );
     SystemChrome.setSystemUIOverlayStyle(uiOverlay);
   }

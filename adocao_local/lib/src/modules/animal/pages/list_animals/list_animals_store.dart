@@ -86,6 +86,102 @@ abstract class _ListAnimalsStore with Store {
     });
   }
 
+  Future<void> blockAnimal(BuildContext context, AnimalModel animal) async {
+    try {
+      setLoading(true);
+      await storage.blockAnimal(animal);
+      animal.blocked = true;
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal bloqueado'));
+      setUpdate();
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> unlockAnimal(BuildContext context, AnimalModel animal) async {
+    try {
+      setLoading(true);
+      await storage.unlockAnimal(animal);
+      animal.blocked = false;
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal desbloqueado'));
+      setUpdate();
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> removeAnimal(BuildContext context, AnimalModel animal) async {
+    try {
+      setLoading(true);
+      await storage.delete(animal);
+      animalList.remove(animal);
+      asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal deletado'));
+      setUpdate();
+    } on ConnectionRefusedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sem conexão com o servidor',
+      ));
+    } on UnauthorizedException {
+      asuka.showSnackBar(asuka.AsukaSnackbar.alert(
+        'Sessão encerrada, entre novamente',
+      ));
+      appData.setJWT('');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+        (route) => false,
+      );
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode >= 500) {
+        asuka.showSnackBar(asuka.AsukaSnackbar.alert('Servidor indisponível'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   void goToShowAnimalPage(BuildContext context, AnimalModel animal) {
     Navigator.push(
       context,
@@ -98,6 +194,12 @@ abstract class _ListAnimalsStore with Store {
       IClientHTTP client = HttpClientService();
       return NetworkImage(client.host + animal.photos.first.url);
     }
-    return AssetImage(AppAssets.catAndDog);
+    return AssetImage(
+      animal.animalType.name == 'Cachorro'
+          ? AppAssets.dog
+          : animal.animalType.name == 'Gato'
+              ? AppAssets.cat
+              : AppAssets.logo,
+    );
   }
 }

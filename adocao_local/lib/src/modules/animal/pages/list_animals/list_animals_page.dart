@@ -5,6 +5,7 @@ import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import './list_animals_store.dart';
 
 class ListAnimalsPage extends StatefulWidget {
@@ -31,6 +32,15 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
       ),
     );
     controller.loadAnimals(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    reaction(
+      (_) => controller.update,
+      (_) => setState(() {}),
+    );
   }
 
   @override
@@ -86,6 +96,8 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   Widget animalCard(AnimalModel animal) => GestureDetector(
         onTap: () => controller.goToShowAnimalPage(context, animal),
         child: Card(
+          color: Theme.of(context).colorScheme.background,
+          elevation: 4.0,
           margin: const EdgeInsets.all(8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,9 +108,14 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                     height: 200,
                     width: 150,
                     decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
                       image: DecorationImage(
                         image: controller.getAnimalPhoto(animal),
                         fit: BoxFit.cover,
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8.0),
+                        bottomLeft: Radius.circular(8.0),
                       ),
                     ),
                   ),
@@ -153,20 +170,30 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
                                 controller.goToCreateAnimalPage(
                                     context: context, animal: animal);
                               }
+                              if (value == '2') {
+                                controller.blockAnimal(context, animal);
+                              }
+                              if (value == '3') {
+                                controller.unlockAnimal(context, animal);
+                              }
+                              if (value == '4') {
+                                controller.removeAnimal(context, animal);
+                              }
                             },
                             itemBuilder: (_) => <PopupMenuItem<String>>[
                               const PopupMenuItem(
                                 value: '1',
                                 child: Text('Editar'),
                               ),
-                              const PopupMenuItem(
-                                value: '2',
-                                child: Text('Bloquear'),
-                              ),
-                              const PopupMenuItem(
-                                value: '3',
-                                child: Text('Desbloquear'),
-                              ),
+                              !animal.blocked
+                                  ? const PopupMenuItem(
+                                      value: '2',
+                                      child: Text('Bloquear'),
+                                    )
+                                  : const PopupMenuItem(
+                                      value: '3',
+                                      child: Text('Desbloquear'),
+                                    ),
                               const PopupMenuItem(
                                 value: '4',
                                 child: Text('Deletar'),

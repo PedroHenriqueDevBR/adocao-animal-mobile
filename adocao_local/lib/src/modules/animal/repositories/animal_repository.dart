@@ -139,7 +139,7 @@ class AnimalRepository implements IAnimalStorage {
 
   @override
   Future<void> blockAnimal(AnimalModel animal) async {
-    final path = 'animal/my/${animal.id}/block';
+    final path = 'animal/${animal.id}/block';
     final jwtKey = await _appData.getJWT();
 
     try {
@@ -166,7 +166,7 @@ class AnimalRepository implements IAnimalStorage {
 
   @override
   Future<void> unlockAnimal(AnimalModel animal) async {
-    final path = 'animal/my/${animal.id}/unlock';
+    final path = 'animal/${animal.id}/unlock';
     final jwtKey = await _appData.getJWT();
 
     try {
