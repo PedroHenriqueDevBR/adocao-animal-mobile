@@ -1,5 +1,6 @@
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_store.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_request_repository.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ShowAnimalPage extends StatefulWidget {
   AnimalModel animal;
@@ -34,8 +36,13 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
         client: client,
         appData: appData,
       ),
+      adoptionStorage: AnimalRequestRepository(
+        client: client,
+        appData: appData,
+      ),
       animal: widget.animal,
     );
+    controller.loadAnimalPhotos();
   }
 
   void showBottomPage() {
@@ -49,28 +56,60 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
             backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (_, __) => const Divider(),
-              itemBuilder: (ctx, index) => ListTile(
-                title: const Text('Nome do solicitante'),
-                subtitle: const Text('(86) 91234-5678'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      color: Colors.green,
-                      onPressed: () {},
-                      icon: const Icon(Icons.check_circle),
-                    ),
-                    IconButton(
-                      color: Colors.red,
-                      onPressed: () {},
-                      icon: const Icon(Icons.cancel),
-                    ),
-                  ],
-                ),
-              ),
+            child: Observer(
+              builder: (_) {
+                return controller.adoptionRequests.length > 0
+                    ? ListView.separated(
+                        itemCount: controller.adoptionRequests.length,
+                        separatorBuilder: (_, __) => const Divider(),
+                        itemBuilder: (ctx, index) {
+                          final adoptionRequest =
+                              controller.adoptionRequests[index];
+                          return ListTile(
+                            title: Text(adoptionRequest.requester.name),
+                            subtitle:
+                                Text(adoptionRequest.requester.contact ?? ''),
+                            tileColor: adoptionRequest.isAcepted == null
+                                ? null
+                                : adoptionRequest.isAcepted == true
+                                    ? Colors.green.shade100
+                                    : Colors.red.shade100,
+                            trailing: adoptionRequest.isAcepted == null &&
+                                    controller.animal.adopted == false
+                                ? Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        color: Colors.green,
+                                        onPressed: () async {
+                                          await controller.acceptAdoptionRequest(
+                                              context, adoptionRequest);
+                                          Navigator.pop(context);
+                                          setState((){});
+                                        },
+                                        icon: const Icon(Icons.check_circle),
+                                      ),
+                                      IconButton(
+                                        color: Colors.red,
+                                        onPressed: () async {
+                                          await controller.recuseAdoptionRequest(
+                                              context, adoptionRequest);
+                                          Navigator.pop(context);
+                                          setState((){});
+                                        },
+                                        icon: const Icon(Icons.cancel),
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Text(
+                            'Nenhuma solicitação para ser apresentada no momento!'),
+                      );
+              },
             ),
           ),
         ],

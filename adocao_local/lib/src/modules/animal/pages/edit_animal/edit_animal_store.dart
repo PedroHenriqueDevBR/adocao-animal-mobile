@@ -97,6 +97,7 @@ abstract class _EditAnimalStore with Store {
       for (AnimalSexModel animalSex in animalSexList) {
         if (animal!.sex == animalSex.short) {
           selectedAnimalSex = animalSex;
+          setUpdate();
           break;
         }
       }
