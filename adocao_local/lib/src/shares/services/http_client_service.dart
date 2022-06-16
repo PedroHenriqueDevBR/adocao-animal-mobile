@@ -9,7 +9,8 @@ import '../interfaces/client_http_interface.dart';
 
 class HttpClientService implements IClientHTTP {
   @override
-  String host = 'http://192.168.2.3:8000';
+  String host = 'http://159.203.69.168';
+  // String host = 'http://192.168.2.3:8000';
 
   Uri _getBaseUrl(String path) => Uri.parse('$host/$path');
 

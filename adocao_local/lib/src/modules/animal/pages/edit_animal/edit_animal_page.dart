@@ -59,7 +59,6 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
       animal: widget.animal,
     );
     controller.loadAnimalTypeList();
-    controller.loadAnimalData();
   }
 
   @override

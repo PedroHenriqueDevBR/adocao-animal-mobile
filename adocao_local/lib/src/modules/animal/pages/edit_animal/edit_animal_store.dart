@@ -83,6 +83,7 @@ abstract class _EditAnimalStore with Store {
     );
     final result = await animalTypeStorage.allTypes();
     animalTypeList.addAll(result);
+    loadAnimalData();
   }
 
   void loadAnimalData() {
@@ -92,6 +93,22 @@ abstract class _EditAnimalStore with Store {
       txtAge.text = '${animal!.age}';
       animalPhotoList.addAll(animal!.photos);
       animalVaccineList.addAll(animal!.vaccines);
+
+      for (AnimalSexModel animalSex in animalSexList) {
+        if (animal!.sex == animalSex.short) {
+          selectedAnimalSex = animalSex;
+          break;
+        }
+      }
+
+      for (AnimalTypeModel animalType in animalTypeList) {
+        if (animal!.animalType.name == animalType.name) {
+          selectedAnimalType = animalType;
+          setUpdate();
+          break;
+        }
+      }
+
     }
   }
 
@@ -141,18 +158,22 @@ abstract class _EditAnimalStore with Store {
 
   Future<void> saveAnimal(BuildContext context) async {
     if (formIsValid()) {
-      final animalData = AnimalModel(
-        name: txtName.text,
-        breed: txtBreed.text,
-        age: int.parse(txtAge.text),
-        sex: selectedAnimalSex!.short,
-        animalType: selectedAnimalType!,
-      );
-
       if (animal == null) {
+        final animalData = AnimalModel(
+          name: txtName.text,
+          breed: txtBreed.text,
+          age: int.parse(txtAge.text),
+          sex: selectedAnimalSex!.short,
+          animalType: selectedAnimalType!,
+        );
         await addAnmal(context, animalData);
       } else {
-        await updateAnimal(context, animalData);
+        animal!.name = txtName.text;
+        animal!.breed = txtBreed.text;
+        animal!.age = int.parse(txtAge.text);
+        animal!.sex = selectedAnimalSex!.short;
+        animal!.animalType = selectedAnimalType!;
+        await updateAnimal(context, animal!);
       }
     }
   }

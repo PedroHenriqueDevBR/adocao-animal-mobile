@@ -67,21 +67,22 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 16.0),
             Observer(
-                builder: (_) => TextFormField(
-                      onChanged: (value) => controller.setPassword(value),
-                      decoration: InputDecoration(
-                        labelText: 'Senha',
-                        suffixIcon: IconButton(
-                          onPressed: () => controller.toggleShowPassword(),
-                          icon: Icon(
-                            controller.showPassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                        ),
-                      ),
-                      obscureText: controller.showPassword ? false : true,
-                    )),
+              builder: (_) => TextFormField(
+                onChanged: (value) => controller.setPassword(value),
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  suffixIcon: IconButton(
+                    onPressed: () => controller.toggleShowPassword(),
+                    icon: Icon(
+                      controller.showPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                  ),
+                ),
+                obscureText: controller.showPassword ? false : true,
+              ),
+            ),
             const SizedBox(height: 16.0),
             Row(
               children: [
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                           : const Text('Entrar'),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             const SizedBox(height: 16.0),
