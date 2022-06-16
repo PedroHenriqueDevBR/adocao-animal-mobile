@@ -46,11 +46,12 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-            color: Theme.of(context).colorScheme.background,
+            color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -96,8 +97,8 @@ class _ListAnimalsPageState extends State<ListAnimalsPage> {
   Widget animalCard(AnimalModel animal) => GestureDetector(
         onTap: () => controller.goToShowAnimalPage(context, animal),
         child: Card(
-          color: Theme.of(context).colorScheme.background,
-          elevation: 4.0,
+          color: Colors.white,
+          elevation: 0,
           margin: const EdgeInsets.all(8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

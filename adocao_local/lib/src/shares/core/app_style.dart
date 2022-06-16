@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class AppStyle {
   Color primaryColor = const Color(0XFF8A2BE2);
   Color secondaryColor = const Color(0XFFFFA500);
+  Color background = Colors.grey.shade100;
+  Color surface = const Color(0x00ffffff);
 
   ThemeData get lightTheme => ThemeData(
-        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: primaryColor,
           secondary: secondaryColor,
+          background: background,
+          surface: surface,
           // seedColor: Color(0XFF24FF78),
           // brightness: Brightness.dark,
         ),
@@ -28,21 +31,7 @@ class AppStyle {
         inputDecorationTheme: _inputDecorationTheme,
         appBarTheme: _appBarTheme,
         floatingActionButtonTheme: _fabTheme,
-        // bottomNavigationBarTheme: _bottomNavigationTheme,
-      );
-
-  ColorScheme get _colorScheme => ColorScheme(
-        brightness: Brightness.light,
-        primary: primaryColor,
-        onPrimary: Colors.white,
-        secondary: secondaryColor,
-        onSecondary: Colors.white,
-        error: Colors.red,
-        onError: Colors.white,
-        background: Colors.blueGrey.shade50,
-        onBackground: Colors.blueGrey.shade900,
-        surface: Colors.blueGrey.shade50,
-        onSurface: Colors.blueGrey.shade900,
+        bottomNavigationBarTheme: _bottomNavigationTheme,
       );
 
   AppBarTheme get _appBarTheme => AppBarTheme(
@@ -77,11 +66,11 @@ class AppStyle {
       );
 
   BottomNavigationBarThemeData get _bottomNavigationTheme =>
-      const BottomNavigationBarThemeData(
+      BottomNavigationBarThemeData(
         elevation: 0,
         showUnselectedLabels: true,
-        // backgroundColor: Colors.white,
-        // selectedItemColor: primaryColor,
-        // unselectedItemColor: Colors.blueGrey.shade900,
+        backgroundColor: Colors.white,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: Colors.blueGrey.shade900,
       );
 }

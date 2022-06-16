@@ -83,7 +83,7 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
             child: SingleChildScrollView(
               physics: const ScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: AnimalFormWidget(
                   textStyle: _textStyle,
                   txtName: controller.txtName,
@@ -114,7 +114,8 @@ class _CreateAnimalPageState extends State<CreateAnimalPage> {
               ),
             ),
           ),
-          Padding(
+          Container(
+            color: Colors.white,
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [

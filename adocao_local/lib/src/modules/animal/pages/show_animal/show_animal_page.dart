@@ -1,3 +1,4 @@
+import 'package:adocao_local/src/modules/animal/models/animal_photo_model.dart';
 import 'package:adocao_local/src/modules/animal/pages/show_animal/show_animal_store.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_request_repository.dart';
@@ -87,7 +88,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                                           Navigator.pop(context);
                                           setState((){});
                                         },
-                                        icon: const Icon(Icons.check_circle),
+                                        icon: const Icon(Icons.check),
                                       ),
                                       IconButton(
                                         color: Colors.red,
@@ -97,7 +98,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                                           Navigator.pop(context);
                                           setState((){});
                                         },
-                                        icon: const Icon(Icons.cancel),
+                                        icon: const Icon(Icons.close),
                                       ),
                                     ],
                                   )
@@ -122,7 +123,7 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Apresentação'),
+        title: Text(controller.animal.name,),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -136,9 +137,8 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
   }
 
   Widget animalPhotoContainerWidget() => Container(
-        height: 400.0,
+        height: 500.0,
         decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
           image: DecorationImage(
             image: controller.getAnimalPhoto(),
             fit: BoxFit.cover,
@@ -152,11 +152,12 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
             Container(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(12.0),
+              margin: const EdgeInsets.only(bottom: 16.0),
               color: controller.animal.adopted
                   ? Colors.green
                   : controller.animal.blocked
                       ? Colors.red
-                      : Theme.of(context).primaryColor,
+                      : Colors.white,
               child: Center(
                 child: Text(
                   controller.animal.adopted
@@ -164,43 +165,47 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
                       : controller.animal.blocked
                           ? 'Bloqueado'
                           : 'Disponível para adoção',
-                  style: _textStyle.textButton.copyWith(color: Colors.white),
+                  style: _textStyle.textButton.copyWith(color:
+                  controller.animal.adopted || controller.animal.blocked
+                      ? Colors.white
+                      : Colors.black,
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    controller.animal.name,
-                    style: _textStyle.titleStyle,
-                  ),
-                  ElevatedButton(
-                    onPressed: showBottomPage,
-                    style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.secondary,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 8.0),
-                    ),
-                    child: const Text('Solicitações'),
-                  ),
-                ],
               ),
             ),
             Padding(
               child: Text(
                 '${controller.animal.animalType.name} da raça ${controller.animal.breed}, sexo: ${controller.animal.sex}',
                 textAlign: TextAlign.center,
-                style: _textStyle.descriptionStyle,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: showBottomPage,
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 8.0),
+                      ),
+                      child: const Text('Solicitações'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            albumWidget(context),
             const Divider(),
             Text(
               'Caderno de vacinação',
               style: _textStyle.textButton,
+              textAlign: TextAlign.left,
             ),
             ListView.separated(
               itemCount: controller.animal.vaccines.length,
@@ -221,4 +226,36 @@ class _ShowAnimalPageState extends State<ShowAnimalPage> {
           ],
         ),
       );
+
+  Widget albumWidget(BuildContext context) => controller.animal.photos.length > 0 ? Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: GridView.builder(
+      itemCount: controller.animal.photos.length,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 4.0,
+        crossAxisSpacing: 4.0,
+      ),
+      itemBuilder: (_, index) {
+        AnimalPhotoModel photo = controller.animal.photos[index];
+        return Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(client.host + photo.url),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(8.0),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  ) : const Text('Nnehuma foto adicionada ao perfil do animal!');
 }

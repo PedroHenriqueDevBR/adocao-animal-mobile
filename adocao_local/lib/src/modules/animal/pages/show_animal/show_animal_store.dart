@@ -127,12 +127,14 @@ abstract class _ShowAnimalStore with Store {
   ImageProvider getAnimalPhoto() {
     if (animal.photos.isNotEmpty) {
       IClientHTTP client = HttpClientService();
-      return NetworkImage(
-        client.host + animal.photos.first.url,
-      );
+      return NetworkImage(client.host + animal.photos.first.url);
     }
     return AssetImage(
-      AppAssets.catAndDog,
+      animal.animalType.name == 'Cachorro'
+          ? AppAssets.dog
+          : animal.animalType.name == 'Gato'
+          ? AppAssets.cat
+          : AppAssets.logo,
     );
   }
 }

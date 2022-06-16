@@ -9,7 +9,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       height: size.height,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(8.0),
@@ -18,6 +18,7 @@ class DashboardPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             cardInfo(
+              Colors.white,
               '6',
               'Total de animais disponíveis para adoção no momento.',
               fullLine: true,
@@ -25,14 +26,15 @@ class DashboardPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: cardInfo('35', 'Solicitações\npendentes'),
+                  child: cardInfo(Colors.white,'35', 'Solicitações\npendentes'),
                 ),
                 Expanded(
-                  child: cardInfo('12', 'Animais\nadotados'),
+                  child: cardInfo(Colors.white,'12', 'Animais\nadotados'),
                 ),
               ],
             ),
             cardInfo(
+              Colors.white,
               '120',
               'Total de visitas recebidas (Pendente)',
               fullLine: true,
@@ -43,8 +45,10 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget cardInfo(String number, String description, {fullLine = false}) =>
+  Widget cardInfo(Color color, String number, String description, {fullLine = false}) =>
       Card(
+        elevation: 0,
+        color: color,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: fullLine

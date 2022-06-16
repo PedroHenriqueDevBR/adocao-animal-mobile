@@ -71,62 +71,86 @@ class AnimalFormWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Dados do animal',
-          textAlign: TextAlign.left,
-          style: textStyle.titleStyle,
+        sectionCardWidget(
+          children: [
+            Text(
+              'Dados do animal',
+              textAlign: TextAlign.left,
+              style: textStyle.titleStyle,
+            ),
+            const SizedBox(height: 16.0),
+            Form(child: firstAnimalData(context)),
+          ],
         ),
-        const SizedBox(height: 16.0),
-        Form(child: firstAnimalData(context)),
         const SizedBox(height: 8.0),
         animalSaved
             ? Column(
                 children: [
-                  const Divider(),
-                  Row(
+                  sectionCardWidget(
                     children: [
-                      Expanded(
-                        child: Text(
-                          'Album de fotos',
-                          textAlign: TextAlign.left,
-                          style: textStyle.titleStyle,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Album de fotos',
+                              textAlign: TextAlign.left,
+                              style: textStyle.titleStyle,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => confirmImageProvider(),
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () => confirmImageProvider(),
-                        icon: const Icon(Icons.add),
-                      ),
+                      const SizedBox(height: 16.0),
+                      animalPhotoList.isNotEmpty
+                          ? albumWidget(context)
+                          : Container(),
+                      animalPhotoPendingList.isNotEmpty
+                          ? pedingPhotos(context)
+                          : Container(),
+                      const SizedBox(height: 8.0),
                     ],
                   ),
-                  const SizedBox(height: 16.0),
-                  animalPhotoList.isNotEmpty
-                      ? albumWidget(context)
-                      : Container(),
-                  animalPhotoPendingList.isNotEmpty
-                      ? pedingPhotos(context)
-                      : Container(),
                   const SizedBox(height: 8.0),
-                  const Divider(),
-                  Row(
+                  sectionCardWidget(
                     children: [
-                      Expanded(
-                        child: Text(
-                          'Caderneta de vacinação',
-                          textAlign: TextAlign.left,
-                          style: textStyle.titleStyle,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Caderneta de vacinação',
+                              textAlign: TextAlign.left,
+                              style: textStyle.titleStyle,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => addVaccineDialog(),
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () => addVaccineDialog(),
-                        icon: const Icon(Icons.add),
-                      ),
+                      vaccineBookWidget(),
                     ],
                   ),
-                  vaccineBookWidget(),
                 ],
               )
             : Container(),
       ],
+    );
+  }
+
+  Widget sectionCardWidget({required List<Widget> children}) {
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
+        ),
+      ),
     );
   }
 
