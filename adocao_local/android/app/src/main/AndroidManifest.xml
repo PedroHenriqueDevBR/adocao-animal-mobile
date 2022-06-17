@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.pedrohenriquedevbr.adocao_animal.adocao_local">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
    <application
-        android:label="adocao_local"
+        android:label="Adotamigo App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
