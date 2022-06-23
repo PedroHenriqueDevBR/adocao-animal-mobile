@@ -190,4 +190,35 @@ class AnimalRepository implements IAnimalStorage {
       rethrow;
     }
   }
+
+  @override
+  Future<Map> dashboard() async {
+    const path = 'animal/dashboard';
+    final jwtKey = await _appData.getJWT();
+
+    try {
+      final response = await _client.get(path, jwtKey: jwtKey);
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return response.data;
+      } else if (response.statusCode >= 401) {
+        return throw UnauthorizedException();
+      } else {
+        if (kDebugMode) {
+          print('ERRO: buscar dashboard');
+        }
+        throw HttpResponseException(
+          response: HttpResponseModel(
+            statusCode: response.statusCode,
+            data: response.data,
+          ),
+        );
+      }
+    } on HttpResponseException catch (error) {
+      if (error.response.statusCode == 401) throw UnauthorizedException();
+      rethrow;
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

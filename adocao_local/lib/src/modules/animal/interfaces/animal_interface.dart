@@ -1,6 +1,8 @@
 import 'package:adocao_local/src/modules/animal/models/animal_model.dart';
 
 abstract class IAnimalStorage {
+  Future<Map> dashboard();
+
   Future<List<AnimalModel>> allAnimals();
 
   Future<AnimalModel> create(AnimalModel animal);

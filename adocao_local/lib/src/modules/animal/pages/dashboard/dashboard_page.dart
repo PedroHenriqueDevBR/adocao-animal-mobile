@@ -1,10 +1,22 @@
+import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
+import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
+import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
+import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
   final _textStyle = AppTextStyle();
+  final storage = AnimalRepository(
+    client: HttpClientService(),
+    appData: AppPreferenceService(),
+  );
 
   DashboardPage({Key? key}) : super(key: key);
+
+  void getDashboardData() async {
+    Map response = await storage.dashboard();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +38,11 @@ class DashboardPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: cardInfo(Colors.white,'35', 'Solicitações\npendentes'),
+                  child:
+                      cardInfo(Colors.white, '35', 'Solicitações\npendentes'),
                 ),
                 Expanded(
-                  child: cardInfo(Colors.white,'12', 'Animais\nadotados'),
+                  child: cardInfo(Colors.white, '12', 'Animais\nadotados'),
                 ),
               ],
             ),
@@ -45,7 +58,8 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget cardInfo(Color color, String number, String description, {fullLine = false}) =>
+  Widget cardInfo(Color color, String number, String description,
+          {fullLine = false}) =>
       Card(
         elevation: 0,
         color: color,
