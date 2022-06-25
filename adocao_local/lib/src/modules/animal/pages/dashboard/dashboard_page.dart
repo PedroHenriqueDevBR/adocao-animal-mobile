@@ -1,21 +1,40 @@
-import 'package:adocao_local/src/modules/animal/interfaces/animal_interface.dart';
 import 'package:adocao_local/src/modules/animal/repositories/animal_repository.dart';
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
+  DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
   final _textStyle = AppTextStyle();
+  int pedding_requests = 0;
+  int available_animal_adoption = 0;
+  int adopted_animals = 0;
+
   final storage = AnimalRepository(
     client: HttpClientService(),
     appData: AppPreferenceService(),
   );
 
-  DashboardPage({Key? key}) : super(key: key);
-
   void getDashboardData() async {
     Map response = await storage.dashboard();
+    setState(() {
+      pedding_requests = response['pedding_requests'];
+      available_animal_adoption = response['available_animals'];
+      adopted_animals = response['adopted_animals'];
+    });
+  }
+
+  @override
+  void initState() {
+    getDashboardData();
+    super.initState();
   }
 
   @override
@@ -31,26 +50,21 @@ class DashboardPage extends StatelessWidget {
           children: [
             cardInfo(
               Colors.white,
-              '6',
+              '$available_animal_adoption',
               'Total de animais disponíveis para adoção no momento.',
               fullLine: true,
             ),
             Row(
               children: [
                 Expanded(
-                  child:
-                      cardInfo(Colors.white, '35', 'Solicitações\npendentes'),
+                  child: cardInfo(Colors.white, '$pedding_requests',
+                      'Solicitações\npendentes'),
                 ),
                 Expanded(
-                  child: cardInfo(Colors.white, '12', 'Animais\nadotados'),
+                  child: cardInfo(
+                      Colors.white, '$adopted_animals', 'Animais\nadotados'),
                 ),
               ],
-            ),
-            cardInfo(
-              Colors.white,
-              '120',
-              'Total de visitas recebidas (Pendente)',
-              fullLine: true,
             ),
           ],
         ),
