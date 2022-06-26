@@ -2,6 +2,7 @@ import 'package:adocao_local/src/modules/animal/repositories/animal_repository.d
 import 'package:adocao_local/src/shares/core/app_text_theme.dart';
 import 'package:adocao_local/src/shares/services/app_preferences_service.dart';
 import 'package:adocao_local/src/shares/services/http_client_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -16,19 +17,36 @@ class _DashboardPageState extends State<DashboardPage> {
   int pedding_requests = 0;
   int available_animal_adoption = 0;
   int adopted_animals = 0;
+  bool loading = true;
 
   final storage = AnimalRepository(
     client: HttpClientService(),
     appData: AppPreferenceService(),
   );
 
-  void getDashboardData() async {
-    Map response = await storage.dashboard();
+  void setLoading(bool value) {
     setState(() {
-      pedding_requests = response['pedding_requests'];
-      available_animal_adoption = response['available_animals'];
-      adopted_animals = response['adopted_animals'];
+      loading = value;
     });
+  }
+
+  void getDashboardData() async {
+    setLoading(true);
+    try {
+      Map response = await storage.dashboard();
+      setState(() {
+        pedding_requests = response['pedding_requests'];
+        available_animal_adoption = response['available_animals'];
+        adopted_animals = response['adopted_animals'];
+      });
+    } catch (error) {
+      if (kDebugMode) {
+        print('Erro ao carregar dados do dashboard');
+        print(error);
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   @override
@@ -42,33 +60,37 @@ class _DashboardPageState extends State<DashboardPage> {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            cardInfo(
-              Colors.white,
-              '$available_animal_adoption',
-              'Total de animais disponíveis para adoção no momento.',
-              fullLine: true,
+      child: loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  cardInfo(
+                    Colors.white,
+                    '$available_animal_adoption',
+                    'Total de animais disponíveis para adoção no momento.',
+                    fullLine: true,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: cardInfo(Colors.white, '$pedding_requests',
+                            'Solicitações\npendentes'),
+                      ),
+                      Expanded(
+                        child: cardInfo(Colors.white, '$adopted_animals',
+                            'Animais\nadotados'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: cardInfo(Colors.white, '$pedding_requests',
-                      'Solicitações\npendentes'),
-                ),
-                Expanded(
-                  child: cardInfo(
-                      Colors.white, '$adopted_animals', 'Animais\nadotados'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 

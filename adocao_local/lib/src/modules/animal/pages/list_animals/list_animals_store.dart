@@ -31,6 +31,7 @@ abstract class _ListAnimalsStore with Store {
   late IAnimalStorage storage;
 
   ObservableList<AnimalModel> animalList = ObservableList<AnimalModel>();
+  ObservableList<AnimalModel> showAnimalList = ObservableList<AnimalModel>();
 
   @observable
   bool loading = false;
@@ -42,12 +43,25 @@ abstract class _ListAnimalsStore with Store {
   @action
   void setUpdate() => update = !update;
 
+  void search(String keyword) {
+    List<AnimalModel> result = [];
+    for (AnimalModel animal in animalList) {
+      if (animal.name.toLowerCase().contains(keyword.toLowerCase())) {
+        result.add(animal);
+      }
+    }
+    showAnimalList.clear();
+    showAnimalList.addAll(result);
+  }
+
   Future<void> loadAnimals(BuildContext context) async {
     try {
       setLoading(true);
       List<AnimalModel> responseList = await storage.allAnimals();
       animalList.clear();
       animalList.addAll(responseList);
+      showAnimalList.clear();
+      showAnimalList.addAll(responseList);
     } on ConnectionRefusedException {
       asuka.showSnackBar(asuka.AsukaSnackbar.alert(
         'Sem conexão com o servidor',
@@ -155,6 +169,8 @@ abstract class _ListAnimalsStore with Store {
       setLoading(true);
       await storage.delete(animal);
       animalList.remove(animal);
+      showAnimalList.clear();
+      showAnimalList.addAll(animalList);
       asuka.showSnackBar(asuka.AsukaSnackbar.success('Animal deletado'));
       setUpdate();
     } on ConnectionRefusedException {
@@ -182,11 +198,14 @@ abstract class _ListAnimalsStore with Store {
     }
   }
 
-  void goToShowAnimalPage(BuildContext context, AnimalModel animal) {
-    Navigator.push(
+  void goToShowAnimalPage(BuildContext context, AnimalModel animal) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => ShowAnimalPage(animal: animal)),
-    );
+    ).then((_) async {
+      loadAnimals(context);
+      setUpdate();
+    });
   }
 
   ImageProvider getAnimalPhoto(AnimalModel animal) {
