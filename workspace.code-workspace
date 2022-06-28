@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": "adocao_local"
 		},
 		{
-			"path": "../adocao-doguinho/backend/animal_adoption"
+			"path": "../adocao-animal-web/backend/animal_adoption"
 		}
 	],
 	"settings": {}
