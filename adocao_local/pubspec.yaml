@@ -48,7 +48,7 @@ dev_dependencies:
 
 flutter_icons:
   android: true
-  image_path: "assets/images/paw-logo.png"
+  image_path: "assets/images/logo.png"
   adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/images/paw-logo.png"
 
